@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MN6VW6GV50"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MN6VW6GV50');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Storage options guide: M.2 NVMe, SATA connections, PCIe Gen 4 vs Gen 5, drive recommendations, and building the optimal storage configuration for your motherboard.">
+  <title>NVMe &amp; SATA Storage Guide for Motherboards - MotherboardCentral</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="canonical" href="https://motherboardcentral.com/guide-storage.html">
+  <meta property="og:title" content="NVMe &amp; SATA Storage Guide for Motherboards">
+  <meta property="og:description" content="Storage options guide: M.2 NVMe, SATA connections, PCIe Gen 4 vs Gen 5, drive recommendations.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://motherboardcentral.com/guide-storage.html">
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION BAR
+       ============================================ -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="6" y1="2" x2="6" y2="22"/><line x1="18" y1="2" x2="18" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+        </div>
+        Motherboard<span>Central</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="guides.html" class="active">Guides</a>
+        <a href="compare.html">Compare</a>
+      </div>
+      <div class="nav-search">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" class="search-input" placeholder="Search motherboards...">
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       PAGE HERO
+       ============================================ -->
+  <section class="page-hero">
+    <div class="page-hero-bg">
+      <img src="images/guides/guide-storage.png" alt="NVMe M.2 SSD and SATA storage connections on a motherboard">
+    </div>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">&gt;</span>
+        <a href="guides.html">Guides</a>
+        <span class="separator">&gt;</span>
+        <span class="current">Storage Options</span>
+      </nav>
+      <h1>Storage Options <span class="gradient-text">Guide</span></h1>
+      <p>M.2 NVMe, SATA, PCIe generations, and building the optimal storage configuration</p>
+    </div>
+  </section>
+
+  <!-- ============================================
+       GUIDE LAYOUT
+       ============================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="guide-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="guide-sidebar">
+          <nav class="guide-toc">
+            <h4>Table of Contents</h4>
+            <ul>
+              <li><a href="#overview" class="active">Storage Types Overview</a></li>
+              <li><a href="#m2-nvme">M.2 NVMe Explained</a></li>
+              <li><a href="#sata">SATA Connections</a></li>
+              <li><a href="#gen4-vs-gen5">PCIe Gen 4 vs Gen 5</a></li>
+              <li><a href="#how-many">How Many Drives?</a></li>
+              <li><a href="#sharing">M.2 Slot Sharing</a></li>
+              <li><a href="#recommended">Recommended Drives</a></li>
+              <li><a href="#planning">Storage Planning</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- CONTENT -->
+        <div class="guide-content">
+
+          <!-- Storage Types Overview -->
+          <h2 id="overview">Storage Types Overview</h2>
+
+          <p>Modern motherboards support several types of storage, each with different interfaces, speeds, form factors, and price points. Understanding the differences is essential to picking the right combination for your build. Here is a complete comparison of every storage type you will encounter:</p>
+
+          <div style="overflow-x: auto;">
+            <table class="spec-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Interface</th>
+                  <th>Max Speed</th>
+                  <th>Form Factor</th>
+                  <th>Cost per TB</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>SATA SSD</td>
+                  <td>SATA III</td>
+                  <td>550 MB/s</td>
+                  <td>2.5"</td>
+                  <td>Low ($50-70)</td>
+                </tr>
+                <tr>
+                  <td>M.2 SATA SSD</td>
+                  <td>SATA III</td>
+                  <td>550 MB/s</td>
+                  <td>M.2 2280</td>
+                  <td>Low ($50-70)</td>
+                </tr>
+                <tr>
+                  <td>NVMe Gen 3</td>
+                  <td>PCIe 3.0 x4</td>
+                  <td>3,500 MB/s</td>
+                  <td>M.2 2280</td>
+                  <td>Low-Med ($50-80)</td>
+                </tr>
+                <tr>
+                  <td>NVMe Gen 4</td>
+                  <td>PCIe 4.0 x4</td>
+                  <td>7,000 MB/s</td>
+                  <td>M.2 2280</td>
+                  <td>Medium ($60-100)</td>
+                </tr>
+                <tr>
+                  <td>NVMe Gen 5</td>
+                  <td>PCIe 5.0 x4</td>
+                  <td>14,000 MB/s</td>
+                  <td>M.2 2280</td>
+                  <td>High ($120-200)</td>
+                </tr>
+                <tr>
+                  <td>HDD</td>
+                  <td>SATA III</td>
+                  <td>250 MB/s</td>
+                  <td>3.5"</td>
+                  <td>Very Low ($15-25)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="info-box">
+            <h4>Best Value in 2025</h4>
+            <p>For most users in 2025, a PCIe Gen 4 NVMe SSD offers the best balance of speed, price, and availability. Gen 5 drives are fast but expensive and generate more heat.</p>
+          </div>
+
+          <!-- M.2 NVMe Explained -->
+          <h2 id="m2-nvme">M.2 NVMe Explained</h2>
+
+          <p><strong>M.2 is the form factor</strong> (the physical slot shape on your motherboard). <strong>NVMe is the protocol</strong> (the communication standard the drive uses to talk to the CPU). These two terms are often used interchangeably, but they describe different things. An M.2 slot can support NVMe drives, SATA drives, or both -- depending on how the motherboard manufacturer wired it.</p>
+
+          <p><strong>M.2 2280</strong> is the most common size designation. The "22" means 22mm wide, and the "80" means 80mm long. Nearly every consumer M.2 SSD uses this form factor. Some compact drives use M.2 2242 (42mm long) or M.2 2230 (30mm long, commonly found in laptops and the Steam Deck), but 2280 is the standard for desktop motherboards.</p>
+
+          <p>M.2 slots use a <strong>key system</strong> to determine compatibility. M-key slots support NVMe drives and are the most common on modern motherboards. B+M-key slots support SATA M.2 drives. An M-key slot can also accept SATA M.2 drives on many boards, but this depends on the motherboard's controller configuration.</p>
+
+          <p>Not all M.2 slots support NVMe. Some budget motherboards include M.2 slots that are <strong>SATA-only</strong>, meaning they will not work with NVMe drives at all. These slots look identical to NVMe-capable M.2 slots, so the only way to know is to check the motherboard specifications or manual.</p>
+
+          <p>One of the biggest advantages of M.2 is the clean installation experience. The drive connects directly to the motherboard with no cables needed -- no SATA data cable, no power cable from the PSU. You simply slot the drive in at an angle, press it down, and secure it with a single screw. This eliminates cable clutter and simplifies the build process significantly.</p>
+
+          <div class="info-box tip">
+            <h4>Verify NVMe Support Before Buying</h4>
+            <p>When buying an M.2 drive, verify your slot supports NVMe if you're buying an NVMe drive. Some budget boards have M.2 slots that only support SATA. Installing an NVMe drive in a SATA-only M.2 slot will result in the drive not being detected at all.</p>
+          </div>
+
+          <!-- SATA Connections -->
+          <h2 id="sata">SATA Connections</h2>
+
+          <p><strong>SATA III (6 Gbps)</strong> ports are the L-shaped connectors found along the edge of your motherboard, typically on the right side. Despite being the oldest storage interface still in active use on consumer boards, SATA remains essential for connecting 2.5" SSDs, 3.5" HDDs, and optical drives.</p>
+
+          <p>The number of SATA ports varies significantly by motherboard tier:</p>
+
+          <ul>
+            <li><strong>Budget boards:</strong> 2-4 SATA ports. This is sufficient for most basic builds but can become limiting if you plan to add multiple storage drives over time.</li>
+            <li><strong>Mid-range boards:</strong> 4 SATA ports is typical. This covers the needs of most builders -- one or two SATA SSDs or HDDs alongside your M.2 NVMe boot drive.</li>
+            <li><strong>High-end boards:</strong> 4-6 SATA ports, with some models offering SATA Express. The extra ports are valuable for content creators and data hoarders who need multiple large HDDs for archival storage.</li>
+          </ul>
+
+          <p>Each SATA connection requires two cables: a <strong>SATA data cable</strong> that runs from the drive to the motherboard's SATA port, and a <strong>SATA power cable</strong> from your power supply to the drive. The data cable is a thin, flat cable (usually included with the motherboard), while the power connector comes from one of your PSU's SATA power chains. Make sure your PSU has enough SATA power connectors for all the drives you plan to install.</p>
+
+          <!-- PCIe Gen 4 vs Gen 5 -->
+          <h2 id="gen4-vs-gen5">PCIe Gen 4 vs Gen 5</h2>
+
+          <p>The jump from PCIe Gen 4 to Gen 5 doubles the theoretical bandwidth available to NVMe drives. But raw speed numbers do not tell the whole story. Here is a detailed comparison to help you decide which generation makes sense for your build:</p>
+
+          <div style="overflow-x: auto;">
+            <table class="spec-table">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>PCIe Gen 4 NVMe</th>
+                  <th>PCIe Gen 5 NVMe</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Sequential Read</td>
+                  <td>Up to 7,000 MB/s</td>
+                  <td>Up to 14,000 MB/s</td>
+                </tr>
+                <tr>
+                  <td>Sequential Write</td>
+                  <td>Up to 6,500 MB/s</td>
+                  <td>Up to 12,000 MB/s</td>
+                </tr>
+                <tr>
+                  <td>Price (1TB)</td>
+                  <td>$60-100</td>
+                  <td>$120-200</td>
+                </tr>
+                <tr>
+                  <td>Price (2TB)</td>
+                  <td>$100-150</td>
+                  <td>$200-350</td>
+                </tr>
+                <tr>
+                  <td>Heat Generation</td>
+                  <td>Moderate</td>
+                  <td>High</td>
+                </tr>
+                <tr>
+                  <td>Heatsink Required</td>
+                  <td>Recommended</td>
+                  <td>Essential</td>
+                </tr>
+                <tr>
+                  <td>Real-World Gaming Impact</td>
+                  <td>Minimal vs Gen 3</td>
+                  <td>Minimal vs Gen 4</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>The sequential speed numbers are impressive on paper, but they primarily matter for sustained large file transfers -- copying huge video files, working with uncompressed project assets, or moving entire game libraries. For everyday tasks like booting your OS, launching applications, and loading game levels, the difference between Gen 4 and Gen 5 is barely perceptible.</p>
+
+          <p>Gen 5 drives also generate significantly more heat than Gen 4 drives due to the higher data throughput and more complex controllers. Without an adequate heatsink, a Gen 5 NVMe drive will thermal throttle under sustained load, reducing its performance to Gen 4 levels or below. Most high-end motherboards include built-in M.2 heatsinks, but verify this before buying a Gen 5 drive.</p>
+
+          <div class="info-box">
+            <h4>Gen 4 Is the Smart Choice for Most Builds</h4>
+            <p>For gaming and general use, PCIe Gen 4 NVMe is more than enough. Gen 5 primarily benefits large file transfers, video editing, and specific workstation tasks. Unless your workflow involves moving massive files daily, the extra cost and heat of Gen 5 are hard to justify.</p>
+          </div>
+
+          <!-- How Many Drives? -->
+          <h2 id="how-many">How Many Drives?</h2>
+
+          <p>The number of storage drives in your system depends on your use case, budget, and how you want to organize your data. Here are the most common configurations, from simple to complex:</p>
+
+          <h3>Budget Build</h3>
+          <p><strong>1x 1TB NVMe Gen 4</strong> (OS + games + files). A single 1TB drive handles everything for a budget-conscious builder. Windows, your game library, documents, and media all live on one fast drive. This is the simplest configuration with zero cable management concerns if using an M.2 drive.</p>
+
+          <h3>Gaming Build</h3>
+          <p><strong>1x 1TB NVMe Gen 4</strong> (OS + apps) <strong>+ 1x 2TB NVMe Gen 4</strong> (games). Separating your operating system from your game library makes management easier. The OS drive stays lean and fast, while the dedicated game drive can be filled and managed independently. Modern games regularly exceed 100GB each, so 2TB gives you room for 15-20 large titles.</p>
+
+          <h3>Content Creator</h3>
+          <p><strong>1x 1TB NVMe Gen 4</strong> (OS) <strong>+ 1x 2TB NVMe Gen 4</strong> (active projects) <strong>+ 1x 4TB HDD</strong> (archive). The OS drive stays clean, active project files live on fast NVMe storage for responsive editing, and completed projects move to the high-capacity HDD for long-term archival. This three-tier approach balances speed, capacity, and cost effectively.</p>
+
+          <h3>Workstation</h3>
+          <p><strong>1x 2TB NVMe Gen 5</strong> (OS + scratch disk) <strong>+ 2x 4TB NVMe Gen 4</strong> (working data) <strong>+ NAS backup</strong>. Professional workstations benefit from Gen 5 speed for scratch disk operations (video rendering, database queries, virtual machine storage). Large NVMe data drives keep active datasets fast, while network-attached storage handles backup and collaboration.</p>
+
+          <!-- M.2 Slot Sharing -->
+          <h2 id="sharing">M.2 Slot Sharing</h2>
+
+          <p>This is one of the most critical and most overlooked aspects of storage planning on a motherboard. <strong>Many motherboards share bandwidth between M.2 slots and SATA ports.</strong> This means installing a drive in a particular M.2 slot can disable one or more SATA ports on the board, and vice versa.</p>
+
+          <p>This happens because the M.2 slot and certain SATA ports are wired to the same PCIe or SATA lanes from the chipset. The controller can route those lanes to the M.2 slot or to the SATA ports, but not both simultaneously. When you install a drive in the M.2 slot, the controller automatically switches those shared lanes to the M.2 slot, and the corresponding SATA ports become inactive.</p>
+
+          <p>Here is what you need to know:</p>
+
+          <ul>
+            <li><strong>CPU-connected M.2 slots</strong> (usually the topmost slot on the motherboard, closest to the CPU socket) typically do not share bandwidth with SATA ports. These slots use dedicated PCIe lanes directly from the CPU and are independent of the chipset's lane allocation.</li>
+            <li><strong>Chipset-connected M.2 slots</strong> (usually the second, third, or lower slots) are more likely to share bandwidth with SATA ports. The exact sharing configuration varies by motherboard model and chipset.</li>
+            <li><strong>Check your motherboard manual's storage configuration diagram.</strong> Every manual includes a table or diagram showing exactly which M.2 slots disable which SATA ports when populated. This is not optional reading -- it is essential for planning your storage layout.</li>
+          </ul>
+
+          <div class="info-box warning">
+            <h4>Plan Before You Build</h4>
+            <p>Before building, map out your storage plan and check the motherboard manual for lane sharing. Some M.2/SATA combinations are mutually exclusive. If you plan to use multiple M.2 NVMe drives alongside several SATA drives, you may find that your motherboard cannot support all of them simultaneously.</p>
+          </div>
+
+          <!-- Recommended Drives -->
+          <h2 id="recommended">Recommended Drives</h2>
+
+          <p>These are well-tested, widely available drives that deliver strong performance and reliability at their respective price points. Prices fluctuate frequently, so check current pricing before purchasing.</p>
+
+          <h3>NVMe Gen 4 (Best Value)</h3>
+          <ul>
+            <li><strong>Samsung 990 EVO Plus 1TB/2TB</strong> -- Excellent all-rounder with strong sequential and random performance. Samsung's in-house controller and V-NAND deliver consistent speeds and outstanding endurance ratings. A top pick for any build.</li>
+            <li><strong>WD Black SN850X 1TB/2TB</strong> -- Great for gaming with optimized firmware for game loading scenarios. Consistently ranks among the fastest Gen 4 drives in real-world game load benchmarks. Excellent value at current prices.</li>
+            <li><strong>Crucial T500 1TB/2TB</strong> -- Strong performance with competitive pricing. Uses Phison's E26 controller and Micron's 232-layer NAND for a combination of speed and value that is hard to beat.</li>
+          </ul>
+
+          <h3>NVMe Gen 5 (Maximum Speed)</h3>
+          <ul>
+            <li><strong>Samsung 990 EVO Plus 2TB</strong> -- Flagship performance from Samsung with their latest controller technology. Delivers consistent speeds even under sustained workloads, making it ideal for professional content creation.</li>
+            <li><strong>Crucial T700 1TB/2TB</strong> -- Fast with an included heatsink in the box, solving the Gen 5 thermal challenge out of the gate. One of the first Gen 5 drives to market and still competitive.</li>
+            <li><strong>WD Black SN850X Gen 5</strong> -- Top-tier sequential performance with Western Digital's proven reliability. Strong random read/write numbers make it excellent for mixed workloads.</li>
+          </ul>
+
+          <h3>SATA SSD (Budget)</h3>
+          <ul>
+            <li><strong>Samsung 870 EVO</strong> -- Best SATA SSD overall. Maxes out the SATA III interface with consistent performance, excellent endurance, and Samsung's proven firmware. Available in capacities from 250GB to 4TB.</li>
+            <li><strong>Crucial MX500</strong> -- Reliable and affordable with a long track record of dependable performance. An excellent choice for secondary storage or budget builds where SATA is the only option.</li>
+          </ul>
+
+          <!-- Storage Planning -->
+          <h2 id="planning">Storage Planning</h2>
+
+          <p>Before purchasing drives or assembling your build, follow this step-by-step process to ensure your storage configuration works as intended:</p>
+
+          <ol>
+            <li><strong>Determine how many drives you need.</strong> Consider your total storage capacity requirements, how you want to organize your data (OS separate from games, active projects separate from archives), and your budget. Start with the minimum configuration and plan for future expansion.</li>
+            <li><strong>Check how many M.2 and SATA ports your motherboard has.</strong> This information is on the motherboard's product page and in the manual. Count the total M.2 slots and SATA ports available, and note which M.2 slots support NVMe, SATA, or both.</li>
+            <li><strong>Verify M.2/SATA sharing won't disable ports you need.</strong> Cross-reference your planned drive configuration with the motherboard manual's storage sharing diagram. If installing an NVMe drive in M.2 slot 2 disables SATA ports 5 and 6, make sure you don't need those ports for other drives.</li>
+            <li><strong>Pick the right PCIe generation.</strong> Gen 4 for most users -- it offers excellent speed at reasonable prices. Gen 5 for enthusiasts and professionals who need maximum sequential throughput and are willing to pay the premium and manage the extra heat.</li>
+            <li><strong>Budget for motherboard heatsinks if your board doesn't include them.</strong> Most mid-range and high-end motherboards include M.2 heatsinks, but budget boards often do not. Aftermarket M.2 heatsinks are inexpensive ($10-15) and essential for maintaining consistent performance, especially with Gen 5 drives.</li>
+          </ol>
+
+          <div class="info-box tip">
+            <h4>Future-Proofing Your Storage</h4>
+            <p>If budget allows, choose a motherboard with more M.2 slots than you need right now. Adding another NVMe drive later is one of the easiest and most impactful upgrades you can make -- no cable management, no power connector concerns, just slot it in and go.</p>
+          </div>
+
+          
+          <h2 id="recommended-boards">Motherboards with Extensive M.2 Storage</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:2rem;">
+  <a href="review-asus-rog-maximus-z890-hero.html" class="card" style="text-decoration:none;color:inherit;">
+    <div class="card-body" style="padding:1.25rem;">
+      <h4 style="font-size:0.95rem;margin-bottom:0.3rem;">ASUS ROG Maximus Z890 Hero</h4>
+      <p style="font-size:0.8rem;color:var(--text-secondary);margin:0;">5x M.2</p>
+    </div>
+  </a>
+  <a href="review-msi-mpg-z890-carbon-wifi.html" class="card" style="text-decoration:none;color:inherit;">
+    <div class="card-body" style="padding:1.25rem;">
+      <h4 style="font-size:0.95rem;margin-bottom:0.3rem;">MSI MPG Z890 Carbon WiFi</h4>
+      <p style="font-size:0.8rem;color:var(--text-secondary);margin:0;">5x M.2</p>
+    </div>
+  </a>
+  <a href="review-asrock-z890-taichi.html" class="card" style="text-decoration:none;color:inherit;">
+    <div class="card-body" style="padding:1.25rem;">
+      <h4 style="font-size:0.95rem;margin-bottom:0.3rem;">ASRock Z890 Taichi</h4>
+      <p style="font-size:0.8rem;color:var(--text-secondary);margin:0;">5x M.2</p>
+    </div>
+  </a>
+  <a href="review-gigabyte-z890-aorus-master.html" class="card" style="text-decoration:none;color:inherit;">
+    <div class="card-body" style="padding:1.25rem;">
+      <h4 style="font-size:0.95rem;margin-bottom:0.3rem;">GIGABYTE Z890 AORUS Master</h4>
+      <p style="font-size:0.8rem;color:var(--text-secondary);margin:0;">5x M.2</p>
+    </div>
+  </a>
+          </div>
+
+<!-- Related Guides -->
+          <h2 id="related-guides" style="margin-top: 4rem;">Related Guides</h2>
+
+          <div class="grid grid-2" style="margin-top: 1.5rem;">
+            <a href="guide-pcie.html" class="card guide-card">
+              <div class="card-img">
+                <img src="images/guides/guide-pcie.png" alt="PCIe Speeds and Slots Explained" loading="lazy">
+              </div>
+              <div class="card-body">
+                <span class="card-category">EXPANSION</span>
+                <h3>PCIe Speeds &amp; Slots</h3>
+                <p>Everything about PCIe generations, lane configurations, bandwidth math, and how slots connect to your CPU and chipset.</p>
+                <span class="read-time">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  8 min read
+                </span>
+              </div>
+            </a>
+            <a href="guide-cases.html" class="card guide-card">
+              <div class="card-img">
+                <img src="images/guides/guide-cases.png" alt="PC Cases Guide" loading="lazy">
+              </div>
+              <div class="card-body">
+                <span class="card-category">BUILDING</span>
+                <h3>PC Cases Guide</h3>
+                <p>Form factors, airflow designs, drive bays, and picking the right case for your motherboard and storage configuration.</p>
+                <span class="read-time">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  7 min read
+                </span>
+              </div>
+            </a>
+          </div>
+
+        </div>
+        <!-- END .guide-content -->
+
+      </div>
+      <!-- END .guide-layout -->
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand Column -->
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <div class="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="2"/>
+                <circle cx="8" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="8" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <line x1="8" y1="9.5" x2="8" y2="14.5"/>
+                <line x1="16" y1="9.5" x2="16" y2="14.5"/>
+                <line x1="9.5" y1="8" x2="14.5" y2="8"/>
+                <line x1="9.5" y1="16" x2="14.5" y2="16"/>
+              </svg>
+            </div>
+            Motherboard<span>Central</span>
+          </a>
+          <p>Your go-to resource for motherboard reviews, buying guides, and hardware education. Helping PC builders make informed decisions since 2024.</p>
+        </div>
+
+        <!-- Reviews Column -->
+        <div class="footer-col">
+          <h4>Reviews</h4>
+          <ul>
+            <li><a href="reviews.html">All Reviews</a></li>
+            <li><a href="reviews.html?price=0-150">Budget Boards</a></li>
+            <li><a href="reviews.html?socket=LGA+1700">Intel Boards</a></li>
+            <li><a href="reviews.html?socket=AM5">AMD Boards</a></li>
+          </ul>
+        </div>
+
+        <!-- Guides Column -->
+        <div class="footer-col">
+          <h4>Guides</h4>
+          <ul>
+            <li><a href="guide-pcie.html">PCIe Speeds &amp; Slots</a></li>
+            <li><a href="guide-sockets.html">CPU Sockets Explained</a></li>
+            <li><a href="guide-ram.html">RAM &amp; Memory</a></li>
+            <li><a href="guide-usb.html">USB Headers &amp; Ports</a></li>
+            <li><a href="guide-cooling.html">Cooling &amp; Thermals</a></li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <p>&copy; 2026 MotherboardCentral.com. All rights reserved.</p>
+        <p>Built for PC enthusiasts</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+  <!-- JavaScript -->
+  <script src="js/main.js"></script>
+  <!-- Vercel Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MN6VW6GV50"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MN6VW6GV50');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Complete RAM and memory guide: DDR4 vs DDR5, memory speeds, dual-channel setup, XMP/EXPO profiles, DIMM slot layout, and recommended kits for every budget.">
+  <title>DDR4 vs DDR5 RAM Guide for Motherboards - MotherboardCentral</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="canonical" href="https://motherboardcentral.com/guide-ram.html">
+  <meta property="og:title" content="DDR4 vs DDR5 RAM Guide for Motherboards">
+  <meta property="og:description" content="Complete RAM guide: DDR4 vs DDR5, memory speeds, dual-channel setup, XMP/EXPO profiles, and recommended kits.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://motherboardcentral.com/guide-ram.html">
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION BAR
+       ============================================ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <!-- Logo -->
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="2"/>
+            <circle cx="8" cy="8" r="1.5" fill="#fff" stroke="none"/>
+            <circle cx="16" cy="8" r="1.5" fill="#fff" stroke="none"/>
+            <circle cx="8" cy="16" r="1.5" fill="#fff" stroke="none"/>
+            <circle cx="16" cy="16" r="1.5" fill="#fff" stroke="none"/>
+            <line x1="8" y1="9.5" x2="8" y2="14.5"/>
+            <line x1="16" y1="9.5" x2="16" y2="14.5"/>
+            <line x1="9.5" y1="8" x2="14.5" y2="8"/>
+            <line x1="9.5" y1="16" x2="14.5" y2="16"/>
+          </svg>
+        </div>
+        Motherboard<span>Central</span>
+      </a>
+
+      <!-- Navigation Links -->
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="guides.html" class="active">Guides</a>
+        <a href="compare.html">Compare</a>
+      </div>
+
+      <!-- Search -->
+      <div class="nav-search">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" class="search-input" placeholder="Search motherboards..." aria-label="Search motherboards">
+      </div>
+
+      <!-- Mobile Toggle -->
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       PAGE HERO
+       ============================================ -->
+  <section class="page-hero">
+    <div class="page-hero-bg">
+      <img src="images/guides/guide-ram.png" alt="DDR4 and DDR5 RAM modules for motherboard builds">
+    </div>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">&gt;</span>
+        <a href="guides.html">Guides</a>
+        <span class="separator">&gt;</span>
+        <span class="current">RAM &amp; Memory</span>
+      </nav>
+      <h1>RAM &amp; Memory Guide</h1>
+      <p>DDR4 vs DDR5, memory configurations, speeds, and maximizing performance</p>
+    </div>
+  </section>
+
+  <!-- ============================================
+       GUIDE LAYOUT: SIDEBAR + CONTENT
+       ============================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="guide-layout">
+
+        <!-- Sidebar Table of Contents -->
+        <aside class="guide-sidebar">
+          <nav class="guide-toc">
+            <h4>On This Page</h4>
+            <ul>
+              <li><a href="#ddr4-vs-ddr5">DDR4 vs DDR5</a></li>
+              <li><a href="#speeds">Memory Speeds</a></li>
+              <li><a href="#dual-channel">Dual-Channel Setup</a></li>
+              <li><a href="#how-much">How Much RAM?</a></li>
+              <li><a href="#xmp-expo">XMP / EXPO Profiles</a></li>
+              <li><a href="#dimm-layout">DIMM Slot Layout</a></li>
+              <li><a href="#compatibility">Compatibility Tips</a></li>
+              <li><a href="#recommended">Recommended Kits</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="guide-content">
+
+          <!-- DDR4 vs DDR5 -->
+          <h2 id="ddr4-vs-ddr5">DDR4 vs DDR5</h2>
+          <p>DDR5 is the latest generation of desktop memory, succeeding DDR4 which dominated from 2014 through 2022. The two standards are physically incompatible -- you cannot install DDR4 into a DDR5 motherboard or vice versa. The notch on the module is in a different position to prevent this. Here is how the two generations compare across key specifications:</p>
+
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>DDR4</th>
+                <th>DDR5</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Speed Range</td>
+                <td>2133-5333 MT/s</td>
+                <td>4800-8000+ MT/s</td>
+              </tr>
+              <tr>
+                <td>Typical Speed</td>
+                <td>3200-3600 MT/s</td>
+                <td>5600-6400 MT/s</td>
+              </tr>
+              <tr>
+                <td>Voltage</td>
+                <td>1.2V (1.35V OC)</td>
+                <td>1.1V (1.35V OC)</td>
+              </tr>
+              <tr>
+                <td>Max Capacity/Stick</td>
+                <td>32GB common</td>
+                <td>48GB common</td>
+              </tr>
+              <tr>
+                <td>On-die ECC</td>
+                <td>No</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td>Power Management</td>
+                <td>On motherboard</td>
+                <td>On module (PMIC)</td>
+              </tr>
+              <tr>
+                <td>Channels per Module</td>
+                <td>1 (64-bit)</td>
+                <td>2 (32-bit each)</td>
+              </tr>
+              <tr>
+                <td>Price</td>
+                <td>Lower</td>
+                <td>Higher</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>DDR5 introduces on-die ECC (Error Correcting Code), which detects and corrects single-bit errors within the memory chip itself. This is not the same as full ECC memory used in servers, but it does improve stability. DDR5 also moves the power management integrated circuit (PMIC) onto the memory module itself, which allows for cleaner power delivery and higher overclocking headroom compared to DDR4's motherboard-based voltage regulation.</p>
+
+          <p>Each DDR5 module operates as two independent 32-bit channels rather than DDR4's single 64-bit channel. This effectively doubles the burst length and improves efficiency when handling multiple memory requests simultaneously, which benefits multitasking and heavily threaded workloads.</p>
+
+          <div class="info-box">
+            <h4>Current State of the Market</h4>
+            <p>DDR5 is now the standard for new builds in 2025. While DDR4 boards still exist for Intel's 12th and 13th Gen platforms, all new AMD AM5 systems require DDR5. DDR5 prices have dropped significantly since launch and a 2x16GB DDR5-6000 kit is now comparable in price to a mid-range DDR4 kit from a year ago.</p>
+          </div>
+
+          <!-- Memory Speeds -->
+          <h2 id="speeds">Memory Speeds</h2>
+          <p>Memory speed is measured in <strong>MT/s (megatransfers per second)</strong>, which describes how many data transfers the memory can perform each second. This replaced the older and technically misleading "MHz" marketing. A DDR5-6000 module operates at a base clock of 3000 MHz but performs two data transfers per clock cycle (the "double data rate" in DDR), resulting in 6000 MT/s. When you see "DDR5-6000," that 6000 number is the megatransfer rate.</p>
+
+          <p>Higher memory speeds improve bandwidth, which helps in memory-intensive tasks like video editing, gaming at high frame rates, and large file decompression. However, the real-world performance difference between, say, DDR5-6000 and DDR5-7200 is often smaller than benchmarks suggest -- typically 2-5% in gaming. The sweet spot balances price, stability, and performance.</p>
+
+          <h3>Platform Sweet Spots</h3>
+          <ul>
+            <li><strong>Intel 12th-14th Gen (LGA 1700):</strong> DDR5-5600 to DDR5-6400. Intel's memory controller is flexible, and most processors handle DDR5-6000 to DDR5-6400 without issues. Higher speeds are possible but returns diminish quickly.</li>
+            <li><strong>AMD Ryzen 7000/9000 (AM5):</strong> DDR5-6000 is the ideal target. This speed runs AMD's Infinity Fabric in a perfect 1:1 ratio with the memory controller (UCLK:MEMCLK). Going above DDR5-6000 forces the fabric into a 1:2 ratio, which can actually reduce performance in latency-sensitive workloads.</li>
+            <li><strong>DDR4 platforms:</strong> 3200-3600 MT/s remains the sweet spot. DDR4-3600 CL16 offers excellent price-to-performance, while DDR4-3200 CL16 is the budget-friendly choice with minimal sacrifice.</li>
+          </ul>
+
+          <div class="info-box tip">
+            <h4>AMD Sweet Spot</h4>
+            <p>For AMD Ryzen 7000/9000, DDR5-6000 CL30 is the "sweet spot" because it runs the Infinity Fabric at a 1:1 ratio for optimal performance. Going faster than DDR5-6000 on Ryzen can actually hurt performance unless the Infinity Fabric can be manually overclocked to maintain the 1:1 ratio, which is not guaranteed on every chip.</p>
+          </div>
+
+          <!-- Dual-Channel Setup -->
+          <h2 id="dual-channel">Dual-Channel Setup</h2>
+          <p>Dual-channel memory doubles your available memory bandwidth by allowing the CPU to access two memory modules simultaneously through two separate 64-bit channels. This gives you 128 bits of total bandwidth instead of 64 bits with a single module. In practical terms, dual-channel can improve performance by 20-40% in memory-bound tasks and 5-15% in gaming compared to single-channel.</p>
+
+          <p><strong>Always install RAM in pairs.</strong> On a motherboard with four DIMM slots, you should populate <strong>slots 2 and 4 first</strong> (the slots furthest from the CPU). These are typically labeled <strong>A2 and B2</strong> in the motherboard manual. This is not arbitrary -- the electrical traces are optimized for this configuration, and using A2/B2 first provides the best signal integrity and the most stable overclocking results.</p>
+
+          <p>If you only install a single stick of RAM, you are running in single-channel mode, which cuts your memory bandwidth in half. This is one of the most common mistakes in PC building and has a noticeable impact on performance, especially in games and applications that stream large amounts of data through memory.</p>
+
+          <h3>How to Verify Dual-Channel</h3>
+          <p>After installing your RAM, you can verify dual-channel is active by opening <strong>Task Manager</strong> (Ctrl+Shift+Esc) on Windows, navigating to the Performance tab, selecting Memory, and checking the "Slots used" field. You can also use free utilities like <strong>CPU-Z</strong> -- look at the Memory tab where the "Channel #" field should read "Dual."</p>
+
+          <div class="info-box warning">
+            <h4>Wrong Slots = Half Bandwidth</h4>
+            <p>Installing RAM in the wrong slots can force single-channel mode, cutting your memory bandwidth in half. On most four-slot boards, installing in slots 1 and 2 (the two slots closest to the CPU) will run in single-channel. Always check your motherboard manual for recommended slots -- on nearly every board, A2 and B2 is the correct starting configuration.</p>
+          </div>
+
+          <!-- How Much RAM? -->
+          <h2 id="how-much">How Much RAM?</h2>
+          <p>The amount of RAM you need depends entirely on what you do with your PC. Too little RAM forces your system to use the much slower storage drive as virtual memory (page file), which creates noticeable stuttering and slowdowns. Too much RAM is simply wasted money sitting idle. Here is a practical breakdown by use case:</p>
+
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th>Usage</th>
+                <th>Minimum</th>
+                <th>Recommended</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Basic / Office</td>
+                <td>8GB</td>
+                <td>16GB</td>
+              </tr>
+              <tr>
+                <td>Gaming</td>
+                <td>16GB</td>
+                <td>32GB</td>
+              </tr>
+              <tr>
+                <td>Content Creation</td>
+                <td>32GB</td>
+                <td>64GB</td>
+              </tr>
+              <tr>
+                <td>Workstation / VMs</td>
+                <td>64GB</td>
+                <td>128GB</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p><strong>16GB</strong> was the standard for gaming for several years, but modern games like Cities: Skylines 2, Star Citizen, and modded titles regularly use 20GB or more. In 2025, <strong>32GB (2x16GB) is the recommended configuration for a new gaming build</strong>. The price difference between a 2x8GB and 2x16GB kit is modest, and having 32GB gives you comfortable headroom for background applications, browser tabs, and Discord while gaming.</p>
+
+          <p>For content creators working with Adobe Premiere Pro, DaVinci Resolve, or Blender, 32GB is the starting point. If you work with 4K or 8K video timelines, large Photoshop files with many layers, or 3D scenes with detailed textures, 64GB will prevent the application from running out of memory and hitting the page file.</p>
+
+          <p>Workstation users running multiple virtual machines, large databases, or scientific computing simulations should target 64GB minimum and 128GB for heavy workloads. Motherboards on the AM5 and LGA 1700 platforms support up to 128GB with four 32GB sticks, or up to 192GB with four 48GB DDR5 modules on supported boards.</p>
+
+          <!-- XMP / EXPO Profiles -->
+          <h2 id="xmp-expo">XMP / EXPO Profiles</h2>
+          <p>When you install new RAM, it does not automatically run at the speed printed on the box. By default, all DDR4 and DDR5 memory runs at the base JEDEC specification -- DDR4 defaults to 2133 MT/s and DDR5 defaults to 4800 MT/s. To reach the rated speed you paid for, you need to enable an overclocking profile in your BIOS.</p>
+
+          <h3>XMP (Extreme Memory Profile)</h3>
+          <p><strong>XMP</strong> is Intel's technology, now in its third generation (XMP 3.0 for DDR5). It stores pre-tested overclocking profiles directly on the memory module's SPD (Serial Presence Detect) chip. When you enable XMP in your BIOS, the motherboard reads these profiles and automatically sets the correct speed, voltage, and timings. Most DDR5 kits include two XMP profiles -- one at the rated specification and sometimes a second at a slightly different speed or timing configuration.</p>
+
+          <h3>EXPO (Extended Profiles for Overclocking)</h3>
+          <p><strong>EXPO</strong> is AMD's equivalent of XMP, designed specifically for AMD platforms. It works the same way -- a pre-tested profile stored on the memory module that you enable with a single toggle in the BIOS. Many DDR5 kits now ship with both XMP and EXPO profiles, so the same kit works optimally on both Intel and AMD platforms.</p>
+
+          <h3>How to Enable</h3>
+          <p>Enabling XMP or EXPO is straightforward. Enter your BIOS (press DEL or F2 during boot), navigate to the memory or overclocking section, and look for the XMP or EXPO toggle. Select the profile and save your settings. The system will reboot and your RAM will run at its rated speed. If the system fails to boot after enabling, the BIOS will typically reset to default settings automatically after a few failed attempts.</p>
+
+          <div class="info-box warning">
+            <h4>Do Not Skip This Step</h4>
+            <p>Without enabling XMP or EXPO, your DDR5-6000 kit is running at DDR5-4800 -- you are leaving significant performance on the table. This is the single most common oversight in new PC builds. Always check that XMP or EXPO is enabled after your first successful boot.</p>
+          </div>
+
+          <!-- DIMM Slot Layout -->
+          <h2 id="dimm-layout">DIMM Slot Layout</h2>
+          <p>The number of DIMM slots on your motherboard determines how many memory modules you can install and your maximum total capacity. The slot count varies by form factor:</p>
+
+          <ul>
+            <li><strong>ATX motherboards:</strong> 4 DIMM slots in most cases, arranged as two channels with two slots per channel (A1, A2, B1, B2). Some high-end boards have 4 slots per channel for a total of 8 DIMMs, but this is rare and mainly found on HEDT (High-End Desktop) platforms.</li>
+            <li><strong>Micro-ATX motherboards:</strong> Usually 2 or 4 DIMM slots. Budget Micro-ATX boards often have only 2 slots, so plan your capacity accordingly -- if you want 32GB, you will need 2x16GB rather than 4x8GB.</li>
+            <li><strong>Mini-ITX motherboards:</strong> Almost always 2 DIMM slots. This means your maximum practical capacity is 64GB (2x32GB DDR5) or 96GB (2x48GB DDR5). Choose your initial kit size carefully since there is no room to add more sticks later.</li>
+          </ul>
+
+          <h3>Population Rules</h3>
+          <p>For a two-stick configuration on a four-slot board, always populate <strong>slots A2 and B2 first</strong> (typically the second and fourth physical slots). This is the configuration that motherboard manufacturers optimize for, and it provides the best signal quality for higher memory speeds.</p>
+
+          <p>If you plan to fill all four slots, be aware that <strong>two sticks generally achieve better overclock stability than four</strong>. Four DIMMs place more electrical load on the memory controller, which can limit your maximum stable speed. For example, a kit rated at DDR5-6000 with two modules might only be stable at DDR5-5600 with four modules installed. If raw speed is your priority and 32GB is enough, use 2x16GB rather than 4x8GB.</p>
+
+          <div class="info-box tip">
+            <h4>Planning for Upgrades</h4>
+            <p>If you think you might want to upgrade from 32GB to 64GB later, start with 2x16GB in a four-slot board. You can then add two more 16GB sticks in the remaining slots. However, for the best stability, try to use the same brand, model, and speed for all four modules.</p>
+          </div>
+
+          <!-- Compatibility Tips -->
+          <h2 id="compatibility">Compatibility Tips</h2>
+          <p>Memory compatibility is usually straightforward, but there are several factors to check before buying:</p>
+
+          <ul>
+            <li><strong>Check the motherboard QVL (Qualified Vendor List):</strong> Every motherboard manufacturer publishes a list of memory kits they have tested and verified to work at rated speeds. You can find this on the motherboard's product page under Support or Downloads. While kits not on the QVL will usually work, checking the list eliminates guesswork -- especially at higher speeds like DDR5-6400 and above.</li>
+            <li><strong>DDR4 and DDR5 are physically incompatible:</strong> The keying notch on DDR4 and DDR5 modules is in a different position. They physically will not fit in the wrong slot. Some Intel motherboards come in DDR4 and DDR5 variants of the same model (e.g., MSI MAG B660 Tomahawk WiFi DDR4 vs DDR5), so double-check which version you are buying.</li>
+            <li><strong>Check the maximum memory speed:</strong> Your motherboard's chipset and CPU both limit the maximum supported memory speed. A budget B660 board might cap at DDR5-4800 without overclocking support, while a Z790 board supports the full overclocking range. Similarly, some CPUs have weaker memory controllers that struggle with speeds above DDR5-6000.</li>
+            <li><strong>Use identical sticks in all slots:</strong> For the best compatibility, all installed memory modules should be the same brand, model, speed, and capacity. Mixing different RAM kits -- even if they have the same rated speed -- can cause instability because the internal die configurations and timings may differ.</li>
+            <li><strong>Mixing different kits:</strong> If you must mix RAM, match the speed and capacity as closely as possible. The system will default to the slowest module's speed. Mixing different capacities (e.g., 8GB + 16GB) can cause the system to run in flex mode, where only a portion of the RAM operates in dual-channel.</li>
+          </ul>
+
+          <div class="info-box">
+            <h4>Tall Heatsinks and CPU Coolers</h4>
+            <p>Some RAM modules have tall heatspreaders or RGB light bars that can interfere with large CPU air coolers. If you are using a tower-style air cooler, check the cooler's maximum RAM clearance before buying modules taller than 40mm. Low-profile kits like the Corsair Vengeance LPX (DDR4) or Corsair Vengeance (DDR5) are safe choices when clearance is tight.</p>
+          </div>
+
+          <!-- Recommended Kits -->
+          <h2 id="recommended">Recommended Kits</h2>
+          <p>These are well-tested, widely available kits that offer strong performance at their respective price points. All recommendations prioritize compatibility, stability, and value. Prices fluctuate frequently, so check current pricing before purchasing.</p>
+
+          <h3>DDR5 Recommendations</h3>
+          <ul>
+            <li><strong>Budget DDR5 -- Corsair Vengeance DDR5-5600 2x16GB:</strong> A reliable and affordable entry point for DDR5 builds. Low-profile design fits under any CPU cooler. CL36 timings are reasonable at this price, and the kit supports both XMP 3.0 and EXPO for compatibility across Intel and AMD platforms.</li>
+            <li><strong>Gaming DDR5 -- G.Skill Trident Z5 DDR5-6000 CL30 2x16GB:</strong> The ideal kit for AMD Ryzen 7000/9000 builds, hitting the Infinity Fabric sweet spot at DDR5-6000. CL30 timings are tight for this speed, offering excellent latency. Also an excellent choice for Intel builds. Widely tested and consistently appears on motherboard QVLs.</li>
+            <li><strong>Premium DDR5 -- G.Skill Trident Z5 RGB DDR5-6400 CL32 2x32GB:</strong> For users who want both speed and capacity. The 64GB total is perfect for content creators and gamers who multitask heavily. DDR5-6400 CL32 delivers top-tier bandwidth while the RGB lighting looks great in windowed cases. Excellent Samsung or SK Hynix ICs for overclocking headroom.</li>
+          </ul>
+
+          <h3>DDR4 Recommendations</h3>
+          <ul>
+            <li><strong>Budget DDR4 -- Corsair Vengeance LPX DDR4-3200 CL16 2x8GB:</strong> The go-to budget DDR4 kit for years running. Low-profile design, proven compatibility, and DDR4-3200 CL16 hits the performance sweet spot without breaking the bank. Ideal for budget Intel builds that still use DDR4 motherboards.</li>
+            <li><strong>Gaming DDR4 -- G.Skill Ripjaws V DDR4-3600 CL16 2x16GB:</strong> The best all-around DDR4 kit for gaming. DDR4-3600 CL16 is the performance ceiling for price-conscious DDR4 builds, delivering optimal bandwidth on both Intel and AMD platforms. The 32GB total gives plenty of headroom for modern games.</li>
+          </ul>
+
+          <div class="info-box tip">
+            <h4>Where to Check Prices</h4>
+            <p>RAM prices change frequently. Use PCPartPicker to compare current prices across retailers, set price alerts for your target kit, and read user reviews about compatibility with your specific motherboard.</p>
+          </div>
+
+          
+          <h2 id="recommended-boards">DDR5 Motherboards We Recommend</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:2rem;">
+  <a href="review-msi-mag-b760-tomahawk-wifi.html" class="card" style="text-decoration:none;color:inherit;">
+    <div class="card-body" style="padding:1.25rem;">
+      <h4 style="font-size:0.95rem;margin-bottom:0.3rem;">MSI MAG B760 Tomahawk WiFi</h4>
+      <p style="font-size:0.8rem;color:var(--text-secondary);margin:0;">DDR5 support</p>
+    </div>
+  </a>
+  <a href="review-gigabyte-b650-aorus-elite-ax.html" class="card" style="text-decoration:none;color:inherit;">
+    <div class="card-body" style="padding:1.25rem;">
+      <h4 style="font-size:0.95rem;margin-bottom:0.3rem;">GIGABYTE B650 AORUS Elite AX</h4>
+      <p style="font-size:0.8rem;color:var(--text-secondary);margin:0;">DDR5 support</p>
+    </div>
+  </a>
+  <a href="review-asus-tuf-gaming-z890-plus-wifi.html" class="card" style="text-decoration:none;color:inherit;">
+    <div class="card-body" style="padding:1.25rem;">
+      <h4 style="font-size:0.95rem;margin-bottom:0.3rem;">ASUS TUF Gaming Z890-Plus WiFi</h4>
+      <p style="font-size:0.8rem;color:var(--text-secondary);margin:0;">DDR5 support</p>
+    </div>
+  </a>
+  <a href="review-msi-mag-b860-tomahawk-wifi.html" class="card" style="text-decoration:none;color:inherit;">
+    <div class="card-body" style="padding:1.25rem;">
+      <h4 style="font-size:0.95rem;margin-bottom:0.3rem;">MSI MAG B860 Tomahawk WiFi</h4>
+      <p style="font-size:0.8rem;color:var(--text-secondary);margin:0;">DDR5 support</p>
+    </div>
+  </a>
+          </div>
+
+<!-- Related Guides -->
+          <h3>Related Guides</h3>
+          <p>Now that you understand memory, explore these related guides to continue planning your build:</p>
+          <ul>
+            <li><a href="guide-sockets.html"><strong>CPU Sockets Explained</strong></a> -- Understand which CPU platform you are building on, which determines whether you need DDR4 or DDR5.</li>
+            <li><a href="guide-pcie.html"><strong>PCIe Speeds &amp; Slots Explained</strong></a> -- Learn how PCIe lanes work alongside your memory configuration for optimal system bandwidth.</li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand Column -->
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <div class="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="2"/>
+                <circle cx="8" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="8" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <line x1="8" y1="9.5" x2="8" y2="14.5"/>
+                <line x1="16" y1="9.5" x2="16" y2="14.5"/>
+                <line x1="9.5" y1="8" x2="14.5" y2="8"/>
+                <line x1="9.5" y1="16" x2="14.5" y2="16"/>
+              </svg>
+            </div>
+            Motherboard<span>Central</span>
+          </a>
+          <p>Your go-to resource for motherboard reviews, buying guides, and hardware education. Helping PC builders make informed decisions since 2024.</p>
+        </div>
+
+        <!-- Reviews Column -->
+        <div class="footer-col">
+          <h4>Reviews</h4>
+          <ul>
+            <li><a href="reviews.html">All Reviews</a></li>
+            <li><a href="reviews.html?price=0-150">Budget Boards</a></li>
+            <li><a href="reviews.html?socket=LGA+1700">Intel Boards</a></li>
+            <li><a href="reviews.html?socket=AM5">AMD Boards</a></li>
+          </ul>
+        </div>
+
+        <!-- Guides Column -->
+        <div class="footer-col">
+          <h4>Guides</h4>
+          <ul>
+            <li><a href="guide-pcie.html">PCIe Speeds &amp; Slots</a></li>
+            <li><a href="guide-sockets.html">CPU Sockets Explained</a></li>
+            <li><a href="guide-ram.html">RAM &amp; Memory</a></li>
+            <li><a href="guide-usb.html">USB Headers &amp; Ports</a></li>
+            <li><a href="guide-cooling.html">Cooling &amp; Thermals</a></li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <p>&copy; 2026 MotherboardCentral.com. All rights reserved.</p>
+        <p>Built for PC enthusiasts</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+  <!-- JavaScript -->
+  <script src="js/main.js"></script>
+  <!-- Vercel Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

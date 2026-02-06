@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MN6VW6GV50"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MN6VW6GV50');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PCIe speeds and slots explained: generations 3.0 through 6.0, lane configurations, bandwidth math, GPU slot selection, M.2 NVMe, and common chipset layouts.">
+  <title>PCIe Speeds &amp; Slots Explained: Gen 3 to Gen 6 - MotherboardCentral</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="canonical" href="https://motherboardcentral.com/guide-pcie.html">
+  <meta property="og:title" content="PCIe Speeds &amp; Slots Explained: Gen 3 to Gen 6">
+  <meta property="og:description" content="PCIe speeds and slots explained: generations 3.0 through 6.0, lane configurations, bandwidth math, GPU and M.2 NVMe.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://motherboardcentral.com/guide-pcie.html">
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION BAR
+       ============================================ -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="6" y1="2" x2="6" y2="22"/><line x1="18" y1="2" x2="18" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+        </div>
+        Motherboard<span>Central</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="guides.html" class="active">Guides</a>
+        <a href="compare.html">Compare</a>
+      </div>
+      <div class="nav-search">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" class="search-input" placeholder="Search motherboards...">
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       PAGE HERO
+       ============================================ -->
+  <section class="page-hero">
+    <div class="page-hero-bg">
+      <img src="images/guides/guide-pcie.png" alt="PCIe Speeds and Slots">
+    </div>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">&gt;</span>
+        <a href="guides.html">Guides</a>
+        <span class="separator">&gt;</span>
+        <span class="current">PCIe Speeds &amp; Slots</span>
+      </nav>
+      <h1>PCIe Speeds &amp; Slots <span class="gradient-text">Explained</span></h1>
+      <p>Everything you need to know about PCIe generations, lane configurations, and bandwidth</p>
+    </div>
+  </section>
+
+  <!-- ============================================
+       GUIDE LAYOUT
+       ============================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="guide-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="guide-sidebar">
+          <nav class="guide-toc">
+            <h4>Table of Contents</h4>
+            <ul>
+              <li><a href="#what-is-pcie" class="active">What is PCIe?</a></li>
+              <li><a href="#pcie-generations">PCIe Generations</a></li>
+              <li><a href="#pcie-slots">PCIe Slot Sizes</a></li>
+              <li><a href="#bandwidth">Bandwidth Explained</a></li>
+              <li><a href="#gpu-slot">GPU Slot Selection</a></li>
+              <li><a href="#m2-pcie">M.2 and PCIe</a></li>
+              <li><a href="#common-configs">Common Configurations</a></li>
+              <li><a href="#tips">Tips &amp; Recommendations</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- CONTENT -->
+        <div class="guide-content">
+
+          <!-- What is PCIe? -->
+          <h2 id="what-is-pcie">What is PCIe?</h2>
+
+          <p><strong>PCIe (Peripheral Component Interconnect Express)</strong> is the primary high-speed expansion bus used on every modern motherboard. If you have a graphics card, an NVMe SSD, a WiFi card, a capture card, or a sound card in your PC, it is connected to the CPU and chipset through PCIe.</p>
+
+          <p>Unlike older bus standards such as PCI and AGP, which used a shared parallel architecture, PCIe uses a <strong>serial point-to-point connection</strong>. Each device gets its own dedicated data pathway (called "lanes") directly to the CPU or chipset, rather than sharing a single bus with every other device. This eliminates bottlenecks and allows each component to use its full allocated bandwidth without competing for resources.</p>
+
+          <p>Think of it this way: old PCI was a single-lane road where every device had to take turns. PCIe is a multi-lane highway where each device gets its own set of lanes. The more lanes a device has, the more data it can move simultaneously.</p>
+
+          <p>PCIe has gone through several generations, each doubling the bandwidth of the last. The specification also defines physical slot sizes -- from tiny x1 slots for basic expansion cards to full-length x16 slots for graphics cards. Understanding both the generation (speed per lane) and the slot configuration (number of lanes) is key to getting the most out of your motherboard.</p>
+
+          <!-- PCIe Generations -->
+          <h2 id="pcie-generations">PCIe Generations</h2>
+
+          <p>Each new PCIe generation doubles the per-lane bandwidth of the previous one. This is the single most important thing to understand about PCIe: <strong>generation controls speed per lane, and slot size controls how many lanes you have</strong>. Together, they determine your total available bandwidth.</p>
+
+          <p>Here is a complete breakdown of every PCIe generation you will encounter on modern and recent motherboards:</p>
+
+          <div style="overflow-x: auto;">
+            <table class="spec-table">
+              <thead>
+                <tr>
+                  <th>Generation</th>
+                  <th>Per-Lane Bandwidth</th>
+                  <th>x1 Speed</th>
+                  <th>x4 Speed</th>
+                  <th>x8 Speed</th>
+                  <th>x16 Speed</th>
+                  <th>Year</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>PCIe 3.0</td>
+                  <td>~1 GB/s</td>
+                  <td>1 GB/s</td>
+                  <td>4 GB/s</td>
+                  <td>8 GB/s</td>
+                  <td>16 GB/s</td>
+                  <td>2010</td>
+                </tr>
+                <tr>
+                  <td>PCIe 4.0</td>
+                  <td>~2 GB/s</td>
+                  <td>2 GB/s</td>
+                  <td>8 GB/s</td>
+                  <td>16 GB/s</td>
+                  <td>32 GB/s</td>
+                  <td>2017</td>
+                </tr>
+                <tr>
+                  <td>PCIe 5.0</td>
+                  <td>~4 GB/s</td>
+                  <td>4 GB/s</td>
+                  <td>16 GB/s</td>
+                  <td>32 GB/s</td>
+                  <td>64 GB/s</td>
+                  <td>2019</td>
+                </tr>
+                <tr>
+                  <td>PCIe 6.0</td>
+                  <td>~8 GB/s</td>
+                  <td>8 GB/s</td>
+                  <td>32 GB/s</td>
+                  <td>64 GB/s</td>
+                  <td>128 GB/s</td>
+                  <td>2022</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>The speeds listed above are <strong>unidirectional</strong> (one-way) throughput figures. PCIe is a full-duplex interface, meaning it can transmit and receive simultaneously, but real-world device performance is typically measured using the unidirectional number since most operations are primarily one-directional (reading from an SSD, rendering frames from a GPU, and so on).</p>
+
+          <div class="info-box">
+            <h4>Backward &amp; Forward Compatibility</h4>
+            <p>PCIe is fully backward and forward compatible. A PCIe 3.0 card works perfectly in a PCIe 5.0 slot, and a PCIe 5.0 card works in a PCIe 3.0 slot. The connection will simply operate at the speed of whichever component -- card or slot -- supports the lower generation. You will never damage hardware by mixing generations.</p>
+          </div>
+
+          <p>For most builders today, <strong>PCIe 4.0</strong> is the mainstream standard. PCIe 5.0 support is available on Intel 12th/13th/14th Gen and AMD Ryzen 7000 platforms but consumer devices that actually need PCIe 5.0 bandwidth are still emerging. PCIe 6.0 hardware is expected in data centers first, with consumer adoption still a few years away.</p>
+
+          <!-- PCIe Slot Sizes -->
+          <h2 id="pcie-slots">PCIe Slot Sizes</h2>
+
+          <p>PCIe slots come in four standard physical sizes, named by the number of lanes they provide: <strong>x1, x4, x8, and x16</strong>. The "x" stands for "times" or "by," so x16 means 16 lanes.</p>
+
+          <h3>x16 Slots</h3>
+          <p>The longest slot on your motherboard, measuring about 89mm. This is where your graphics card goes. Every modern GPU uses an x16 connector. Most motherboards have one or two x16-length slots, with the top one typically wired directly to the CPU for maximum performance.</p>
+
+          <h3>x8 Slots</h3>
+          <p>Physically shorter than x16, these are relatively uncommon as standalone slots on consumer motherboards. However, many second x16-length slots are actually only wired for x8 lanes electrically. You will also find x8 slots on workstation and server boards for RAID controllers, high-end network cards, and other bandwidth-hungry devices.</p>
+
+          <h3>x4 Slots</h3>
+          <p>A medium-length slot used for some network adapters, RAID controllers, and NVMe adapter cards. On most consumer motherboards, x4 lanes are more commonly allocated to M.2 slots rather than physical x4 PCIe slots.</p>
+
+          <h3>x1 Slots</h3>
+          <p>The smallest PCIe slot, measuring about 25mm. Used for low-bandwidth expansion cards like WiFi adapters, sound cards, USB expansion cards, and serial port cards. These are perfectly adequate for devices that do not need much throughput.</p>
+
+          <div class="info-box tip">
+            <h4>Check Your Manual</h4>
+            <p>Look at your motherboard manual to check actual electrical wiring. A slot that looks like x16 might only be wired for x4 lanes. The physical slot size only tells you the maximum number of lanes it can accept -- the actual wiring depends on how the manufacturer routed the PCIe lanes from the CPU and chipset. This is especially common for the second and third x16-length slots on a board.</p>
+          </div>
+
+          <p>An important physical compatibility note: you can always install a smaller card in a larger slot. An x1 WiFi card works fine in an x16 slot -- it will just use one lane. However, you generally cannot fit a larger card into a smaller slot unless the slot has an open-ended design (some motherboards do this with x4 slots).</p>
+
+          <!-- Bandwidth Explained -->
+          <h2 id="bandwidth">Bandwidth Explained</h2>
+
+          <p>Understanding PCIe bandwidth in practical terms helps you make smart purchasing decisions. The key insight is this: <strong>bandwidth doubles with each generation, so fewer lanes on a newer generation can match more lanes on an older one</strong>.</p>
+
+          <p>Here are some practical equivalencies:</p>
+
+          <ul>
+            <li><strong>PCIe 5.0 x8 = PCIe 4.0 x16</strong> (both provide ~32 GB/s)</li>
+            <li><strong>PCIe 4.0 x4 = PCIe 3.0 x8</strong> (both provide ~8 GB/s)</li>
+            <li><strong>PCIe 5.0 x4 = PCIe 4.0 x8 = PCIe 3.0 x16</strong> (all ~16 GB/s)</li>
+          </ul>
+
+          <p>This matters because it means a PCIe 5.0 platform can deliver the same bandwidth to your GPU using only half the lanes, freeing up the remaining lanes for other devices like NVMe drives.</p>
+
+          <h3>Do GPUs Actually Need All That Bandwidth?</h3>
+          <p>Current-generation GPUs (NVIDIA RTX 40-series, AMD RX 7000-series) are designed around PCIe 4.0 x16 bandwidth. Benchmarks consistently show that even running these GPUs at PCIe 3.0 x16 only results in a 1-3% performance loss in most gaming scenarios. The performance difference between PCIe 4.0 x16 and 5.0 x16 for GPUs is effectively zero right now.</p>
+
+          <p>Where PCIe generation matters most today is <strong>NVMe storage</strong>. A Gen 4 NVMe SSD using x4 lanes can deliver up to ~7,000 MB/s sequential reads. A Gen 5 NVMe SSD on x4 lanes can reach ~14,000 MB/s. If you are doing large file transfers, video editing, or working with massive datasets, the bandwidth difference is significant and tangible.</p>
+
+          <h3>Lane Allocation Matters</h3>
+          <p>Your CPU and chipset have a finite number of PCIe lanes to distribute across all slots and M.2 connectors. When you populate one slot or M.2 connector, it may reduce the lanes available to another. This is why reading your motherboard manual is essential -- especially if you plan to use multiple NVMe drives alongside a GPU and expansion cards.</p>
+
+          <!-- GPU Slot Selection -->
+          <h2 id="gpu-slot">GPU Slot Selection</h2>
+
+          <p><strong>Always install your graphics card in the top x16 slot.</strong> This is not just a suggestion -- it is the single most important PCIe rule for any PC build. Here is why.</p>
+
+          <p>The top x16 slot on virtually every motherboard connects directly to the CPU's PCIe lanes. This provides the shortest, fastest, most direct data path between your GPU and processor. The connection does not pass through any intermediary chip, which means the lowest possible latency and the full bandwidth your CPU's PCIe controller can provide.</p>
+
+          <h3>Why Not the Second x16 Slot?</h3>
+          <p>Second and third x16-length slots typically connect through the <strong>chipset</strong> rather than directly to the CPU. The chipset acts as a traffic controller for its own set of PCIe lanes, but the chipset itself connects to the CPU through a limited uplink (usually PCIe 4.0 x4 or x8, depending on the platform). This means all devices connected through the chipset share that uplink bandwidth.</p>
+
+          <p>If you put your GPU in a chipset-connected slot, it would be sharing bandwidth with your NVMe drives, USB controllers, WiFi, and every other chipset-attached device -- all through a bottleneck that is a fraction of what the top slot provides.</p>
+
+          <p>Additionally, many second x16-length slots are not even wired for a full 16 lanes. It is common for the second slot to be electrically x4 or x8, which further limits your GPU's available bandwidth.</p>
+
+          <h3>What About Multi-GPU?</h3>
+          <p>Multi-GPU configurations (NVIDIA SLI and AMD CrossFire) are essentially dead for gaming. NVIDIA dropped SLI support after the RTX 20-series, and AMD discontinued CrossFire branding. Almost no modern games support multi-GPU rendering, and the few that do rarely scale well. Focus your budget on the best single GPU you can afford and put it in the top x16 slot.</p>
+
+          <p>The exception is professional workloads: some rendering, machine learning, and compute applications can use multiple GPUs effectively. If you need multi-GPU for professional work, look at HEDT platforms (like AMD Threadripper) that provide more CPU-direct PCIe lanes.</p>
+
+          <!-- M.2 and PCIe -->
+          <h2 id="m2-pcie">M.2 and PCIe</h2>
+
+          <p>M.2 is a physical form factor for compact expansion cards, and the most common use is <strong>NVMe SSDs</strong>. These drives connect to your motherboard via PCIe lanes, typically using an x4 configuration. The M.2 slot is essentially a compact PCIe x4 slot in a different physical format.</p>
+
+          <h3>NVMe Performance by Generation</h3>
+          <p>The PCIe generation of your M.2 slot directly determines the maximum speed your NVMe SSD can achieve:</p>
+
+          <ul>
+            <li><strong>PCIe 3.0 x4 NVMe:</strong> up to ~3,500 MB/s sequential read (e.g., Samsung 970 EVO Plus)</li>
+            <li><strong>PCIe 4.0 x4 NVMe:</strong> up to ~7,000 MB/s sequential read (e.g., Samsung 980 PRO, WD Black SN850X)</li>
+            <li><strong>PCIe 5.0 x4 NVMe:</strong> up to ~14,000 MB/s sequential read (e.g., Crucial T700, Samsung 990 EVO Plus)</li>
+          </ul>
+
+          <p>These are peak sequential speeds. Random read/write performance (which affects everyday responsiveness, game loading, and application launch times) improves with each generation too, but the gains are less dramatic than the headline sequential numbers suggest.</p>
+
+          <h3>M.2 Slot Sources: CPU vs. Chipset</h3>
+          <p>Just like full-size PCIe slots, M.2 connectors get their lanes from either the CPU or the chipset. The first M.2 slot (often labeled "M2_1" or "CPU M.2") on most motherboards is wired directly to the CPU, giving it the best possible performance and the highest PCIe generation the CPU supports. Additional M.2 slots are typically routed through the chipset.</p>
+
+          <p>For most users, the practical difference between a CPU-connected and chipset-connected M.2 slot is negligible for everyday tasks. It becomes relevant for sustained sequential transfers or if the chipset uplink is already saturated by other devices.</p>
+
+          <div class="info-box warning">
+            <h4>Shared Lane Warning</h4>
+            <p>Installing an M.2 NVMe drive in certain slots may disable SATA ports 5 and 6 on some motherboards. Always check your motherboard manual. This happens because the M.2 slot and those SATA ports share the same PCIe/SATA lanes from the chipset -- the controller can use them for one purpose or the other, but not both simultaneously.</p>
+          </div>
+
+          <h3>M.2 SATA vs. M.2 NVMe</h3>
+          <p>Not all M.2 drives use PCIe. Some M.2 SSDs use the SATA protocol instead, which limits them to ~550 MB/s regardless of the slot's PCIe capability. These drives are keyed differently (B+M key vs. M key) and are an older, cheaper option. Most modern M.2 SSDs are NVMe, but double-check before buying -- especially if you see suspiciously low prices. An M.2 SATA drive will work in most M.2 slots, but it will not benefit from PCIe bandwidth at all.</p>
+
+          <!-- Common Configurations -->
+          <h2 id="common-configs">Common Configurations</h2>
+
+          <p>Every chipset has a different pool of PCIe lanes to distribute. The CPU provides a set of lanes (usually reserved for the primary GPU slot and the first M.2 slot), while the chipset provides additional lanes for secondary slots, M.2 connectors, SATA ports, USB controllers, and other onboard features.</p>
+
+          <p>Here is how the most popular current chipsets compare:</p>
+
+          <div style="overflow-x: auto;">
+            <table class="spec-table">
+              <thead>
+                <tr>
+                  <th>Chipset</th>
+                  <th>CPU PCIe Lanes</th>
+                  <th>Chipset PCIe Lanes</th>
+                  <th>Typical M.2 Slots</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Intel Z790</td>
+                  <td>20 (PCIe 5.0) + 4 (4.0)</td>
+                  <td>28 (PCIe 4.0/3.0)</td>
+                  <td>3-5</td>
+                  <td>Best for enthusiasts</td>
+                </tr>
+                <tr>
+                  <td>Intel B760</td>
+                  <td>20 (PCIe 5.0) + 4 (4.0)</td>
+                  <td>14 (PCIe 4.0/3.0)</td>
+                  <td>2-3</td>
+                  <td>Great for most users</td>
+                </tr>
+                <tr>
+                  <td>AMD X670E</td>
+                  <td>24 (PCIe 5.0) + 4 (4.0)</td>
+                  <td>12 (PCIe 4.0)</td>
+                  <td>3-4</td>
+                  <td>Full PCIe 5.0 support</td>
+                </tr>
+                <tr>
+                  <td>AMD B650</td>
+                  <td>24 (PCIe 4.0) + 4 (5.0)</td>
+                  <td>8 (PCIe 4.0)</td>
+                  <td>2-3</td>
+                  <td>Best value AM5</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>A few things to keep in mind when reading this table:</p>
+
+          <ul>
+            <li><strong>CPU PCIe lanes</strong> are the premium lanes. They offer the highest generation and the most direct connection to the processor. The primary GPU slot and at least one M.2 slot typically use CPU lanes.</li>
+            <li><strong>Chipset PCIe lanes</strong> handle everything else: secondary M.2 slots, additional PCIe expansion slots, SATA controllers, USB controllers, audio, LAN, and WiFi. All of these share the chipset's uplink to the CPU.</li>
+            <li><strong>Z790 vs. B760:</strong> Both get the same CPU lanes, but Z790 has double the chipset lanes. This means Z790 boards can offer more M.2 slots, more expansion options, and more USB ports without running into lane contention. For a build with one GPU and one or two NVMe drives, B760 is usually sufficient.</li>
+            <li><strong>X670E vs. B650:</strong> The "E" in X670E stands for "Extreme" and guarantees PCIe 5.0 for both the GPU slot and the first M.2 slot. Standard B650 boards typically only offer PCIe 5.0 for the M.2 slot, with the GPU slot running at PCIe 4.0. In practice, this makes no difference for current GPUs.</li>
+          </ul>
+
+          <!-- Tips & Recommendations -->
+          <h2 id="tips">Tips &amp; Recommendations</h2>
+
+          <p>Here are the most practical takeaways from everything covered in this guide:</p>
+
+          <ul>
+            <li><strong>Check what your hardware actually needs.</strong> Before worrying about PCIe 5.0 or lane counts, look up the actual PCIe requirements of your GPU and SSDs. Most current GPUs are PCIe 4.0, and most current NVMe SSDs are Gen 4 or Gen 5. Buy the motherboard that matches your actual hardware, not a theoretical future upgrade.</li>
+            <li><strong>Most gamers will not notice a difference between PCIe 3.0 x16 and 4.0 x16 for GPUs.</strong> GPU performance is almost entirely determined by the card itself, not by whether it runs on Gen 3 or Gen 4. Do not spend extra on a motherboard purely for a higher PCIe generation GPU slot unless you are planning for next-generation hardware.</li>
+            <li><strong>NVMe SSDs benefit most from newer PCIe generations.</strong> If you work with large files, edit video, or want the fastest possible game load times, investing in a Gen 4 or Gen 5 NVMe drive (and a motherboard with the right M.2 slot generation) makes a real difference. This is where PCIe generation actually impacts daily usage.</li>
+            <li><strong>Plan your M.2 slots before buying.</strong> Know how many NVMe drives you want, check which M.2 slots share lanes with SATA ports, and verify which slots are CPU-connected vs. chipset-connected. A motherboard with four M.2 slots is only useful if you understand which ones disable other features when populated.</li>
+            <li><strong>Always use the top x16 slot for your GPU.</strong> This connects directly to the CPU for maximum bandwidth and lowest latency. There is almost never a reason to use a different slot for your primary graphics card.</li>
+            <li><strong>Read your motherboard manual.</strong> This is the single most underrated piece of advice in PC building. The manual tells you exactly which slots share lanes, which M.2 slots are CPU-connected, and what gets disabled when you install certain components. Five minutes reading the manual can save you hours of troubleshooting.</li>
+          </ul>
+
+          <div class="info-box tip">
+            <h4>Bottom Line</h4>
+            <p>For most builders in 2025, a motherboard with PCIe 4.0 x16 for the GPU and at least one PCIe 4.0 x4 M.2 slot is all you need. PCIe 5.0 is a nice future-proofing bonus but is not yet a necessity for gaming or general productivity. Spend your budget on the GPU and SSD themselves rather than chasing the highest PCIe spec on your motherboard.</p>
+          </div>
+
+          
+          <h2 id="recommended-boards">Motherboards with PCIe 5.0 Support</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:2rem;">
+  <a href="review-asus-rog-maximus-z890-hero.html" class="card" style="text-decoration:none;color:inherit;">
+    <div class="card-body" style="padding:1.25rem;">
+      <h4 style="font-size:0.95rem;margin-bottom:0.3rem;">ASUS ROG Maximus Z890 Hero</h4>
+      <p style="font-size:0.8rem;color:var(--text-secondary);margin:0;">PCIe 5.0 x16 + PCIe 5.0 M.2</p>
+    </div>
+  </a>
+  <a href="review-msi-meg-z890-ace.html" class="card" style="text-decoration:none;color:inherit;">
+    <div class="card-body" style="padding:1.25rem;">
+      <h4 style="font-size:0.95rem;margin-bottom:0.3rem;">MSI MEG Z890 ACE</h4>
+      <p style="font-size:0.8rem;color:var(--text-secondary);margin:0;">PCIe 5.0 x16 + PCIe 5.0 M.2</p>
+    </div>
+  </a>
+  <a href="review-asus-rog-crosshair-x870e-hero.html" class="card" style="text-decoration:none;color:inherit;">
+    <div class="card-body" style="padding:1.25rem;">
+      <h4 style="font-size:0.95rem;margin-bottom:0.3rem;">ASUS ROG Crosshair X870E Hero</h4>
+      <p style="font-size:0.8rem;color:var(--text-secondary);margin:0;">PCIe 5.0 x16 + PCIe 5.0 M.2</p>
+    </div>
+  </a>
+  <a href="review-gigabyte-z890-aorus-master.html" class="card" style="text-decoration:none;color:inherit;">
+    <div class="card-body" style="padding:1.25rem;">
+      <h4 style="font-size:0.95rem;margin-bottom:0.3rem;">GIGABYTE Z890 AORUS Master</h4>
+      <p style="font-size:0.8rem;color:var(--text-secondary);margin:0;">PCIe 5.0 x16 + PCIe 5.0 M.2</p>
+    </div>
+  </a>
+          </div>
+
+<!-- Related Guides -->
+          <h2 id="related-guides" style="margin-top: 4rem;">Related Guides</h2>
+
+          <div class="grid grid-2" style="margin-top: 1.5rem;">
+            <a href="guide-storage.html" class="card guide-card">
+              <div class="card-img">
+                <img src="images/guides/guide-storage.png" alt="Storage Options Guide" loading="lazy">
+              </div>
+              <div class="card-body">
+                <span class="card-category">STORAGE</span>
+                <h3>Storage Options</h3>
+                <p>M.2 NVMe vs SATA, PCIe Gen 4 vs Gen 5 SSDs, and optimal storage configurations for your build.</p>
+                <span class="read-time">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  7 min read
+                </span>
+              </div>
+            </a>
+            <a href="guide-sockets.html" class="card guide-card">
+              <div class="card-img">
+                <img src="images/guides/guide-sockets.png" alt="CPU Sockets Explained" loading="lazy">
+              </div>
+              <div class="card-body">
+                <span class="card-category">FUNDAMENTALS</span>
+                <h3>CPU Sockets Explained</h3>
+                <p>Everything about Intel LGA 1700, AMD AM5, and how to pick the right motherboard socket for your processor.</p>
+                <span class="read-time">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  7 min read
+                </span>
+              </div>
+            </a>
+          </div>
+
+        </div>
+        <!-- END .guide-content -->
+
+      </div>
+      <!-- END .guide-layout -->
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand Column -->
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <div class="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="2"/>
+                <circle cx="8" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="8" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <line x1="8" y1="9.5" x2="8" y2="14.5"/>
+                <line x1="16" y1="9.5" x2="16" y2="14.5"/>
+                <line x1="9.5" y1="8" x2="14.5" y2="8"/>
+                <line x1="9.5" y1="16" x2="14.5" y2="16"/>
+              </svg>
+            </div>
+            Motherboard<span>Central</span>
+          </a>
+          <p>Your go-to resource for motherboard reviews, buying guides, and hardware education. Helping PC builders make informed decisions since 2024.</p>
+        </div>
+
+        <!-- Reviews Column -->
+        <div class="footer-col">
+          <h4>Reviews</h4>
+          <ul>
+            <li><a href="reviews.html">All Reviews</a></li>
+            <li><a href="reviews.html?price=0-150">Budget Boards</a></li>
+            <li><a href="reviews.html?socket=LGA+1700">Intel Boards</a></li>
+            <li><a href="reviews.html?socket=AM5">AMD Boards</a></li>
+          </ul>
+        </div>
+
+        <!-- Guides Column -->
+        <div class="footer-col">
+          <h4>Guides</h4>
+          <ul>
+            <li><a href="guide-pcie.html">PCIe Speeds &amp; Slots</a></li>
+            <li><a href="guide-sockets.html">CPU Sockets Explained</a></li>
+            <li><a href="guide-ram.html">RAM &amp; Memory</a></li>
+            <li><a href="guide-usb.html">USB Headers &amp; Ports</a></li>
+            <li><a href="guide-cooling.html">Cooling &amp; Thermals</a></li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <p>&copy; 2026 MotherboardCentral.com. All rights reserved.</p>
+        <p>Built for PC enthusiasts</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+  <!-- JavaScript -->
+  <script src="js/main.js"></script>
+  <!-- Vercel Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
