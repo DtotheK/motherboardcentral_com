@@ -520,6 +520,76 @@ document.addEventListener('DOMContentLoaded', () => {
             description: "ASRock B760M-ITX/D4 WiFi - LGA 1700 B760 Mini-ITX DDR4 motherboard review"
         },
 
+        // CPU Buying Guides - 8 Guides
+        {
+            title: 'Best Motherboards for Core Ultra 9 285K',
+            type: 'Guide',
+            url: 'best-motherboard-for-core-ultra-9-285k.html',
+            description: 'Top Z890 motherboards for Intel flagship Arrow Lake CPU'
+        },
+        {
+            title: 'Best Motherboards for Core Ultra 5 245K',
+            type: 'Guide',
+            url: 'best-motherboard-for-core-ultra-5-245k.html',
+            description: 'Best B860 and Z890 boards for mid-range Arrow Lake'
+        },
+        {
+            title: 'Best Motherboards for i7-14700K',
+            type: 'Guide',
+            url: 'best-motherboard-for-i7-14700k.html',
+            description: 'Top Z790 boards for gaming and productivity on LGA 1700'
+        },
+        {
+            title: 'Best Motherboards for i5-12400F',
+            type: 'Guide',
+            url: 'best-motherboard-for-i5-12400f.html',
+            description: 'Budget B760 boards for affordable gaming builds'
+        },
+        {
+            title: 'Best Motherboards for Ryzen 9 9950X',
+            type: 'Guide',
+            url: 'best-motherboard-for-ryzen-9-9950x.html',
+            description: 'Top X870E boards for AMD flagship Zen 5 processor'
+        },
+        {
+            title: 'Best Motherboards for Ryzen 7 9700X',
+            type: 'Guide',
+            url: 'best-motherboard-for-ryzen-7-9700x.html',
+            description: 'Best X870 and B650 boards for mid-range AM5 builds'
+        },
+        {
+            title: 'Best Motherboards for Ryzen 7 7800X3D',
+            type: 'Guide',
+            url: 'best-motherboard-for-ryzen-7-7800x3d.html',
+            description: 'Top B650 and X670E boards for the ultimate gaming CPU'
+        },
+        {
+            title: 'Best Motherboards for Ryzen 5 5600X',
+            type: 'Guide',
+            url: 'best-motherboard-for-ryzen-5-5600x.html',
+            description: 'Best B550 boards for budget AM4 gaming builds'
+        },
+
+        // Legacy CPU Buying Guides
+        {
+            title: 'Best Motherboards for i9-9900K',
+            type: 'Guide',
+            url: 'best-motherboard-for-i9-9900k.html',
+            description: 'Best Z390 boards for the legendary Coffee Lake flagship'
+        },
+        {
+            title: 'Best Motherboards for Ryzen 5 3600',
+            type: 'Guide',
+            url: 'best-motherboard-for-ryzen-5-3600.html',
+            description: 'Best B550 and B450 boards for the budget Zen 2 legend'
+        },
+        {
+            title: 'Best Motherboards for Ryzen 7 3700X',
+            type: 'Guide',
+            url: 'best-motherboard-for-ryzen-7-3700x.html',
+            description: 'Best B550 and X570 boards for the 8-core Zen 2 workhorse'
+        },
+
         // Guides - 7 Guides
         {
             title: 'How to Choose the Right Motherboard',
