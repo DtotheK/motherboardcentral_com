@@ -23,3 +23,6 @@ package-lock.json
 
 # Backups
 *.bak
+
+# .claude is local state, but project settings are policy and must be tracked
+!.claude/settings.json
