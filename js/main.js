@@ -2348,6 +2348,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
 
         let selectedBoards = [null, null];
+        let showDifferencesOnly = false;
 
         const extractNumeric = (value, type) => {
             if (type === 'higher' || type === 'lower') return parseFloat(value) || 0;
@@ -2398,6 +2399,50 @@ document.addEventListener('DOMContentLoaded', () => {
         const getAmazonUrl = (board) => {
             return 'https://www.amazon.com/s?k=' + board.amazonSearch + '&tag=' + AFFILIATE_TAG;
         };
+
+        // A row collapses only when every *selected* board renders the same
+        // string. Empty slots are ignored, and one board can never "match".
+        const rowIsIdentical = (displays, boards) => {
+            const shown = displays.filter((d, i) => boards[i] !== null);
+            if (shown.length < 2) return false;
+            return shown.every(d => String(d) === String(shown[0]));
+        };
+
+        const selectedBoardCount = () => {
+            return selectedBoards.filter(idx => idx !== null).length;
+        };
+
+        // "Show differences only" control. Built here rather than in
+        // compare.html so the page needs no markup change, and the checked
+        // state lives in JS so it survives the re-render on every selection
+        // change.
+        const diffToggleWrap = document.createElement('div');
+        diffToggleWrap.className = 'compare-diff-toggle';
+        diffToggleWrap.id = 'compare-diff-toggle';
+
+        const diffToggleInput = document.createElement('input');
+        diffToggleInput.type = 'checkbox';
+        diffToggleInput.id = 'compare-diff-only';
+
+        const diffToggleLabel = document.createElement('label');
+        diffToggleLabel.setAttribute('for', 'compare-diff-only');
+        diffToggleLabel.textContent = 'Show differences only';
+
+        diffToggleWrap.appendChild(diffToggleInput);
+        diffToggleWrap.appendChild(diffToggleLabel);
+        compareTableWrap.parentNode.insertBefore(diffToggleWrap, compareTableWrap);
+
+        diffToggleInput.addEventListener('change', () => {
+            showDifferencesOnly = diffToggleInput.checked;
+            renderTable();
+        });
+
+        // Nothing can differ with fewer than two boards on screen.
+        function updateDiffToggle() {
+            const usable = selectedBoardCount() >= 2;
+            diffToggleWrap.hidden = !usable;
+            diffToggleInput.disabled = !usable;
+        }
 
         function renderSlots() {
             let html = '';
@@ -2466,9 +2511,33 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             var anySelected = boards.some(function(b) { return b !== null; });
 
+            updateDiffToggle();
+
             if (!anySelected) {
                 compareTableWrap.innerHTML = '<div class="compare-placeholder"><p>Select motherboards above to compare specifications side-by-side.</p></div>';
                 return;
+            }
+
+            var rows = specRows.map(function(spec) {
+                return {
+                    spec: spec,
+                    values: boards.map(function(b) { return b ? b[spec.key] : null; }),
+                    displays: boards.map(function(b) {
+                        if (!b) return '--';
+                        return spec.format ? spec.format(b[spec.key]) : b[spec.key];
+                    })
+                };
+            });
+
+            if (showDifferencesOnly) {
+                rows = rows.filter(function(row) {
+                    return !rowIsIdentical(row.displays, boards);
+                });
+
+                if (rows.length === 0) {
+                    compareTableWrap.innerHTML = '<div class="compare-placeholder"><p>These boards match on every specification we compare. Switch off &ldquo;Show differences only&rdquo; to see the full table.</p></div>';
+                    return;
+                }
             }
 
             var html = '<table><thead><tr><th>Specification</th>';
@@ -2477,15 +2546,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             html += '</tr></thead><tbody>';
 
-            specRows.forEach(function(spec) {
-                var values = boards.map(function(b) { return b ? b[spec.key] : null; });
-                var displays = boards.map(function(b) {
-                    if (!b) return '--';
-                    return spec.format ? spec.format(b[spec.key]) : b[spec.key];
-                });
-                var bestIndices = getBestIndices(values, spec.compare);
+            rows.forEach(function(row) {
+                var displays = row.displays;
+                var bestIndices = getBestIndices(row.values, row.spec.compare);
 
-                html += '<tr><td>' + spec.label + '</td>';
+                html += '<tr><td>' + row.spec.label + '</td>';
                 boards.forEach(function(board, i) {
                     var cls = bestIndices.indexOf(i) !== -1 ? ' class="highlight"' : '';
                     html += '<td' + cls + '>' + displays[i] + '</td>';
