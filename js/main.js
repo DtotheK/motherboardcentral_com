@@ -2637,3 +2637,383 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+
+/* ============================================================
+   9. GLOSSARY TOOLTIPS
+   Marks jargon inside spec tables with a short definition shown
+   on hover, tap or keyboard focus. Progressive enhancement:
+   with JS off the tables render exactly as the HTML ships them.
+   ============================================================ */
+
+(function (global) {
+    'use strict';
+
+    var VRM_GUIDE = 'guide-cooling.html#vrm-heatsinks';
+    var VRM_GUIDE_LABEL = 'VRM cooling guide';
+    var RAM_GUIDE = 'guide-ram.html#ddr4-vs-ddr5';
+    var RAM_GUIDE_LABEL = 'DDR4 vs DDR5 guide';
+    var DDR_SLOTS = 'DDR4 and DDR5 slots are physically incompatible, so a board takes one or the other.';
+
+    var TERMS = [
+        {
+            id: 'vrm',
+            label: 'VRM',
+            pattern: /\bVRMs?\b/,
+            definition: "The voltage regulator module steps the power supply's 12V rail down to the much lower voltage a CPU runs on. It works harder and runs hotter the more power the CPU draws.",
+            guide: VRM_GUIDE,
+            guideLabel: VRM_GUIDE_LABEL
+        },
+        {
+            id: 'power-phases',
+            label: 'Power phases',
+            pattern: /\b\d{1,2}\+\d{1,2}(?:\+\d{1,2})?\b/,
+            definition: 'Each phase is one stage of the VRM circuit that shares the work of stepping 12V down for the processor. A count like 14+2+1 groups the phases by what they feed: the CPU cores first, then the SoC or integrated graphics, then smaller rails.',
+            guide: VRM_GUIDE,
+            guideLabel: VRM_GUIDE_LABEL
+        },
+        {
+            id: 'alc',
+            label: 'Realtek ALC codec',
+            pattern: /\bALC\d{3,4}\b/,
+            definition: 'The model number of the Realtek codec chip that turns digital audio into the analog signal headphones and speakers need. A higher number means a newer part, not automatically better sound.'
+        },
+        {
+            id: 'pcie',
+            label: 'PCIe',
+            pattern: /\bPCIe\b/,
+            definition: 'PCI Express is the high-speed bus that connects graphics cards and NVMe drives to the CPU and chipset. The number after the x is how many lanes a slot carries, and each generation doubles the bandwidth per lane.',
+            guide: 'guide-pcie.html#what-is-pcie',
+            guideLabel: 'PCIe guide'
+        },
+        {
+            id: 'm2',
+            label: 'M.2',
+            pattern: /\bM\.2\b/,
+            definition: 'M.2 is the slot standard for the small, stick-shaped SSDs that mount flat on the board. Most M.2 slots run NVMe drives over PCIe lanes.',
+            guide: 'guide-storage.html#m2-nvme',
+            guideLabel: 'M.2 and NVMe guide'
+        },
+        {
+            id: 'wifi',
+            label: 'WiFi',
+            pattern: /\bWiFi(?:\s?(?:6E|7|6|5))?\b/,
+            definition: 'The wireless networking standard the onboard adapter supports. WiFi 6E and WiFi 7 can also use the 6GHz band, which is usually less crowded than 2.4GHz and 5GHz.'
+        },
+        {
+            id: 'bluetooth',
+            label: 'Bluetooth',
+            pattern: /\bBT\s?\d(?:\.\d)?\b/,
+            definition: "BT is the Bluetooth version of the board's wireless module, used for controllers, headsets and other peripherals. Later versions add range and low-energy features."
+        },
+        {
+            id: 'lan',
+            label: 'Ethernet speed',
+            pattern: /\b(?:10G|5G|2\.5G|1G)\b/,
+            definition: "The top speed of the board's wired Ethernet port in gigabits per second. The router or switch at the other end has to support the same speed for it to help."
+        },
+        {
+            id: 'memory-profile',
+            label: 'EXPO / XMP',
+            pattern: /\b(?:EXPO|XMP)\b/,
+            definition: "Stored profiles that let a memory kit run at its rated speed instead of the slower default, switched on with one BIOS setting. EXPO is AMD's version and XMP is Intel's.",
+            guide: 'guide-ram.html#xmp-expo',
+            guideLabel: 'XMP and EXPO guide'
+        },
+        {
+            id: 'mini-itx',
+            label: 'Mini-ITX',
+            pattern: /\bMini-?ITX\b/,
+            definition: 'The smallest mainstream board size at 170 x 170mm, built for small-form-factor cases. Space is tight, so it trades expansion room for size.',
+            guide: 'guide-cases.html#mini-itx',
+            guideLabel: 'Mini-ITX guide'
+        },
+        {
+            id: 'micro-atx',
+            label: 'Micro-ATX',
+            pattern: /\bMicro-?ATX\b/,
+            definition: 'A 244 x 244mm board, as wide as ATX but shorter and with fewer expansion slots. It fits Micro-ATX cases and most full-size ATX ones.',
+            guide: 'guide-cases.html#micro-atx',
+            guideLabel: 'Micro-ATX guide'
+        },
+        {
+            id: 'atx',
+            label: 'ATX',
+            pattern: /\bATX\b/,
+            definition: 'The full-size desktop board standard at 305 x 244mm, with the most expansion slots and headers. The case has to be rated for ATX to take one.',
+            guide: 'guide-cases.html#atx',
+            guideLabel: 'ATX guide'
+        },
+        {
+            id: 'ddr5',
+            label: 'DDR5',
+            pattern: /\bDDR5\b/,
+            definition: 'The current desktop memory generation, running at higher speeds than DDR4 and managing its own power on the module. ' + DDR_SLOTS,
+            guide: RAM_GUIDE,
+            guideLabel: RAM_GUIDE_LABEL
+        },
+        {
+            id: 'ddr4',
+            label: 'DDR4',
+            pattern: /\bDDR4\b/,
+            definition: 'The previous desktop memory generation, slower than DDR5 but cheaper per gigabyte. ' + DDR_SLOTS,
+            guide: RAM_GUIDE,
+            guideLabel: RAM_GUIDE_LABEL
+        }
+    ];
+
+    var CELL_SELECTOR = '.spec-table td, .compare-table td, .compare-table-wrap td';
+
+    var tipCount = 0;
+
+    function escapeHTML(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    // All matches in `text`, longest first at any position, one per term.
+    function findMatches(text) {
+        var hits = [];
+
+        TERMS.forEach(function (term) {
+            var re = new RegExp(term.pattern.source, 'g');
+            var match;
+            while ((match = re.exec(text)) !== null) {
+                hits.push({
+                    start: match.index,
+                    end: match.index + match[0].length,
+                    text: match[0],
+                    term: term
+                });
+            }
+        });
+
+        hits.sort(function (a, b) {
+            return (a.start - b.start) || ((b.end - b.start) - (a.end - a.start));
+        });
+
+        var kept = [];
+        var marked = {};
+        var cursor = 0;
+
+        hits.forEach(function (hit) {
+            if (hit.start < cursor) return;                       // inside a longer match
+            if (marked[hit.term.id]) return;                      // one mark per term per cell
+            if (hit.start > 0 && text.charAt(hit.start - 1) === '-') return;  // E-ATX, not ATX
+            marked[hit.term.id] = true;
+            cursor = hit.end;
+            kept.push(hit);
+        });
+
+        return kept;
+    }
+
+    function markup(hit) {
+        var term = hit.term;
+        var tipId = 'glossary-tip-' + term.id + '-' + (++tipCount);
+        var body = escapeHTML(term.definition);
+
+        if (term.guide) {
+            body += ' <a class="glossary-tip-link" href="' + escapeHTML(term.guide) + '">' +
+                escapeHTML(term.guideLabel) + '</a>';
+        }
+
+        return '<span class="glossary">' +
+            '<button type="button" class="glossary-term" aria-describedby="' + tipId +
+            '" aria-expanded="false">' + escapeHTML(hit.text) + '</button>' +
+            '<span class="glossary-tip" role="tooltip" id="' + tipId + '">' +
+            '<span class="glossary-tip-label">' + escapeHTML(term.label) + '</span> ' +
+            body + '</span></span>';
+    }
+
+    // Returns annotated HTML, or null when the text holds no known term.
+    function annotate(text) {
+        var hits = findMatches(text);
+        if (!hits.length) return null;
+
+        var html = '';
+        var pos = 0;
+
+        hits.forEach(function (hit) {
+            html += escapeHTML(text.slice(pos, hit.start)) + markup(hit);
+            pos = hit.end;
+        });
+
+        return html + escapeHTML(text.slice(pos));
+    }
+
+    function enhance(root) {
+        var scope = root || global.document;
+        var cells = scope.querySelectorAll(CELL_SELECTOR);
+        var changed = 0;
+
+        Array.prototype.forEach.call(cells, function (cell) {
+            if (cell.dataset.glossary === 'done') return;
+            if (cell.children.length) return;                     // leave markup alone
+
+            var html = annotate(cell.textContent);
+            if (!html) return;
+
+            cell.innerHTML = html;
+            cell.dataset.glossary = 'done';
+            changed++;
+        });
+
+        return changed;
+    }
+
+    var EDGE = 8;   // keep this far clear of the viewport edge
+    var GAP = 6;    // gap between the term and its tooltip
+
+    // Viewport coordinates for a tooltip anchored under `anchorRect`.
+    function tipPosition(anchorRect, tipSize, viewport) {
+        var left = anchorRect.left + (anchorRect.width / 2) - (tipSize.width / 2);
+        var maxLeft = viewport.width - tipSize.width - EDGE;
+        left = Math.max(EDGE, Math.min(left, Math.max(EDGE, maxLeft)));
+
+        var top = anchorRect.bottom + GAP;
+        if (top + tipSize.height > viewport.height - EDGE) {
+            top = anchorRect.top - tipSize.height - GAP;   // flip above
+        }
+        top = Math.max(EDGE, top);
+
+        return { left: left, top: top };
+    }
+
+    function place(wrap) {
+        var doc = global.document;
+        var term = wrap.querySelector('.glossary-term');
+        var tip = wrap.querySelector('.glossary-tip');
+        if (!term || !tip) return;
+
+        var pos = tipPosition(
+            term.getBoundingClientRect(),
+            { width: tip.offsetWidth, height: tip.offsetHeight },
+            {
+                width: global.innerWidth || doc.documentElement.clientWidth,
+                height: global.innerHeight || doc.documentElement.clientHeight
+            }
+        );
+
+        tip.style.left = pos.left + 'px';
+        tip.style.top = pos.top + 'px';
+    }
+
+    function open(wrap) {
+        wrap.classList.add('is-open');
+        var term = wrap.querySelector('.glossary-term');
+        if (term) term.setAttribute('aria-expanded', 'true');
+        place(wrap);
+    }
+
+    function closeAll(doc, except) {
+        Array.prototype.forEach.call(doc.querySelectorAll('.glossary.is-open'), function (el) {
+            if (el === except) return;
+            el.classList.remove('is-open');
+            var term = el.querySelector('.glossary-term');
+            if (term) term.setAttribute('aria-expanded', 'false');
+        });
+    }
+
+    function wrapOf(node) {
+        return node && node.closest ? node.closest('.glossary') : null;
+    }
+
+    function init() {
+        var doc = global.document;
+        if (!doc) return;
+
+        enhance(doc);
+
+        // compare.html rebuilds its table after load, so re-run on DOM changes.
+        if (typeof global.MutationObserver === 'function' && doc.body) {
+            var pending = false;
+            var observer = new global.MutationObserver(function () {
+                if (pending) return;
+                pending = true;
+                global.setTimeout(function () {
+                    pending = false;
+                    enhance(doc);
+                }, 0);
+            });
+            observer.observe(doc.body, { childList: true, subtree: true });
+        }
+
+        // Hover, mouse only - touch is handled by the click below.
+        doc.addEventListener('pointerover', function (event) {
+            if (event.pointerType && event.pointerType !== 'mouse') return;
+            var wrap = wrapOf(event.target);
+            if (!wrap) {
+                closeAll(doc, wrapOf(doc.activeElement));   // leave a focused one open
+                return;
+            }
+            closeAll(doc, wrap);
+            open(wrap);
+        });
+
+        doc.addEventListener('pointerout', function (event) {
+            if (event.pointerType && event.pointerType !== 'mouse') return;
+            var wrap = wrapOf(event.target);
+            if (!wrap || wrapOf(event.relatedTarget) === wrap) return;
+            if (wrap.contains(doc.activeElement)) return;   // keyboard focus is inside
+            closeAll(doc, wrapOf(doc.activeElement));
+        });
+
+        // Tap to open, tap away to close.
+        doc.addEventListener('click', function (event) {
+            var term = event.target.closest ? event.target.closest('.glossary-term') : null;
+
+            if (!term) {
+                if (!wrapOf(event.target)) closeAll(doc);
+                return;
+            }
+
+            var wrap = term.parentNode;
+            if (event.detail === 0) return;   // keyboard activation, focus already opened it
+
+            var wasOpen = wrap.classList.contains('is-open');
+            closeAll(doc);
+            if (!wasOpen) open(wrap);
+        });
+
+        // Keyboard: focus opens, Esc closes.
+        doc.addEventListener('focusin', function (event) {
+            var wrap = wrapOf(event.target);
+            closeAll(doc, wrap);
+            if (wrap) open(wrap);
+        });
+
+        doc.addEventListener('focusout', function (event) {
+            var wrap = wrapOf(event.target);
+            if (!wrap || wrapOf(event.relatedTarget) === wrap) return;
+            closeAll(doc);
+        });
+
+        doc.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' || event.key === 'Esc') closeAll(doc);
+        });
+
+        // Keep an open tooltip pinned to its term.
+        var reposition = function () {
+            Array.prototype.forEach.call(doc.querySelectorAll('.glossary.is-open'), place);
+        };
+        global.addEventListener('scroll', reposition, true);
+        global.addEventListener('resize', reposition);
+    }
+
+    global.MBCGlossary = {
+        TERMS: TERMS,
+        CELL_SELECTOR: CELL_SELECTOR,
+        annotate: annotate,
+        enhance: enhance,
+        tipPosition: tipPosition,
+        init: init
+    };
+
+    if (global.document && global.document.addEventListener) {
+        global.document.addEventListener('DOMContentLoaded', init);
+    }
+})(typeof window !== 'undefined' ? window : this);
