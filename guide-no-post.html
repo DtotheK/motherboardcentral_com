@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MN6VW6GV50"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MN6VW6GV50');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your PC powers on but will not POST. Here is what a stuck CPU, DRAM, VGA or BOOT debug LED means, what to check for each one, and how to clear CMOS safely.">
+  <title>Motherboard Won't POST: CPU, DRAM, VGA &amp; BOOT Debug LEDs - MotherboardCentral</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="canonical" href="https://motherboardcentral.com/guide-no-post.html">
+  <meta property="og:title" content="Motherboard Won't POST: What the Debug LEDs Mean">
+  <meta property="og:description" content="What a stuck CPU, DRAM, VGA or BOOT debug LED means, what to check for each, and how to clear CMOS safely.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://motherboardcentral.com/guide-no-post.html">
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION BAR
+       ============================================ -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="6" y1="2" x2="6" y2="22"/><line x1="18" y1="2" x2="18" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+        </div>
+        Motherboard<span>Central</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="guides.html" class="active">Guides</a>
+        <a href="compare.html">Compare</a>
+      </div>
+      <div class="nav-search">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" class="search-input" placeholder="Search motherboards...">
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       PAGE HERO
+       ============================================ -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">&gt;</span>
+        <a href="guides.html">Guides</a>
+        <span class="separator">&gt;</span>
+        <span class="current">Motherboard Won't POST</span>
+      </nav>
+      <h1>Motherboard Won't POST: <span class="gradient-text">Debug LEDs</span></h1>
+      <p>What a stuck CPU, DRAM, VGA or BOOT light is telling you, and what to check for each one</p>
+    </div>
+  </section>
+
+  <!-- ============================================
+       GUIDE LAYOUT
+       ============================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="guide-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="guide-sidebar">
+          <nav class="guide-toc">
+            <h4>Table of Contents</h4>
+            <ul>
+              <li><a href="#what-they-are" class="active">What the Debug LEDs Are</a></li>
+              <li><a href="#check-first">Check These First</a></li>
+              <li><a href="#cpu-led">CPU LED Stays Lit</a></li>
+              <li><a href="#dram-led">DRAM LED Stays Lit</a></li>
+              <li><a href="#vga-led">VGA LED Stays Lit</a></li>
+              <li><a href="#boot-led">BOOT LED Stays Lit</a></li>
+              <li><a href="#nothing-lights">Nothing Lights Up at All</a></li>
+              <li><a href="#q-code">Two-Digit Q-Code Displays</a></li>
+              <li><a href="#beep-codes">Beep Codes</a></li>
+              <li><a href="#clear-cmos">How to Clear CMOS Safely</a></li>
+              <li><a href="#rma">When It Is Genuinely Faulty</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- CONTENT -->
+        <div class="guide-content">
+
+          <div class="info-box">
+            <h4>How This Guide Is Sourced</h4>
+            <p>Everything below is based on published manufacturer documentation. We have not taken a board apart to reproduce these faults, and nothing here is a test result. Where a step is specific to one brand, it is attributed to that brand and linked to its own support page.</p>
+          </div>
+
+          <!-- What the Debug LEDs Are -->
+          <h2 id="what-they-are">What the Debug LEDs Are</h2>
+
+          <p>Most desktop motherboards sold in the last decade carry a small cluster of four labelled LEDs. They light up in turn while the board works through its power-on self test. If the board gets stuck, the light for the stage it failed at stays on. That single light is the most useful diagnostic information a dead build will give you.</p>
+
+          <p>Every vendor calls the feature something different:</p>
+
+          <ul>
+            <li><strong>ASUS</strong> calls them <strong>Q-LED</strong> indicators. ASUS documents the four meanings and a step-by-step procedure for each on its <a href="https://www.asus.com/support/faq/1042678/" target="_blank" rel="noopener">Q-LED support FAQ</a>.</li>
+            <li><strong>MSI</strong> calls them the <strong>EZ Debug LED</strong>. MSI's <a href="https://us.msi.com/faq/2504" target="_blank" rel="noopener">debug LED FAQ</a> describes four LEDs covering CPU, memory, VGA and boot, with the corresponding indicator staying constantly on when the related hardware fails during startup.</li>
+            <li><strong>GIGABYTE</strong> calls them <strong>status LEDs</strong>. GIGABYTE's <a href="https://www.gigabyte.com/Support/Consumer/FAQ/3151" target="_blank" rel="noopener">indicator light FAQ</a> and its board manuals cover what each one means.</li>
+            <li><strong>ASRock</strong> uses a <strong>POST Status Checker</strong>, and adds a two-digit <strong>Dr. Debug</strong> readout on higher-end boards. ASRock publishes a <a href="https://www.asrock.com/support/index.asp?cat=Debug" target="_blank" rel="noopener">Debug LED troubleshooting checklist</a>.</li>
+          </ul>
+
+          <p>Where are they? According to ASUS's documentation, the Q-LEDs are usually near the 24-pin power connector or the memory slots. On some older boards the lights sit next to the part they refer to instead -- ASUS gives the example of a Z97-era board with the VGA LED beside the PCIe slot. The same two locations cover most other brands. If you cannot find them, the board's manual has a labelled layout diagram.</p>
+
+          <p>The four labels mean the same thing across brands. These are the meanings as ASUS states them:</p>
+
+          <div style="overflow-x: auto;">
+            <table class="spec-table">
+              <thead>
+                <tr>
+                  <th>Indicator</th>
+                  <th>What ASUS documents it as meaning</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>CPU indicator</td>
+                  <td>No CPU, or CPU faulty</td>
+                </tr>
+                <tr>
+                  <td>DRAM indicator</td>
+                  <td>No memory, or memory faulty</td>
+                </tr>
+                <tr>
+                  <td>VGA indicator</td>
+                  <td>No graphics card, or graphics card faulty</td>
+                </tr>
+                <tr>
+                  <td>BOOT indicator</td>
+                  <td>No boot device (HDD/SSD), or boot device faulty</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="info-box warning">
+            <h4>A Lit Light Is a Stage, Not a Verdict</h4>
+            <p>"Memory faulty" is the stage the board stopped at, not proof that your RAM is dead. A DRAM light most often means the board could not train the memory -- bad seating, an unsupported kit, or the wrong slots. Work through the checks before you buy replacement parts.</p>
+          </div>
+
+          <!-- Check These First -->
+          <h2 id="check-first">Check These First</h2>
+
+          <p>Before you read anything into a specific light, rule out the five things that account for most no-POST builds. All five are free to check and take about ten minutes together.</p>
+
+          <ol>
+            <li><strong>Both power connectors are in.</strong> The 24-pin ATX connector powers the board; the 8-pin EPS connector at the top of the board powers the CPU. A build with only the 24-pin connected will spin fans and go no further. This is the single most common miss on a first build. Some boards have two EPS connectors -- check the manual for whether the second one is required.</li>
+            <li><strong>The power switch is on the right header.</strong> The front panel connector block is small, unlabelled on the case side, and easy to get one pin off. Move the case's power switch lead to the PWR_SW pins shown in the manual. To take the case out of the equation, briefly bridge those two pins with a screwdriver.</li>
+            <li><strong>The RAM is fully clicked in.</strong> Push each module down firmly at both ends until the retention clip snaps up on its own. Memory that looks seated but is a millimetre proud is the usual cause of a DRAM light.</li>
+            <li><strong>The graphics card has its own power cables.</strong> Seat the card until the slot latch clicks, then connect every PCIe power connector the card asks for. Do not daisy-chain one cable into two connectors on a card that wants two separate feeds.</li>
+            <li><strong>No stray standoff is shorting the board.</strong> A brass standoff screwed into a hole with no matching mounting point on your board will short the underside. Count the standoffs against the board's mounting holes. See our <a href="guide-cases.html">case compatibility guide</a> for standoff placement and front panel headers.</li>
+          </ol>
+
+          <div class="info-box tip">
+            <h4>Test Outside the Case</h4>
+            <p>If you are still stuck after the five checks, build the minimum system on the motherboard box: board, CPU, cooler, one stick of RAM, graphics card, PSU. No case, no extra drives, no fans beyond the cooler. If that posts, the fault is something in the case -- almost always a standoff or a front panel lead.</p>
+          </div>
+
+          <!-- CPU LED -->
+          <h2 id="cpu-led">CPU LED Stays Lit</h2>
+
+          <p>The board never got a working processor to respond. According to ASUS's documentation, the CPU indicator staying on after power up means no CPU or a faulty CPU. ASUS gives this order:</p>
+
+          <ol>
+            <li>Reinstall the CPU.</li>
+            <li>Check the socket pins and the CPU for dirt, and clean them if you find any.</li>
+            <li>Look for broken pins. If any are damaged, try another CPU.</li>
+            <li>If the first three steps change nothing, replace the CPU.</li>
+          </ol>
+
+          <p>Two things worth adding before you go anywhere near step four. First, where the pins live depends on the socket. On LGA sockets -- Intel's LGA 1700 and LGA 1851, and AMD's AM5 -- the pins are in the socket, and a bent one shows up under a phone torch and magnification. On AMD's AM4, the pins are on the underside of the processor instead. Either way, look before you re-seat.</p>
+
+          <p>Second, a board older than the processor in it may need a BIOS update before it will start with that chip. Check the board's CPU support list on the vendor's site: if your CPU needs a newer BIOS than the board shipped with, the fix is a BIOS flash, not a new processor. Many boards have a USB BIOS flashback button that works with no CPU installed.</p>
+
+          <p>Also re-check the 8-pin EPS connector here. A board with no CPU power behaves much like a board with no CPU.</p>
+
+          <!-- DRAM LED -->
+          <h2 id="dram-led">DRAM LED Stays Lit</h2>
+
+          <p>The board found the CPU but could not bring the memory up. According to ASUS's documentation the DRAM indicator means no memory or faulty memory, and ASUS gives this sequence:</p>
+
+          <ol>
+            <li>Confirm the memory is fully installed, and reinstall it if not.</li>
+            <li>Check the memory pins and the slots for dirt, and clean them if necessary.</li>
+            <li>Replace the memory with a kit from the board's memory QVL.</li>
+            <li>Follow the suggested memory configurations in the user manual.</li>
+            <li>If you have more than one module, test with one at a time.</li>
+            <li>If none of that works, change the memory.</li>
+            <li>If the problem persists, reinstall or replace the CPU.</li>
+          </ol>
+
+          <p>Step four is the one people skip. On a four-slot board, two modules almost never go in the first two slots -- they usually go in slots two and four counting away from the CPU. Populating the wrong pair can leave you with a DRAM light on perfectly good memory. Our <a href="guide-ram.html">RAM and memory guide</a> covers slot layout, dual-channel population and what a QVL actually is.</p>
+
+          <p>Step seven is not a typo. The memory controller lives on the processor, so a memory fault and a CPU fault can present identically.</p>
+
+          <div class="info-box warning">
+            <h4>On AM5, a Long First Boot With the DRAM Light On Is Usually Normal</h4>
+            <p>AMD's AM5 platform runs a memory training pass to find working signal timings. ASUS's ROG community documents this on 600- and 800-series boards as a pause showing <a href="https://rog-forum.asus.com/t5/amd-800-series/understanding-memory-training-on-amd-am5-motherboards-q-code-15/td-p/1099400" target="_blank" rel="noopener">Q-CODE 15, or the yellow DRAM Q-LED on boards without a code display</a>. It describes this as expected on a first boot or after a CMOS clear, notes it can run for five minutes or more, and warns that restarting mid-way makes the board start the process over.</p>
+            <p>The related point is that enabling EXPO can make this happen on every boot rather than once. XDA reported in January 2026 that with EXPO on, <a href="https://www.xda-developers.com/this-am5-bios-change-halves-your-boot-time/" target="_blank" rel="noopener">the motherboard performs memory training at every boot</a>, and that turning on Memory Context Restore in the BIOS roughly halved the author's boot time. Before you conclude the RAM is dead, leave the machine alone for ten minutes and see whether it gets there.</p>
+          </div>
+
+          <!-- VGA LED -->
+          <h2 id="vga-led">VGA LED Stays Lit</h2>
+
+          <p>Memory came up, but the board could not initialise a display adapter. According to ASUS's documentation the VGA indicator means no graphics card or a faulty graphics card, and the procedure splits by where your display output comes from:</p>
+
+          <ul>
+            <li><strong>Using the processor's integrated graphics:</strong> reinstall the CPU.</li>
+            <li><strong>Using an add-in card:</strong> reinstall the card, check the PCIe contacts for dirt and clean them, or try another graphics card.</li>
+          </ul>
+
+          <p>Three additions that cost nothing to check. Put the card in the top PCIe x16 slot -- on most boards that is the only slot wired to the CPU at full width, and some lower slots will not initialise a card at POST at all. Our <a href="guide-pcie.html">PCIe speeds and slots guide</a> explains which slot is which and how lanes are shared.</p>
+
+          <p>Next, make sure the monitor cable is plugged into the graphics card, not the motherboard's rear I/O. With a card installed, the board's video outputs are usually dead.</p>
+
+          <p>Finally, if you are relying on integrated graphics, confirm your processor actually has any. Several AMD and Intel desktop parts ship with no integrated GPU at all, and on those a display needs a card.</p>
+
+          <!-- BOOT LED -->
+          <h2 id="boot-led">BOOT LED Stays Lit</h2>
+
+          <p>This is the good news light: the CPU, memory and graphics all came up, and the board is only failing to hand over to an operating system. According to ASUS's documentation the BOOT indicator means no boot device, or a faulty one, and the steps are:</p>
+
+          <ol>
+            <li>Reconnect the SATA cables at both the motherboard and the drive.</li>
+            <li>Reconnect the M.2 SSD, and check that its retaining screw is actually locked down.</li>
+            <li>Check the M.2 gold contacts and the slot for dirt, and clean them if you find any.</li>
+            <li>Try a different SATA cable, a different port, or a different drive.</li>
+          </ol>
+
+          <p>Note that GIGABYTE documents the same light slightly differently: on its boards a lit BOOT status LED means you have not entered the operating system yet. So on a GIGABYTE board it can be lit briefly and normally during a successful startup. It is a fault only when it stays on.</p>
+
+          <p>Two more causes worth knowing. An M.2 slot that shares lanes with SATA ports can silently disable the ports your boot drive is plugged into -- our <a href="guide-storage.html">storage options guide</a> covers M.2 seating and slot sharing. And a drive with no operating system on it, or one left behind after a Windows install to a different disk, produces exactly this light. Check the boot order in the BIOS before you suspect the hardware.</p>
+
+          <!-- Nothing Lights Up at All -->
+          <h2 id="nothing-lights">Nothing Lights Up at All</h2>
+
+          <p>No LEDs, no fans, nothing. This is a power delivery problem, not a POST problem, so the debug LEDs cannot help you.</p>
+
+          <ul>
+            <li><strong>Check the obvious supply path.</strong> Wall socket, cable, and the rocker switch on the back of the PSU, which ships in the off position.</li>
+            <li><strong>Check the front panel wiring again.</strong> A power switch lead on the wrong pins produces a completely dead machine. Bridge the PWR_SW pins directly to rule the case out.</li>
+            <li><strong>Rule the PSU in or out.</strong> Many power supplies have a self-test button. Otherwise, a known-good spare is the fastest answer.</li>
+            <li><strong>Look for a short.</strong> A misplaced standoff or a loose screw under the board will make the PSU shut down instantly. Building on the box isolates this.</li>
+            <li><strong>Accept that your board may not have these LEDs.</strong> Budget models often ship without them. If the manual's layout diagram shows none, silence here means nothing either way.</li>
+          </ul>
+
+          <!-- Q-Code Displays -->
+          <h2 id="q-code">Two-Digit Q-Code Displays</h2>
+
+          <p>Higher-end boards add a two-digit hexadecimal display next to the LEDs. It reports the stage the board is at rather than a single pass/fail, so it is more precise than the four lights -- but only if you read it against the right table.</p>
+
+          <p>Two things to understand before you look a code up. First, cycling through many codes during startup is normal: they are progress codes, and only the one the board stops on matters. ASRock makes this point directly about its Dr. Debug readout, and also notes that code meanings can differ between its AMD and Intel platforms, which is why it publishes a per-platform checklist rather than one list.</p>
+
+          <p>Second, the tables are board-specific. Your board's manual contains the code list that applies to your board, and that is the one to use. A code table copied from a different model or a different brand will send you after the wrong part.</p>
+
+          <p>One code worth knowing on AMD AM5: as covered in the DRAM section above, a board sitting on Q-CODE 15 for several minutes on a first boot is normally running memory training, not failing.</p>
+
+          <!-- Beep Codes -->
+          <h2 id="beep-codes">Beep Codes</h2>
+
+          <p>Beep codes are the oldest form of this diagnostic, and they still work -- with two catches.</p>
+
+          <p>The first is that you need a speaker. Almost no board or case ships with the small piezo buzzer any more, and without one plugged into the SPKR header on the front panel block, a board that is trying to tell you something makes no sound at all. They cost very little and are worth keeping in a toolbox.</p>
+
+          <p>The second is that the codes are not universal. What a given pattern means depends on the BIOS vendor and on the board, and the general-purpose tables that circulate online do not agree with what individual manufacturers publish for their own hardware. We are not going to add another one.</p>
+
+          <div class="info-box warning">
+            <h4>Look the Pattern Up in Your Own Manual</h4>
+            <p>Count the beeps and their lengths, then find the beep code table in your motherboard's manual or on your board's own support page. That table is written for your board's BIOS. A generic table found elsewhere is a guess.</p>
+          </div>
+
+          <!-- Clear CMOS -->
+          <h2 id="clear-cmos">How to Clear CMOS Safely</h2>
+
+          <p>Clearing CMOS puts the firmware back to defaults. It is the standard fix when a board stopped posting after a BIOS change, an overclock or a memory profile, and it is worth doing before you suspect hardware.</p>
+
+          <p>According to ASUS's <a href="https://www.asus.com/support/faq/1040820/" target="_blank" rel="noopener">official clear CMOS FAQ</a>, this clears the real time clock RAM in CMOS, which holds the date, time, BIOS password and BIOS setup parameters. ASUS lists three methods, and says to power the PC off and remove the power cord first in every case:</p>
+
+          <ul>
+            <li><strong>Clear CMOS button.</strong> Rear I/O or on-board on many mid-range and high-end boards. Press and hold it for about 5 to 10 seconds.</li>
+            <li><strong>CLRTC pins.</strong> Short the two pins with a jumper cap or a metal object for about 5 to 10 seconds, then reconnect the power and start the PC. You should get a prompt saying the BIOS settings have been reset.</li>
+            <li><strong>Remove the CMOS battery.</strong> Open the case, find the coin cell holder on the board, and release the battery using the tab at the side of the holder.</li>
+          </ul>
+
+          <p>Which of the three your board offers is in its manual. The same procedure applies across brands, but the button label and the pin header name vary, so use your own manual for the location.</p>
+
+          <div class="info-box tip">
+            <h4>Expect a Slow Boot Afterwards</h4>
+            <p>A CMOS clear wipes your EXPO or XMP profile along with everything else, so memory has to be trained again from scratch. On AM5 in particular that first boot back can take several minutes with the DRAM light on. That is the training pass described above, not a new fault.</p>
+          </div>
+
+          <!-- RMA -->
+          <h2 id="rma">When It Is Genuinely Faulty</h2>
+
+          <p>If a light is still stuck after you have swapped the part it points at for a known-good one, you have a reasonable case that something is dead. Before you start a return, gather the following -- it is what every manufacturer's support form asks for, and having it ready is the difference between a one-email RMA and three weeks of back and forth.</p>
+
+          <ul>
+            <li><strong>The board's exact model and revision.</strong> Both are silk-screened on the board itself, usually near the memory slots or the PCIe area. Revision matters: two boards with the same name can take different BIOS files.</li>
+            <li><strong>The BIOS version</strong> the board is running, if you can still reach the firmware screen.</li>
+            <li><strong>The full parts list.</strong> Processor, memory kit including its part number, graphics card, power supply, and any drives.</li>
+            <li><strong>Which indicator stays lit, and for how long.</strong> "DRAM light on, still on after fifteen minutes" is a much stronger report than "won't boot".</li>
+            <li><strong>What you have already ruled out.</strong> List the swaps you made and what each one changed. Testing outside the case with the minimum parts is worth mentioning explicitly.</li>
+            <li><strong>Photographs of the socket,</strong> straight on and well lit. Support will ask for these, and taking them now saves a round trip.</li>
+            <li><strong>Proof of purchase.</strong> Warranty length runs from the invoice date, and some vendors run it from manufacture instead if you cannot produce one.</li>
+          </ul>
+
+          <div class="info-box warning">
+            <h4>Check the Terms Before You Ship</h4>
+            <p>Physical damage -- bent socket pins, scratched contacts, liquid -- is handled differently from a manufacturing fault, and the difference can decide whether a claim is accepted. Read the vendor's warranty and RMA terms for your region before sending anything, and photograph the board as it looks now.</p>
+          </div>
+
+          <!-- Related Guides -->
+          <h2 id="related-guides" style="margin-top: 4rem;">Related Guides</h2>
+
+          <div class="grid grid-2" style="margin-top: 1.5rem;">
+            <a href="guide-ram.html" class="card guide-card">
+              <div class="card-img">
+                <img src="images/guides/guide-ram.png" alt="RAM &amp; Memory Guide" loading="lazy">
+              </div>
+              <div class="card-body">
+                <span class="card-category">MEMORY</span>
+                <h3>RAM &amp; Memory</h3>
+                <p>DIMM slot population order, dual-channel layout, QVL lists, and the memory profiles that cause most DRAM-light problems.</p>
+                <span class="read-time">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  10 min read
+                </span>
+              </div>
+            </a>
+            <a href="guide-pcie.html" class="card guide-card">
+              <div class="card-img">
+                <img src="images/guides/guide-pcie.png" alt="PCIe Speeds and Slots Explained" loading="lazy">
+              </div>
+              <div class="card-body">
+                <span class="card-category">EXPANSION</span>
+                <h3>PCIe Speeds &amp; Slots</h3>
+                <p>Which x16 slot is wired to the CPU, how lanes are shared, and why a graphics card in the wrong slot may not come up.</p>
+                <span class="read-time">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  8 min read
+                </span>
+              </div>
+            </a>
+          </div>
+
+        </div>
+        <!-- END .guide-content -->
+
+      </div>
+      <!-- END .guide-layout -->
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand Column -->
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <div class="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="2"/>
+                <circle cx="8" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="8" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <line x1="8" y1="9.5" x2="8" y2="14.5"/>
+                <line x1="16" y1="9.5" x2="16" y2="14.5"/>
+                <line x1="9.5" y1="8" x2="14.5" y2="8"/>
+                <line x1="9.5" y1="16" x2="14.5" y2="16"/>
+              </svg>
+            </div>
+            Motherboard<span>Central</span>
+          </a>
+          <p>Your go-to resource for motherboard reviews, buying guides, and hardware education. Helping PC builders make informed decisions since 2024.</p>
+        </div>
+
+        <!-- Reviews Column -->
+        <div class="footer-col">
+          <h4>Reviews</h4>
+          <ul>
+            <li><a href="reviews.html">All Reviews</a></li>
+            <li><a href="reviews.html?price=0-150">Budget Boards</a></li>
+            <li><a href="reviews.html?socket=LGA+1700">Intel Boards</a></li>
+            <li><a href="reviews.html?socket=AM5">AMD Boards</a></li>
+          </ul>
+        </div>
+
+        <!-- Guides Column -->
+        <div class="footer-col">
+          <h4>Guides</h4>
+          <ul>
+            <li><a href="guide-pcie.html">PCIe Speeds &amp; Slots</a></li>
+            <li><a href="guide-sockets.html">CPU Sockets Explained</a></li>
+            <li><a href="guide-ram.html">RAM &amp; Memory</a></li>
+            <li><a href="guide-usb.html">USB Headers &amp; Ports</a></li>
+            <li><a href="guide-cooling.html">Cooling &amp; Thermals</a></li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <p>&copy; 2026 MotherboardCentral.com. All rights reserved.</p>
+        <p>Built for PC enthusiasts</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+  <!-- JavaScript -->
+  <script src="js/main.js"></script>
+  <!-- Vercel Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
