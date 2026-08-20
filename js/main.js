@@ -2347,8 +2347,83 @@ document.addEventListener('DOMContentLoaded', () => {
             { label: 'Rating', key: 'rating', compare: 'higher', format: v => `${v} / 5.0` }
         ];
 
+        const MIN_SLOTS = 2;
+        const MAX_SLOTS = 5;
+        const BOARDS_PARAM = 'boards';
+
         let selectedBoards = [null, null];
         let showDifferencesOnly = false;
+
+        // ---- Shareable URL state (issue #38) ------------------------------
+        // The comparison is addressable via ?boards=<slug>,<slug>. Slugs are
+        // derived from the board name, never from its index in
+        // motherboardDatabase, so inserting a board cannot silently repoint
+        // links people have already shared. The slug also matches the board's
+        // review-page filename (review-<slug>.html).
+
+        const slugify = (name) => String(name)
+            .toLowerCase()
+            .replace(/\./g, '')       // "M.2" -> "m2"
+            .replace(/\+/g, ' plus ') // "M.2+" -> "m2 plus"
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+
+        const boardSlugs = motherboardDatabase.map(b => slugify(b.name));
+
+        const slugToIndex = Object.create(null);
+        boardSlugs.forEach((slug, i) => {
+            if (!(slug in slugToIndex)) slugToIndex[slug] = i;
+        });
+
+        // Returns the slot array described by the URL, or null to keep today's
+        // default. Anything unrecognised (unknown, misspelled, blank or
+        // repeated) becomes an empty slot rather than an error.
+        function selectionFromUrl() {
+            const raw = new URLSearchParams(window.location.search).get(BOARDS_PARAM);
+            if (!raw) return null;
+
+            const taken = [];
+            const slots = raw.split(',').slice(0, MAX_SLOTS).map(part => {
+                const slug = part.trim().toLowerCase();
+                if (!(slug in slugToIndex)) return null;
+                if (taken.indexOf(slug) !== -1) return null;
+                taken.push(slug);
+                return slugToIndex[slug];
+            });
+
+            while (slots.length < MIN_SLOTS) slots.push(null);
+            return slots;
+        }
+
+        // Trailing empty slots carry no information, so they are dropped;
+        // an empty slot between two boards is kept so columns stay put.
+        function boardsParamValue() {
+            const slugs = selectedBoards.map(idx => idx !== null ? boardSlugs[idx] : '');
+            while (slugs.length && slugs[slugs.length - 1] === '') slugs.pop();
+            return slugs.join(',');
+        }
+
+        // replaceState, not pushState: a comparison is one destination, and a
+        // history entry per dropdown change would trap the back button.
+        function syncUrl() {
+            if (typeof history === 'undefined' || !history.replaceState) return;
+
+            const others = new URLSearchParams(window.location.search);
+            others.delete(BOARDS_PARAM);
+
+            const parts = [];
+            others.forEach((value, key) => {
+                parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+            });
+
+            // Appended raw: slugs are [a-z0-9-] only, so the commas that make
+            // the link readable need no escaping.
+            const value = boardsParamValue();
+            if (value) parts.push(BOARDS_PARAM + '=' + value);
+
+            const query = parts.length ? '?' + parts.join('&') : '';
+            history.replaceState(null, '', window.location.pathname + query + (window.location.hash || ''));
+        }
 
         const extractNumeric = (value, type) => {
             if (type === 'higher' || type === 'lower') return parseFloat(value) || 0;
@@ -2462,13 +2537,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     html += '<span class="slot-meta">' + board.socket + ' &middot; ' + board.chipset + '</span>';
                     html += '</div>';
                 }
-                if (selectedBoards.length > 2) {
+                if (selectedBoards.length > MIN_SLOTS) {
                     html += '<button class="compare-remove-btn" data-slot="' + slotIdx + '" title="Remove">&times;</button>';
                 }
                 html += '</div>';
             });
 
-            if (selectedBoards.length < 5) {
+            if (selectedBoards.length < MAX_SLOTS) {
                 html += '<button class="compare-add-btn" id="add-board-btn">';
                 html += '<div class="plus-icon">+</div>';
                 html += '<span>Add Board</span>';
@@ -2482,6 +2557,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     var slot = parseInt(e.target.dataset.slot);
                     var val = e.target.value;
                     selectedBoards[slot] = val !== '' ? parseInt(val) : null;
+                    syncUrl();
                     renderSlots();
                     renderTable();
                 });
@@ -2491,6 +2567,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.addEventListener('click', function(e) {
                     var slot = parseInt(e.target.dataset.slot);
                     selectedBoards.splice(slot, 1);
+                    syncUrl();
                     renderSlots();
                     renderTable();
                 });
@@ -2500,6 +2577,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (addBtn) {
                 addBtn.addEventListener('click', function() {
                     selectedBoards.push(null);
+                    syncUrl();
                     renderSlots();
                 });
             }
@@ -2571,6 +2649,11 @@ document.addEventListener('DOMContentLoaded', () => {
             html += '</tbody></table>';
             compareTableWrap.innerHTML = html;
         }
+
+        // Preselect from the URL before the first paint. No syncUrl() here:
+        // arriving at a bare compare.html must not rewrite the address bar.
+        const urlSelection = selectionFromUrl();
+        if (urlSelection) selectedBoards = urlSelection;
 
         renderSlots();
         renderTable();
