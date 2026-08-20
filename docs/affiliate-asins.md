@@ -26,7 +26,22 @@ Renewed, not a bundle).
 | MSI MAG B650 Tomahawk WiFi | B0BHCCNSRH | `review-msi-mag-b650-tomahawk-wifi.html` | 2026-08-19 (#52) |
 | MSI MAG B650M Mortar WiFi | B0BHC39YG7 | `review-msi-mag-b650m-mortar-wifi.html` | 2026-08-19 (#52) |
 | MSI PRO B650-P WiFi | B0BHBT5BD3 | `review-msi-pro-b650-p-wifi.html` | 2026-08-19 (#52) |
+| ASRock B550M Steel Legend | B089W2Q2QC | `review-asrock-b550m-steel-legend.html` | 2026-08-20 (#54) |
+| ASUS ROG Strix B550-F Gaming WiFi II | B09GP7P1XS | `review-asus-rog-strix-b550-f-gaming-wifi-ii.html` | 2026-08-20 (#54) |
+| GIGABYTE B550 AORUS Elite V2 | B08JHDL4WP | `review-gigabyte-b550-aorus-elite-v2.html` | 2026-08-20 (#54) |
+| MSI MAG B550 Tomahawk | B089CWDHFZ | `review-msi-mag-b550-tomahawk.html` | 2026-08-20 (#54) |
 
 ## Unconverted
 
 None from batch #52 — all nine boards converted.
+
+Batch #54 (AM4 legacy) left two boards on search URLs, both PENDING-HUMAN:
+
+| Board | Review page | Reason |
+|---|---|---|
+| ASUS ROG Crosshair VIII Dark Hero | `review-asus-rog-crosshair-viii-dark-hero.html` | Our spec table says chipset `X570`; the genuine listing `B08MTKJ6HM` is titled `X570S`. Flagged in advance by issue #54; not resolvable by a link conversion. |
+| MSI MEG X570S Unify-X Max | `review-msi-meg-x570s-unify-x-max.html` | Our spec table says chipset `X570`; listing `B09GLBW5LL` reports chipset `X570S`. Verification test (c) fails, so the ASIN was not used. |
+
+Neither ASIN is recorded above, because neither board was converted. Whether
+our pages should read `X570` or `X570S` is a spec question for a human to
+settle against the manufacturer's own spec page.
