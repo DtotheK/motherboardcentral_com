@@ -37,6 +37,15 @@ Renewed, not a bundle).
 | ASRock B760M Pro RS/D4 | B0BQWR37J4 | `review-asrock-b760m-pro-rs-d4.html` | 2026-08-20 (#48) |
 | ASRock B760M Steel Legend WiFi | B0BQWPLY57 | `review-asrock-b760m-steel-legend-wifi.html` | 2026-08-20 (#48) |
 | MSI MAG B760M Mortar WiFi | B0BRQSXRB2 | `review-msi-mag-b760m-mortar-wifi.html` | 2026-08-20 (#48) |
+| ASRock Z790 Steel Legend WiFi | B0BJF1RS19 | `review-asrock-z790-steel-legend-wifi.html` | 2026-08-20 (#47) |
+| ASUS Prime Z790-A WiFi | B0BG6NVPVG | `review-asus-prime-z790-a-wifi.html` | 2026-08-20 (#47) |
+| ASUS ROG Strix Z790-A Gaming WiFi | B0BSP5MPC5 | `review-asus-rog-strix-z790-a-gaming-wifi.html` | 2026-08-20 (#47) |
+| ASUS ROG Strix Z790-I Gaming WiFi | B0BHXS6HLH | `review-asus-rog-strix-z790-i-gaming-wifi.html` | 2026-08-20 (#47) |
+| ASUS TUF Gaming Z790-Plus WiFi | B0BPHCPSCM | `review-asus-tuf-gaming-z790-plus-wifi.html` | 2026-08-20 (#47) |
+| GIGABYTE Z790 AORUS Elite AX | B0BH9DXY38 | `review-gigabyte-z790-aorus-elite-ax.html` | 2026-08-20 (#47) |
+| MSI MPG Z790 Carbon WiFi | B0BHCJ1QK8 | `review-msi-mpg-z790-carbon-wifi.html` | 2026-08-20 (#47) |
+| MSI MPG Z790 Edge WiFi | B0BL92SPJQ | `review-msi-mpg-z790-edge-wifi.html` | 2026-08-20 (#47) |
+| MSI MPG Z790I Edge WiFi | B0BHCJ6KQ2 | `review-msi-mpg-z790i-edge-wifi.html` | 2026-08-20 (#47) |
 
 ## Unconverted
 
@@ -74,3 +83,11 @@ search URLs:
 
 None of these ASINs are recorded above, because none of the boards were
 converted.
+
+Batch #47 (Z790) converted nine of ten boards. The tenth keeps its search URL:
+
+| Board | Review page | Status | Reason |
+|---|---|---|---|
+| ASUS ROG Strix Z790-E Gaming WiFi II | `review-asus-rog-strix-z790-e-gaming-wifi-ii.html` | PENDING-HUMAN | Candidate `B0CJMQ2S5M` is the right board and agrees on socket, chipset, memory generation and form factor, but both the listing and ASUS's own spec page report Wi-Fi 7 while our table says `WiFi 6E`. ASUS also lists five M.2 slots against our four. WiFi variant is part of the comparison set, so the ASIN was not used. |
+
+`B0CJMQ2S5M` is not recorded above, because the board was not converted.
