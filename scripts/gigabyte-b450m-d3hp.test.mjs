@@ -208,12 +208,17 @@ for (const page of PAGES) {
   });
 }
 
+/* The counter must track the cards. The absolute total is deliberately not
+ * asserted here: it belongs to whichever board page was added last, and this
+ * suite is about the two B450 boards. */
 test('reviews.html reports the new board count', () => {
   const shown = read('reviews.html').match(/Showing\s*<strong>(\d+)<\/strong>\s*motherboards/i);
   assert.ok(shown, 'no "Showing N motherboards" counter');
   const cards = read('reviews.html').match(/class="card review-card/g) || [];
   assert.equal(Number(shown[1]), cards.length, 'counter disagrees with the number of cards');
-  assert.equal(cards.length, 72, 'expected the two new B450 cards on top of the existing 70');
+  for (const slug of PAGES) {
+    assert.ok(read('reviews.html').includes(slug), `reviews.html lost the card for ${slug}`);
+  }
 });
 
 test('reviews.html can filter to the B450 chipset', () => {
