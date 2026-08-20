@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MN6VW6GV50"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MN6VW6GV50');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Enable EXPO on an AM5 board and boots can stretch to the best part of a minute with the DRAM light on. Here is what memory training is, why it reruns, and what Memory Context Restore changes.">
+  <title>AM5 Slow Boot With EXPO: Memory Training Explained - MotherboardCentral</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="canonical" href="https://motherboardcentral.com/guide-am5-slow-boot.html">
+  <meta property="og:title" content="AM5 Slow Boot With EXPO: Memory Training Explained">
+  <meta property="og:description" content="Why an AM5 board sits on a black screen with the DRAM light lit after you enable EXPO, and what Memory Context Restore actually trades away.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://motherboardcentral.com/guide-am5-slow-boot.html">
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION BAR
+       ============================================ -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="6" y1="2" x2="6" y2="22"/><line x1="18" y1="2" x2="18" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+        </div>
+        Motherboard<span>Central</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="guides.html" class="active">Guides</a>
+        <a href="compare.html">Compare</a>
+      </div>
+      <div class="nav-search">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" class="search-input" placeholder="Search motherboards...">
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       PAGE HERO
+       ============================================ -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">&gt;</span>
+        <a href="guides.html">Guides</a>
+        <span class="separator">&gt;</span>
+        <span class="current">AM5 Slow Boot With EXPO</span>
+      </nav>
+      <h1>AM5 Slow Boot With EXPO: <span class="gradient-text">Memory Training</span></h1>
+      <p>Why the machine sits on a black screen with the DRAM light on, and what you can actually do about it</p>
+    </div>
+  </section>
+
+  <!-- ============================================
+       GUIDE LAYOUT
+       ============================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="guide-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="guide-sidebar">
+          <nav class="guide-toc">
+            <h4>Table of Contents</h4>
+            <ul>
+              <li><a href="#symptom" class="active">The Symptom</a></li>
+              <li><a href="#what-is-training">What Memory Training Is</a></li>
+              <li><a href="#why-every-boot">Why It Reruns on Every Boot</a></li>
+              <li><a href="#memory-context-restore">Memory Context Restore</a></li>
+              <li><a href="#power-down-enable">Power Down Enable</a></li>
+              <li><a href="#trade-off">The Stability Trade-Off</a></li>
+              <li><a href="#training-vs-fault">Training or a Real Fault?</a></li>
+              <li><a href="#post-codes">Boards With a POST Code Display</a></li>
+              <li><a href="#what-does-not-fix-it">What Does Not Fix It</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- CONTENT -->
+        <div class="guide-content">
+
+          <div class="info-box">
+            <h4>How This Guide Is Sourced</h4>
+            <p>We have not timed a boot for this article. Every figure below belongs to somebody else's machine and is attributed to the report it came from, with the date that report was published. Treat the numbers as illustrations of the scale of the problem, not as a specification your board should match.</p>
+          </div>
+
+          <!-- The Symptom -->
+          <h2 id="symptom">The Symptom: A Long Black Screen, Then It Boots Fine</h2>
+
+          <p>You finish an AM5 build, go into the BIOS, switch on the EXPO profile so the memory runs at its rated speed, and save. From then on the machine behaves like this: you press the power button, the fans spin up, the monitor stays dark, and the DRAM light on the board stays lit. Nothing else happens for what feels like a very long time. Then the screen comes on, Windows loads, and everything works perfectly.</p>
+
+          <p>Almost everyone who hits this assumes the memory is failing, because a lit DRAM light is the exact same signal a board gives for a real memory problem. In most cases it is not a fault at all. It is the board doing a job it has to do before it can show you anything.</p>
+
+          <p>For a sense of scale: XDA reported in January 2026, testing a Ryzen 5 7600X with a 32&nbsp;GB DDR5-6000 kit, that the machine took around 10 seconds to boot with EXPO off and around 53 seconds with EXPO on. A second XDA article in February 2026 described readers whose machines took 45 to 50 seconds to reach the desktop, and reported them getting there in 10 to 20 seconds after two BIOS changes. Your own numbers will differ &mdash; they depend on the board, the processor and the specific memory kit &mdash; but that is the order of magnitude people are describing.</p>
+
+          <div class="info-box warning">
+            <h4>If Your Board Never Gets There</h4>
+            <p>This guide is about a board that boots slowly and then works. If yours never reaches the desktop at all, the DRAM light means something different and you want our <a href="guide-no-post.html">no-POST and debug LED guide</a> instead. That page covers what each light means and how to work through it.</p>
+          </div>
+
+          <!-- What Memory Training Is -->
+          <h2 id="what-is-training">What Memory Training Actually Is, and Why DDR5 Needs It</h2>
+
+          <p>Memory training is a calibration pass the firmware runs during POST, before any operating system code executes. The memory controller writes known patterns to the modules and reads them back, repeatedly, adjusting as it goes: signal timings, reference voltages, and the alignment between the data lines and the strobe that clocks them. What it is looking for is the middle of the window in which every bit comes back correctly. Land in that middle and the system is stable. Land near the edge and you get corruption weeks later.</p>
+
+          <p>The result depends on the exact combination in front of it &mdash; this board, this processor, this memory kit, in these slots, at this temperature. That is why it cannot be shipped as a fixed table in the BIOS, and why swapping any one of those parts means doing it again.</p>
+
+          <p>DDR5 makes this harder than DDR4 did. It runs at much higher data rates, so the electrical window the controller is hunting for is narrower in absolute terms, and there is more to calibrate. That is the trade you accepted when you bought the platform: more bandwidth, more calibration. Our <a href="guide-ram.html">RAM and memory guide</a> covers DDR5 slot population, dual-channel layout and what a QVL is, all of which affect how easy a kit is to train. For where AM5 sits relative to the other current platforms, see the <a href="guide-sockets.html">CPU sockets guide</a>.</p>
+
+          <p>The important thing to take from this section is that training is not an error path. It is a normal, required part of starting an AM5 machine. The only question is how often your board decides to do it.</p>
+
+          <!-- Why It Reruns -->
+          <h2 id="why-every-boot">Why It Reruns on Every Boot When EXPO Is Enabled</h2>
+
+          <p>At the memory's default JEDEC speed, the board is running well inside its comfort zone, and startup is quick. Switch EXPO on and you are asking for a data rate above that default, with tighter timings, from a kit the board has to prove it can drive reliably. The margins are smaller, so the calibration matters more.</p>
+
+          <p>XDA reported in January 2026 that with EXPO enabled the motherboard performs memory training at every boot, and that this is what accounts for the difference between a fast startup and a slow one. That is the whole mechanism. It is not that EXPO makes your machine slow; it is that EXPO makes the board redo a piece of work it would otherwise skip.</p>
+
+          <p>Two other things reliably trigger a full training pass, whatever your EXPO setting: clearing CMOS, and updating the BIOS. Both wipe the stored configuration, so the first boot afterwards starts from nothing. A long first boot after either of those is expected. If you are about to flash firmware, our <a href="guide-bios-update.html">BIOS update guide</a> is worth reading first.</p>
+
+          <!-- Memory Context Restore -->
+          <h2 id="memory-context-restore">Memory Context Restore: What It Changes</h2>
+
+          <p>Memory Context Restore is a BIOS setting on AM5 boards that changes the answer to "do we train again?" from always to only when we have to. Instead of recalculating from scratch, the firmware saves the parameters that worked last time and reuses them on boots where the hardware has not changed. XDA's February 2026 article describes it as skipping the constant memory retraining that causes the long boots, by recycling previously successful memory parameters.</p>
+
+          <p>The effect people report is substantial. XDA reported in January 2026 that turning it on roughly halved the boot time on the Ryzen 5 7600X system described above. The February 2026 article reported readers going from 45 to 50 seconds down to 10 to 20 seconds with this setting and one other.</p>
+
+          <p>Where the option lives varies. Vendors put it in different places and label the surrounding menus differently, so rather than guess at a menu path for your board, look for "Memory Context Restore" in the BIOS search function if your firmware has one, or in the memory and AMD overclocking sections. Your board's manual is the authority on where it is and what it is called.</p>
+
+          <div class="info-box warning">
+            <h4>This Setting Is a Trade, Not a Free Upgrade</h4>
+            <p>Reusing a saved calibration means trusting that it is still correct. XDA's January 2026 article notes that many users have complained about instability and boot problems after turning Memory Context Restore on alongside an EXPO profile, and its February 2026 article warns this can show up as random BSODs or a failure to POST. The way back is to clear CMOS, which returns the setting to its disabled default along with everything else. Read the <a href="#trade-off">trade-off section</a> below before you enable it, and find your board's clear-CMOS button or jumper first.</p>
+          </div>
+
+          <!-- Power Down Enable -->
+          <h2 id="power-down-enable">Power Down Enable, and Why It Is Suggested Alongside</h2>
+
+          <p>Power Down Enable is a memory power-saving setting, and it is the second of the two options the XDA articles recommend together. The two descriptions differ slightly in the detail &mdash; the January 2026 article describes it as powering down parts of the RAM when they are not in use, the February 2026 article as lowering RAM voltage while idle &mdash; so we will not state a precise mechanism here. What both agree on is the practical point.</p>
+
+          <p>That practical point is this: it is the setting people turn on when Memory Context Restore alone gives them trouble. XDA's January 2026 article recommends enabling Power Down Mode alongside Memory Context Restore if stability problems appear, and its February 2026 article presents the pair together as the combination that produced the improvements it describes. So the sensible order is Memory Context Restore first, and Power Down Enable second if the machine is not happy.</p>
+
+          <p>As a power-saving feature it is not doing anything exotic to your memory, and it is not an overclock. If you try it and nothing changes, turning it back off costs you nothing.</p>
+
+          <!-- The Trade-Off -->
+          <h2 id="trade-off">The Stability Trade-Off, and How to Back Out</h2>
+
+          <p>Everything in the two sections above is a saving bought with a risk, and the risk is worth stating plainly rather than in a footnote.</p>
+
+          <p>The failure mode people report is not subtle. XDA's January 2026 article carries a reader account of a board that would not POST after Memory Context Restore held on to cached data that had gone bad. Its February 2026 article describes the same class of problem as random BSODs and failures to POST. A saved calibration that has quietly stopped being valid is worse than no saved calibration, because the board now boots confidently into a configuration that does not work.</p>
+
+          <p>So before you change either setting, do these three things:</p>
+
+          <ol>
+            <li><strong>Find your clear-CMOS method first.</strong> Look up whether your board has a rear I/O button, a jumper header, or only the coin cell, and confirm you can reach it in the case you have built. Our <a href="guide-no-post.html">no-POST guide</a> covers the procedure and links the vendor documentation for it.</li>
+            <li><strong>Change one setting at a time.</strong> Enable Memory Context Restore, save, and use the machine normally for a few days before touching Power Down Enable. If you flip both at once and it becomes unstable, you have learned nothing about which one did it.</li>
+            <li><strong>Decide what the saving is worth to you.</strong> A desktop that is left on all day pays the training cost rarely. If that is you, the honest answer may be to leave both settings alone and accept a slow cold boot.</li>
+          </ol>
+
+          <div class="info-box tip">
+            <h4>Backing Out</h4>
+            <p>If the machine becomes unstable and you can still reach the BIOS, set Memory Context Restore back to its default and save. If it will not POST at all, clearing CMOS is the recovery path &mdash; XDA's February 2026 article gives exactly that advice, and it returns the setting to disabled. Expect the next boot after a CMOS clear to be a slow one, because you have just deleted every stored calibration and your EXPO profile along with it.</p>
+          </div>
+
+          <!-- Training or a Fault -->
+          <h2 id="training-vs-fault">How to Tell Training Apart From a Real Fault</h2>
+
+          <p>The single most useful test is free and takes one reboot: <strong>turn EXPO off and set the memory back to its default speed.</strong> If the machine then boots quickly and runs without complaint, your board, processor and memory are all working. What you have is a training and profile question, which is what the rest of this page is about. If it is still broken at default speed, EXPO is not your problem and you should work through the <a href="guide-no-post.html">no-POST and debug LED guide</a> instead.</p>
+
+          <p>Beyond that, the pattern usually tells you which you are looking at:</p>
+
+          <div style="overflow-x: auto;">
+            <table class="spec-table">
+              <thead>
+                <tr>
+                  <th>Looks like training</th>
+                  <th>Looks like a genuine fault</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>It gets there eventually, every time</td>
+                  <td>It never reaches the desktop, however long you wait</td>
+                </tr>
+                <tr>
+                  <td>Started right after enabling EXPO, clearing CMOS or flashing the BIOS</td>
+                  <td>Started on its own, or after physically changing parts</td>
+                </tr>
+                <tr>
+                  <td>The DRAM light goes out and the system posts</td>
+                  <td>The DRAM light stays on through repeated attempts</td>
+                </tr>
+                <tr>
+                  <td>Booting at default memory speed is quick and stable</td>
+                  <td>It fails at default memory speed too</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="info-box warning">
+            <h4>Do Not Reset It Part-Way Through</h4>
+            <p>The most common way people turn a slow boot into a real problem is hitting the reset button because they assume it has hung. Cut the pass short and you never find out whether it would have finished, so you learn nothing and start the wait over. Give it well past the longest figure on this page &mdash; XDA reported around 53 seconds in January 2026, and readers describing 45 to 50 seconds in February 2026 &mdash; before you conclude anything. A first boot, or the first boot after a CMOS clear, is a full pass from scratch and can run considerably longer than that; our <a href="guide-no-post.html">no-POST guide</a> covers how long to give it.</p>
+          </div>
+
+          <p>This affects every AM5 board, budget to flagship &mdash; it is a platform behaviour, not a defect in any particular model. You will find the same note in our reviews of boards like the <a href="review-msi-mag-b650-tomahawk-wifi.html">MSI MAG B650 Tomahawk WiFi</a> and the <a href="review-asus-rog-strix-b650e-e-gaming-wifi.html">ASUS ROG Strix B650E-E Gaming WiFi</a>.</p>
+
+          <!-- POST Codes -->
+          <h2 id="post-codes">Boards With a POST Code Display</h2>
+
+          <p>Mid-range and high-end boards often add a two-digit hexadecimal readout next to the debug LEDs. It reports which stage of startup the board is at, so it is more informative than a single lit light &mdash; but only if you read it against the right table.</p>
+
+          <p>Two things to know before you look a code up. First, cycling rapidly through many codes during startup is normal. They are progress codes, and the only one that means anything is the code the board stops on. Second, the tables are specific to the board and the platform. Your board's own manual carries the list that applies to it, and a table copied from a different model or a different brand will point you at the wrong part.</p>
+
+          <p>If your board pauses on one code for a long time during a boot that eventually succeeds, that is consistent with the training pass this page describes rather than with a failure. Our <a href="guide-no-post.html">no-POST and debug LED guide</a> covers code displays and the vendor-documented meaning of a stuck code in more depth.</p>
+
+          <!-- What Does Not Fix It -->
+          <h2 id="what-does-not-fix-it">What Does Not Fix It</h2>
+
+          <p>These are the things people try first, and none of them shortens a training pass. Knowing that saves you an evening and, in a couple of cases, some money.</p>
+
+          <ul>
+            <li><strong>Reseating the RAM.</strong> Worth doing once if you have never checked it, because badly seated memory causes real DRAM-light faults. But memory that is seated correctly does not train faster for being taken out and put back. If anything you have added a boot, because the board may now redo the calibration it had stored.</li>
+            <li><strong>Raising voltages.</strong> Pushing memory or SoC voltage above what the profile asks for does not speed up calibration &mdash; the controller is searching for a working window, not waiting on power. What it does do is add heat and reduce the margin you were trying to protect. Leave the profile's values alone.</li>
+            <li><strong>Buying a faster kit.</strong> A higher-rated kit gives the controller a harder problem, not an easier one. Swapping kits to fix a slow boot is the one item on this list with a price attached, and it is the least likely to work.</li>
+            <li><strong>Reinstalling Windows, or changing Fast Startup.</strong> Training happens during POST, before any operating system code runs. Nothing you configure inside Windows can affect it. If your slow phase is a black screen with the DRAM light on, the OS has not been reached yet.</li>
+            <li><strong>Clearing CMOS.</strong> This is the fix for a bad configuration, and it is the recovery path described above &mdash; but as a cure for slow boots it does the opposite. It deletes every stored calibration, so the next boot is a full pass from scratch.</li>
+          </ul>
+
+          <p>The one thing on the general list of remedies that genuinely can help is a BIOS update, because vendors do revise memory training routines between releases. That is a real possibility rather than a promise, and it is worth checking your board's release notes before you assume it applies to you. Our <a href="guide-bios-update.html">BIOS update guide</a> covers doing it safely.</p>
+
+          <!-- Related Guides -->
+          <h2 id="related-guides" style="margin-top: 4rem;">Related Guides</h2>
+
+          <div class="grid grid-2" style="margin-top: 1.5rem;">
+            <a href="guide-ram.html" class="card guide-card">
+              <div class="card-img">
+                <img src="images/guides/guide-ram.png" alt="RAM &amp; Memory Guide" loading="lazy">
+              </div>
+              <div class="card-body">
+                <span class="card-category">MEMORY</span>
+                <h3>RAM &amp; Memory</h3>
+                <p>DDR5 slot population, dual-channel layout, QVL lists, and how EXPO and XMP profiles actually work.</p>
+                <span class="read-time">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  10 min read
+                </span>
+              </div>
+            </a>
+            <a href="guide-sockets.html" class="card guide-card">
+              <div class="card-img">
+                <img src="images/guides/guide-sockets.png" alt="CPU Sockets Explained" loading="lazy">
+              </div>
+              <div class="card-body">
+                <span class="card-category">PLATFORM</span>
+                <h3>CPU Sockets Explained</h3>
+                <p>Where AM5 sits against AM4 and Intel's current sockets, and what each platform commits you to.</p>
+                <span class="read-time">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  7 min read
+                </span>
+              </div>
+            </a>
+          </div>
+
+          <div class="info-box" style="margin-top: 2rem;">
+            <h4>Sources</h4>
+            <ul>
+              <li>XDA Developers, 25 January 2026 &mdash; <a href="https://www.xda-developers.com/this-am5-bios-change-halves-your-boot-time/" target="_blank" rel="noopener">This AM5 BIOS change halves your boot time</a></li>
+              <li>XDA Developers, 16 February 2026 &mdash; <a href="https://www.xda-developers.com/these-two-motherboard-settings-could-halve-your-amd-pcs-boot-time/" target="_blank" rel="noopener">These two motherboard settings could halve your AMD PC's boot time</a></li>
+            </ul>
+            <p>For the POST codes and debug-LED meanings on your own board, your board's manual is the authority. We do not reproduce a code table here because the tables differ between vendors and between models.</p>
+          </div>
+
+        </div>
+        <!-- END .guide-content -->
+
+      </div>
+      <!-- END .guide-layout -->
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand Column -->
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <div class="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="2"/>
+                <circle cx="8" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="8" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <line x1="8" y1="9.5" x2="8" y2="14.5"/>
+                <line x1="16" y1="9.5" x2="16" y2="14.5"/>
+                <line x1="9.5" y1="8" x2="14.5" y2="8"/>
+                <line x1="9.5" y1="16" x2="14.5" y2="16"/>
+              </svg>
+            </div>
+            Motherboard<span>Central</span>
+          </a>
+          <p>Your go-to resource for motherboard reviews, buying guides, and hardware education. Helping PC builders make informed decisions since 2024.</p>
+        </div>
+
+        <!-- Reviews Column -->
+        <div class="footer-col">
+          <h4>Reviews</h4>
+          <ul>
+            <li><a href="reviews.html">All Reviews</a></li>
+            <li><a href="reviews.html?price=0-150">Budget Boards</a></li>
+            <li><a href="reviews.html?socket=LGA+1700">Intel Boards</a></li>
+            <li><a href="reviews.html?socket=AM5">AMD Boards</a></li>
+          </ul>
+        </div>
+
+        <!-- Guides Column -->
+        <div class="footer-col">
+          <h4>Guides</h4>
+          <ul>
+            <li><a href="guide-pcie.html">PCIe Speeds &amp; Slots</a></li>
+            <li><a href="guide-sockets.html">CPU Sockets Explained</a></li>
+            <li><a href="guide-ram.html">RAM &amp; Memory</a></li>
+            <li><a href="guide-usb.html">USB Headers &amp; Ports</a></li>
+            <li><a href="guide-cooling.html">Cooling &amp; Thermals</a></li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <p>&copy; 2026 MotherboardCentral.com. All rights reserved.</p>
+        <p>Built for PC enthusiasts</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+  <!-- JavaScript -->
+  <script src="js/main.js"></script>
+  <!-- Vercel Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
