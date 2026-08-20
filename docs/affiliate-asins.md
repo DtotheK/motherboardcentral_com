@@ -30,6 +30,10 @@ Renewed, not a bundle).
 | ASUS ROG Strix B550-F Gaming WiFi II | B09GP7P1XS | `review-asus-rog-strix-b550-f-gaming-wifi-ii.html` | 2026-08-20 (#54) |
 | GIGABYTE B550 AORUS Elite V2 | B08JHDL4WP | `review-gigabyte-b550-aorus-elite-v2.html` | 2026-08-20 (#54) |
 | MSI MAG B550 Tomahawk | B089CWDHFZ | `review-msi-mag-b550-tomahawk.html` | 2026-08-20 (#54) |
+| ASUS ROG Crosshair X870E Hero | B0DDZSP2BG | `review-asus-rog-crosshair-x870e-hero.html` | 2026-08-20 (#49) |
+| ASUS ROG Strix X870E-E Gaming WiFi | B0DGQ7NHT2 | `review-asus-rog-strix-x870e-e-gaming-wifi.html` | 2026-08-20 (#49) |
+| GIGABYTE X870E AORUS Master | B0DGVSW4FD | `review-gigabyte-x870e-aorus-master.html` | 2026-08-20 (#49) |
+| MSI MPG X870E Carbon WiFi | B0DG3QW9TJ | `review-msi-mpg-x870e-carbon-wifi.html` | 2026-08-20 (#49) |
 
 ## Unconverted
 
@@ -45,3 +49,11 @@ Batch #54 (AM4 legacy) left two boards on search URLs, both PENDING-HUMAN:
 Neither ASIN is recorded above, because neither board was converted. Whether
 our pages should read `X570` or `X570S` is a spec question for a human to
 settle against the manufacturer's own spec page.
+
+Batch #49 (X870E) left one board on its search URL, PENDING-HUMAN:
+
+| Board | Review page | Reason |
+|---|---|---|
+| ASRock X870E Taichi | `review-asrock-x870e-taichi.html` | Our spec table says form factor `ATX`; the genuine listing `B0DFP2Q3TM` and ASRock's own product listing both say `EATX`. Form factor is one of the specs the conversion recipe compares, so the ASIN was not used. |
+
+`B0DFP2Q3TM` is not recorded above, because the board was not converted.
