@@ -17,6 +17,10 @@ Renewed, not a bundle).
 | ASUS ROG Strix X670E-E Gaming WiFi | B0BDTHQTJV | `review-asus-rog-strix-x670e-e-gaming-wifi.html` | pilot (#3) |
 | GIGABYTE B650 AORUS ELITE AX | B0BH7GTY9C | `review-gigabyte-b650-aorus-elite-ax.html` | pilot (#3) |
 | MSI MAG B760 Tomahawk WiFi | B0BRQV1P6M | `review-msi-mag-b760-tomahawk-wifi.html` | pilot (#3) |
+| ASUS ROG Crosshair X670E Hero | B0BDTN8SNJ | `review-asus-rog-crosshair-x670e-hero.html` | 2026-08-19 (#51) |
+| GIGABYTE X670E AORUS Master | B0BFNVND8B | `review-gigabyte-x670e-aorus-master.html` | 2026-08-19 (#51) |
+| MSI MEG X670E ACE | B0B6Q4X5NF | `review-msi-meg-x670e-ace.html` | 2026-08-19 (#51) |
+| MSI MPG X670E Carbon WiFi | B0B6Q23SPC | `review-msi-mpg-x670e-carbon-wifi.html` | 2026-08-19 (#51) |
 | ASUS ROG Strix B650E-E Gaming WiFi | B0BHMTC99Q | `review-asus-rog-strix-b650e-e-gaming-wifi.html` | 2026-08-19 (#52) |
 | ASUS ROG Strix B650E-I Gaming WiFi | B0BP9LJBP8 | `review-asus-rog-strix-b650e-i-gaming-wifi.html` | 2026-08-19 (#52) |
 | ASUS Prime B650M-A AX II | B0BSP52VJC | `review-asus-prime-b650m-a-ax-ii.html` | 2026-08-19 (#52) |
@@ -26,6 +30,12 @@ Renewed, not a bundle).
 | MSI MAG B650 Tomahawk WiFi | B0BHCCNSRH | `review-msi-mag-b650-tomahawk-wifi.html` | 2026-08-19 (#52) |
 | MSI MAG B650M Mortar WiFi | B0BHC39YG7 | `review-msi-mag-b650m-mortar-wifi.html` | 2026-08-19 (#52) |
 | MSI PRO B650-P WiFi | B0BHBT5BD3 | `review-msi-pro-b650-p-wifi.html` | 2026-08-19 (#52) |
+| MSI PRO A620M-E | B0BZW9RG3P | `review-msi-pro-a620m-e.html` | 2026-08-20 (#53) |
+| ASUS Prime X870-P WiFi | B0DDZY6HTW | `review-asus-prime-x870-p-wifi.html` | 2026-08-20 (#50) |
+| ASUS TUF Gaming X870-Plus WiFi | B0DGB8Q19Y | `review-asus-tuf-gaming-x870-plus-wifi.html` | 2026-08-20 (#50) |
+| GIGABYTE X870 AORUS Elite WiFi7 | B0DGVC3DDW | `review-gigabyte-x870-aorus-elite-wifi7.html` | 2026-08-20 (#50) |
+| MSI MAG X870 Tomahawk WiFi | B0DG3HK897 | `review-msi-mag-x870-tomahawk-wifi.html` | 2026-08-20 (#50) |
+| MSI PRO X870-P WiFi | B0DG3SSGLF | `review-msi-pro-x870-p-wifi.html` | 2026-08-20 (#50) |
 | ASRock B550M Steel Legend | B089W2Q2QC | `review-asrock-b550m-steel-legend.html` | 2026-08-20 (#54) |
 | ASUS ROG Strix B550-F Gaming WiFi II | B09GP7P1XS | `review-asus-rog-strix-b550-f-gaming-wifi-ii.html` | 2026-08-20 (#54) |
 | GIGABYTE B550 AORUS Elite V2 | B08JHDL4WP | `review-gigabyte-b550-aorus-elite-v2.html` | 2026-08-20 (#54) |
@@ -50,10 +60,35 @@ Renewed, not a bundle).
 | ASUS ROG Strix Z890-E Gaming WiFi | B0DJDFY3FL | `review-asus-rog-strix-z890-e-gaming-wifi.html` | 2026-08-21 (#44) |
 | GIGABYTE Z890 AORUS Master | B0DK7JMBBX | `review-gigabyte-z890-aorus-master.html` | 2026-08-21 (#44) |
 | MSI MEG Z890 ACE | B0DJPTRP57 | `review-msi-meg-z890-ace.html` | 2026-08-21 (#44) |
+| ASUS Prime Z890-P WiFi | B0DGWTQWL3 | `review-asus-prime-z890-p-wifi.html` | 2026-08-21 (#45) |
+| ASUS TUF Gaming Z890-Plus WiFi | B0DGWNVCHL | `review-asus-tuf-gaming-z890-plus-wifi.html` | 2026-08-21 (#45) |
+| MSI MPG Z890 Carbon WiFi | B0DJPTRFN6 | `review-msi-mpg-z890-carbon-wifi.html` | 2026-08-21 (#45) |
+| MSI MPG Z890 Edge TI WiFi | B0DK4C8GYK | `review-msi-mpg-z890-edge-ti-wifi.html` | 2026-08-21 (#45) |
+| MSI PRO Z890-A WiFi | B0DH6W5M6R | `review-msi-pro-z890-a-wifi.html` | 2026-08-21 (#45) |
 
 ## Unconverted
 
+Batch #51 (X670E) converted four of five boards. The fifth keeps its search
+URL:
+
+| Board | Review page | Status | Notes |
+|---|---|---|---|
+| ASRock X670E Taichi | `review-asrock-x670e-taichi.html` | UNVERIFIED (#51) | Only genuine listing found is B0BGPF7K2P; every fetch of it returned HTTP 500, so test (b) could not pass. Links left as search URLs. Every other candidate was rejected by the reject list (Carrara SKU, "Fit for" clones, RAM accessories). |
+
+`B0BGPF7K2P` is not recorded above, because the board was not converted.
+
 None from batch #52 — all nine boards converted.
+
+From batch #53 (A620), three boards remain UNVERIFIED and keep their search
+URLs:
+
+| Board | Reason |
+|---|---|
+| ASRock A620M-HDV/M.2+ | Candidate `B0C1ZZDZTJ` matches the model exactly, but `/dp/` and the long SEO URL both returned HTTP 500. No other genuine listing found. |
+| ASUS Prime A620M-A | No candidate survived the reject list. Amazon lists `Prime A620M-A-CSM` (`B0C3ZLCSVP`), a different SKU token, and `Prime A620M-K CSM`. Never fetched. |
+| GIGABYTE A620M DS3H | Candidate `B0CD2KY2G7` matches the model exactly, but `/dp/` and the long SEO URL both returned HTTP 500. No other genuine listing found. |
+
+None from batch #50 — all five boards converted.
 
 Batch #54 (AM4 legacy) left two boards on search URLs, both PENDING-HUMAN:
 
@@ -104,3 +139,28 @@ search URL:
 | ASRock Z890 Taichi | `review-asrock-z890-taichi.html` | UNVERIFIED | The only exact-name search hit, `B0DJRNZWGN`, no longer resolves to this board: a live fetch of `/dp/B0DJRNZWGN` returns "ASRock Intel Core Ultra Z890 Lightning WiFi 7 Phantom Gaming …", so the exact-name test fails. A control fetch of `B0DJRPLRJB` returned its own correct title (Z890 Taichi OCF), so the mismatch is the listing's, not the fetcher's. The remaining Taichi listings are `OCF`, `Lite` and `Aqua` — all rejected as revision-token mismatches. |
 
 `B0DJRNZWGN` is not recorded above, because the board was not converted.
+
+Batch #45 (Z890 mainstream) converted all five boards. Each one passed the
+full comparison set used by every previous batch — exact model name, live
+`/dp/` fetch, socket, chipset, memory generation, form factor and WiFi
+variant. No board was left on a search URL, so there are no UNVERIFIED or
+PENDING-HUMAN entries for this batch.
+
+Every board in the batch did, however, turn up a spec-table discrepancy
+outside that comparison set. None of them casts doubt on board identity, and
+no spec table was edited (issue #45 forbids it), but all five are recorded
+here so a human can settle them:
+
+| Board | Spec | Our table | Source consulted | Source says |
+|---|---|---|---|---|
+| ASUS Prime Z890-P WiFi | M.2 slots | `3x M.2` | ASUS techspec page | 4 x M.2 |
+| ASUS TUF Gaming Z890-Plus WiFi | M.2 slots | `3x M.2` | ASUS techspec page | 4 x M.2 |
+| MSI MPG Z890 Carbon WiFi | LAN | `2.5G` | secondary (MSI 403s) | dual LAN: 5G Killer E5000B + 2.5G Intel I226V |
+| MSI MPG Z890 Edge TI WiFi | M.2 slots / LAN | `4x M.2` / `2.5G` | secondary (MSI 403s) | 5x M.2 / 5G Killer E5000B |
+| MSI PRO Z890-A WiFi | M.2 slots / LAN / SATA | `3x M.2` / `2.5G` / `6` | secondary (MSI 403s) | 4x M.2 / 5G Realtek / 4x SATA |
+
+The two ASUS rows are confirmed against ASUS's own techspec pages, so our
+tables are wrong there. The three MSI rows are **not** settled: MSI's spec
+pages return HTTP 403, so those figures come from retailer and reviewer
+sources rather than the manufacturer, and need a human check against MSI's
+own page before any table is edited.
