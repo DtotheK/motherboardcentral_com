@@ -113,7 +113,7 @@
 
           <ol>
             <li><strong>A newer CPU than the board shipped with.</strong> This is the common one. A board sold before a processor existed does not know how to start it, and the symptom is a machine that powers up and never posts. The board's CPU support list on the vendor's site names the minimum BIOS version for each supported chip. If your chip needs a version newer than the one on the board, a flash is the fix, not a different processor. Our <a href="guide-sockets.html">CPU sockets guide</a> covers which processors physically fit a given socket, which is a separate question from whether the firmware recognises them.</li>
-            <li><strong>A security advisory that names your platform.</strong> Firmware fixes for processor and platform vulnerabilities reach you as a motherboard BIOS update, not through Windows Update. If a vendor has published one for your board, nothing else will install it for you.</li>
+            <li><strong>A security advisory that names your platform.</strong> Firmware fixes for processor and platform vulnerabilities reach you as a motherboard BIOS update, not through Windows Update. If a vendor has published one for your board, nothing else will install it for you. Our <a href="uefi-dma-security-advisory.html">UEFI early-boot DMA advisory</a> is a current example, and it needs a BIOS setting changed as well as a firmware update.</li>
             <li><strong>A specific bug you are hitting.</strong> Read the release notes for the versions between yours and the latest. If one of them names your problem, that is a reason. If none of them do, you do not have a reason yet.</li>
           </ol>
 
