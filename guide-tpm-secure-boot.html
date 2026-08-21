@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MN6VW6GV50"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MN6VW6GV50');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your board almost certainly already has TPM 2.0 — it ships switched off. How to turn on firmware TPM and Secure Boot for Windows 11 and anti-cheat, in the right order, without triggering BitLocker recovery.">
+  <title>How to Enable TPM 2.0 and Secure Boot on Your Motherboard - MotherboardCentral</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="canonical" href="https://motherboardcentral.com/guide-tpm-secure-boot.html">
+  <meta property="og:title" content="How to Enable TPM 2.0 and Secure Boot on Your Motherboard">
+  <meta property="og:description" content="Firmware TPM and Secure Boot are already on your board and switched off. Here is how to turn them on for Windows 11 and anti-cheat, in an order that does not break your boot.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://motherboardcentral.com/guide-tpm-secure-boot.html">
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION BAR
+       ============================================ -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="6" y1="2" x2="6" y2="22"/><line x1="18" y1="2" x2="18" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+        </div>
+        Motherboard<span>Central</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="guides.html" class="active">Guides</a>
+        <a href="compare.html">Compare</a>
+      </div>
+      <div class="nav-search">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" class="search-input" placeholder="Search motherboards...">
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       PAGE HERO
+       ============================================ -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">&gt;</span>
+        <a href="guides.html">Guides</a>
+        <span class="separator">&gt;</span>
+        <span class="current">TPM 2.0 and Secure Boot</span>
+      </nav>
+      <h1>Enable <span class="gradient-text">TPM 2.0 and Secure Boot</span></h1>
+      <p>For Windows 11 and for anti-cheat &mdash; what to turn on, and the order that keeps your machine bootable</p>
+    </div>
+  </section>
+
+  <!-- ============================================
+       GUIDE LAYOUT
+       ============================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="guide-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="guide-sidebar">
+          <nav class="guide-toc">
+            <h4>Table of Contents</h4>
+            <ul>
+              <li><a href="#what-they-are" class="active">What They Actually Are</a></li>
+              <li><a href="#check-first">Check What You Already Have</a></li>
+              <li><a href="#firmware-vs-discrete">Firmware TPM vs a Module</a></li>
+              <li><a href="#enable-amd">Enabling fTPM: AMD Boards</a></li>
+              <li><a href="#enable-intel">Enabling PTT: Intel Boards</a></li>
+              <li><a href="#secure-boot">Secure Boot, and CSM</a></li>
+              <li><a href="#mbr-to-gpt">If Your Disk Is Still MBR</a></li>
+              <li><a href="#after">After You Enable It</a></li>
+              <li><a href="#ftpm-caveat">The AMD fTPM Caveat</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- CONTENT -->
+        <div class="guide-content">
+
+          <div class="info-box">
+            <h4>How This Guide Is Sourced</h4>
+            <p>We have not run these steps on a bench for this article. Every BIOS menu path below is quoted from the vendor's own support page and linked in the sentence that carries it. Where a vendor's documentation was not readable to us, we name the setting you are looking for and stop there rather than print a menu path we cannot stand behind. Your board's manual is always the authority on its own menus.</p>
+          </div>
+
+          <!-- What they are -->
+          <h2 id="what-they-are">What TPM 2.0 and Secure Boot Actually Are</h2>
+
+          <p>These are two different things that get switched on in the same afternoon, which is why they are usually discussed as one.</p>
+
+          <p><strong>A TPM is a small security processor.</strong> It generates and stores keys in a place the operating system cannot read out, and it keeps measurements of what the machine loaded at startup. Windows leans on it for BitLocker's automatic unlock and for Windows Hello. Version 2.0 is the current specification.</p>
+
+          <p><strong>Secure Boot is a firmware policy.</strong> With it enabled, your board only hands control to a bootloader signed by a key it already trusts. That is what stops something from quietly inserting itself underneath Windows.</p>
+
+          <p>Microsoft's <a href="https://learn.microsoft.com/en-us/windows/whats-new/windows-11-requirements" target="_blank" rel="noopener">Windows 11 requirements page</a> lists both in its minimum hardware requirements: <em>"System firmware: UEFI, Secure Boot capable"</em> and <em>"TPM: Trusted Platform Module (TPM) version 2.0"</em>. That page carried a documentation date of 14 July 2026 when we checked it for this article, and it still lists TPM 2.0. You will see claims in forum threads that the TPM requirement has been dropped. Microsoft's own requirements page does not say that, so do not plan an install around it.</p>
+
+          <p>Note the exact wording on firmware: the requirement is <em>Secure Boot capable</em>, not Secure Boot enabled. For a Windows 11 install, capability is the bar. Anti-cheat is stricter, and wants it actually turned on.</p>
+
+          <p>On the anti-cheat side, ASUS puts the reason plainly in its <a href="https://www.asus.com/support/faq/1055973/" target="_blank" rel="noopener">support article on game launch errors</a> (last updated 15 October 2025): <em>"Many modern anti-cheat drivers verify the integrity of your boot chain and security processor before games will launch."</em> If the chain does not check out, the game refuses to start rather than explaining itself.</p>
+
+          <p>The useful thing to know before you start: on any recent board, both features are already in the hardware. Nothing needs buying. They are configuration, not parts &mdash; see our <a href="guide-sockets.html">CPU sockets guide</a> for which platform you are on.</p>
+
+          <!-- Check first -->
+          <h2 id="check-first">Check What You Already Have</h2>
+
+          <p>Do this before you touch the BIOS. Three checks, all from inside Windows, all read-only.</p>
+
+          <ol>
+            <li><strong>TPM status.</strong> Press Windows+R, run <code style="font-family:var(--font-mono);background:var(--bg-surface);border:1px solid var(--border-color);border-radius:4px;padding:0.1rem 0.35rem;font-size:0.9em;">tpm.msc</code>. If a TPM is on and working, the console reports it as ready for use and shows a specification version. You want 2.0.</li>
+            <li><strong>Secure Boot and boot mode.</strong> Windows+R, run <code style="font-family:var(--font-mono);background:var(--bg-surface);border:1px solid var(--border-color);border-radius:4px;padding:0.1rem 0.35rem;font-size:0.9em;">msinfo32</code>. Read two rows in System Summary: <strong>BIOS Mode</strong> and <strong>Secure Boot State</strong>. BIOS Mode must say UEFI. If it says Legacy, read the <a href="#mbr-to-gpt">MBR section</a> below before changing anything.</li>
+            <li><strong>Partition style.</strong> Windows+R, run <code style="font-family:var(--font-mono);background:var(--bg-surface);border:1px solid var(--border-color);border-radius:4px;padding:0.1rem 0.35rem;font-size:0.9em;">diskmgmt.msc</code>, right-click your system disk, choose Properties, then the Volumes tab, and read <strong>Partition style</strong>. Microsoft's <a href="https://learn.microsoft.com/en-us/windows/deployment/mbr-to-gpt" target="_blank" rel="noopener">MBR2GPT documentation</a> gives a one-line alternative in PowerShell: <code style="font-family:var(--font-mono);background:var(--bg-surface);border:1px solid var(--border-color);border-radius:4px;padding:0.1rem 0.35rem;font-size:0.9em;">Get-Disk | ft -Auto</code>, which prints a Partition Style column.</li>
+          </ol>
+
+          <p>ASUS documents another route to the same TPM figure in its support article: Settings, then Privacy &amp; security, Windows Security, Device security, Security processor details, where the specification version is listed.</p>
+
+          <div class="info-box warning">
+            <h4>Read This Before You Change Any Setting</h4>
+            <p>The order matters more than any individual setting. ASUS states it directly: <em>"If your disk is MBR or your firmware is in Legacy/CSM mode, do not switch to UEFI or enable Secure Boot until you convert the disk to GPT."</em> Flip the firmware to UEFI while the disk is still MBR and the machine stops finding its own Windows install. If your three checks came back UEFI and GPT, you can skip straight to the enable steps. If either came back Legacy or MBR, go to the <a href="#mbr-to-gpt">conversion section</a> first.</p>
+          </div>
+
+          <!-- Firmware vs discrete -->
+          <h2 id="firmware-vs-discrete">Firmware TPM vs a Discrete Module</h2>
+
+          <p>When people discover they need TPM 2.0, the first thing many do is search for a TPM header module. You almost certainly do not need to buy one.</p>
+
+          <p>Modern processors carry a firmware TPM: a TPM 2.0 implementation running inside the processor and platform firmware rather than on a separate chip. AMD calls it fTPM. Intel calls it PTT, short for Platform Trust Technology. It satisfies the Windows 11 TPM 2.0 requirement, and it is already sitting on your board &mdash; typically switched off from the factory, which is the entire reason this page exists.</p>
+
+          <p>A discrete module plugs into a header on the board and does the same job in dedicated silicon. It is a niche purchase, and not an interchangeable one: a module has to match the header on the specific board it is going into, so it is bought against a model number rather than off a shelf. If your BIOS offers a choice between firmware TPM and discrete TPM, and there is no module physically installed, firmware TPM is the answer.</p>
+
+          <div class="info-box warning">
+            <h4>Save Your BitLocker Recovery Key First</h4>
+            <p>Changing the TPM state or enabling Secure Boot alters the platform configuration BitLocker measures, and Windows can respond by demanding your 48-digit recovery key at the next boot. If this machine has BitLocker turned on &mdash; and it may have been enabled automatically &mdash; sign in at <a href="https://account.microsoft.com/devices/recoverykey" target="_blank" rel="noopener">your Microsoft account's recovery key page</a> or export the key to a file on another device before you go any further. The same warning applies to flashing firmware, which our <a href="guide-bios-update.html">BIOS update guide</a> covers.</p>
+          </div>
+
+          <!-- AMD -->
+          <h2 id="enable-amd">Enabling Firmware TPM: AMD Boards (fTPM)</h2>
+
+          <p>On AMD, the setting you are hunting for is called fTPM, and enabling it means selecting <em>Firmware TPM</em> rather than a discrete device.</p>
+
+          <p>ASUS documents the path on its AMD boards as <code style="font-family:var(--font-mono);background:var(--bg-surface);border:1px solid var(--border-color);border-radius:4px;padding:0.1rem 0.35rem;font-size:0.9em;">Advanced Mode › Advanced › AMD fTPM configuration › Firmware TPM switch</code>, set to "Enable Firmware TPM", in its <a href="https://www.asus.com/support/faq/1055973/" target="_blank" rel="noopener">Secure Boot and fTPM support article</a>. You reach Advanced Mode by pressing Del as the machine starts.</p>
+
+          <p>Other vendors use their own menu trees and their own labels for the same feature. The words to look for are "fTPM", "AMD CPU fTPM", "Firmware TPM" or, on boards that do not name the vendor at all, "Security Device Support". If your BIOS has a search function, search for TPM; otherwise the setting usually lives near the other security or advanced CPU options. We do not reproduce menu paths we could not confirm at the vendor's own source, so for any board that is not an ASUS one, check the manual that came with it.</p>
+
+          <p>Once the setting is changed, save and exit &mdash; F10 on most boards &mdash; and let the machine restart before you check anything.</p>
+
+          <!-- Intel -->
+          <h2 id="enable-intel">Enabling Firmware TPM: Intel Boards (PTT)</h2>
+
+          <p>The Intel equivalent is PTT, Platform Trust Technology. It is the same idea as fTPM: a TPM 2.0 implementation in firmware, no module required.</p>
+
+          <p>We could not read a current vendor support page for the Intel menu path while writing this, so there is no path printed here. Inventing one would be worse than useless. What you are looking for is a setting named "PTT", "Intel Platform Trust Technology", "Intel PTT" or "Security Device Support", and on many boards it sits alongside the firmware and security options rather than under a TPM heading of its own. Use your BIOS search function if it has one, and treat your board manual as the authority.</p>
+
+          <p>One thing worth knowing when you find it: where the BIOS offers a choice of TPM device, the two options are typically a firmware TPM and a discrete one. Choose the firmware option unless you have actually installed a module.</p>
+
+          <!-- Secure Boot -->
+          <h2 id="secure-boot">Enabling Secure Boot, and Why CSM Has to Go Off First</h2>
+
+          <p>Secure Boot only exists in the UEFI boot path. CSM &mdash; the Compatibility Support Module, sometimes labelled Legacy or Legacy Boot &mdash; is the layer that lets a board boot the old BIOS way, and while it is doing that there is no signature checking to enable. So CSM goes off, and the machine boots in UEFI mode, and only then does Secure Boot mean anything.</p>
+
+          <p>That is also why the partition style matters. A Windows install on an MBR disk boots through the legacy path. Turn CSM off underneath it and it will not start.</p>
+
+          <p>ASUS documents its own path as <code style="font-family:var(--font-mono);background:var(--bg-surface);border:1px solid var(--border-color);border-radius:4px;padding:0.1rem 0.35rem;font-size:0.9em;">Advanced Mode › Boot › Secure Boot</code>, selecting "Windows UEFI mode" under <strong>OS Type</strong> and "Standard" under <strong>Secure Boot Mode</strong>, in the <a href="https://www.asus.com/support/faq/1055973/" target="_blank" rel="noopener">support article linked throughout this page</a>. On other brands the menu differs; the setting is normally in the Boot or Security section, and CSM has its own entry nearby.</p>
+
+          <p>If the option is greyed out, that is usually the firmware telling you something else is in the way &mdash; commonly CSM still enabled, or Secure Boot keys not installed, for which boards offer a "Restore Factory Keys" or equivalent action.</p>
+
+          <div class="info-box tip">
+            <h4>If It Will Not Boot Afterwards</h4>
+            <p>Nothing here is one-way. Go back into the BIOS, put Secure Boot back to disabled and CSM back to how it was, and you are where you started. The one change on this page that genuinely cannot be reversed is the MBR-to-GPT conversion below, which is why it has its own warning.</p>
+          </div>
+
+          <!-- MBR to GPT -->
+          <h2 id="mbr-to-gpt">If Your Windows Install Is Still MBR: Converting to GPT</h2>
+
+          <p>If <code style="font-family:var(--font-mono);background:var(--bg-surface);border:1px solid var(--border-color);border-radius:4px;padding:0.1rem 0.35rem;font-size:0.9em;">msinfo32</code> said Legacy, or Disk Management said Master Boot Record, you have an install that predates all of this. Windows ships a tool for converting it in place. Our <a href="guide-storage.html">storage guide</a> covers what MBR and GPT are and why the boot drive is the one that cares.</p>
+
+          <p>Microsoft's <a href="https://learn.microsoft.com/en-us/windows/deployment/mbr-to-gpt" target="_blank" rel="noopener">MBR2GPT documentation</a> describes the tool as converting "a disk from the Master Boot Record (MBR) to the GUID Partition Table (GPT) partition style without modifying or deleting data on the disk". It lives in the Windows\System32 directory.</p>
+
+          <div class="info-box warning">
+            <h4>This One Is Not Reversible</h4>
+            <p>The tool prints its own warning before it starts: <em>"If conversion is successful the disk can only be booted in GPT mode. These changes cannot be undone!"</em> Everything else on this page is a setting you can put back. This is not. Have a current backup of anything you care about before you run it &mdash; this guide assumes you do &mdash; and if the machine is a work machine, ask whoever owns it first.</p>
+            <p>Microsoft also documents that a BitLocker-encrypted disk can only be converted with protection suspended, and that resuming BitLocker afterwards means the existing protectors have to be deleted and recreated.</p>
+          </div>
+
+          <p>Before it changes anything, the tool checks the disk against a list of conditions from Microsoft's documentation, including: the disk is currently using MBR; there are at most three primary partitions; one partition is marked active and is the system partition; there are no extended or logical partitions; there is enough unpartitioned space at each end of the disk for the GPT structures; and the boot configuration store on the system partition has a default OS entry. If any check fails, it stops and reports an error instead of converting.</p>
+
+          <p>So run the check on its own first, from an elevated command prompt:</p>
+
+          <p><code style="font-family:var(--font-mono);background:var(--bg-surface);border:1px solid var(--border-color);border-radius:4px;padding:0.35rem 0.6rem;font-size:0.9em;display:inline-block;">mbr2gpt /validate /disk:0</code></p>
+
+          <p>By default the tool only runs from the Windows Preinstallation Environment. Microsoft documents the <code style="font-family:var(--font-mono);background:var(--bg-surface);border:1px solid var(--border-color);border-radius:4px;padding:0.1rem 0.35rem;font-size:0.9em;">/allowFullOS</code> option, which overrides that block and lets it run inside Windows; ASUS's support article uses exactly that form. Note Microsoft's caveat that when you convert from the full OS, the existing system partition is in use and cannot be reused, so a new EFI system partition is created by shrinking the Windows partition.</p>
+
+          <p>If validation passes, and only then, convert:</p>
+
+          <p><code style="font-family:var(--font-mono);background:var(--bg-surface);border:1px solid var(--border-color);border-radius:4px;padding:0.35rem 0.6rem;font-size:0.9em;display:inline-block;">mbr2gpt /convert /disk:0</code></p>
+
+          <p>The last line the tool prints is the step people miss: <em>"Before the new system can boot properly you need to switch the firmware to boot to UEFI mode!"</em> The disk is now GPT and the firmware is still set to boot the legacy way. Go into the BIOS, turn CSM off so the machine boots in UEFI mode, and let Windows start once and settle before you enable Secure Boot on top.</p>
+
+          <!-- After -->
+          <h2 id="after">After You Enable It: What to Verify, and What Breaks</h2>
+
+          <p>Back in Windows, confirm the machine agrees with you rather than assuming:</p>
+
+          <ul>
+            <li><code style="font-family:var(--font-mono);background:var(--bg-surface);border:1px solid var(--border-color);border-radius:4px;padding:0.1rem 0.35rem;font-size:0.9em;">tpm.msc</code> should now report a TPM that is ready for use, with specification version 2.0.</li>
+            <li><code style="font-family:var(--font-mono);background:var(--bg-surface);border:1px solid var(--border-color);border-radius:4px;padding:0.1rem 0.35rem;font-size:0.9em;">msinfo32</code> should show <strong>Secure Boot State: On</strong> and <strong>BIOS Mode: UEFI</strong>.</li>
+          </ul>
+
+          <p>Secure Boot State reading "Unsupported" rather than "Off" usually means the machine is still booting through the legacy path, not that the board lacks the feature.</p>
+
+          <p>Three things change once these are on, and it is better to know beforehand:</p>
+
+          <ul>
+            <li><strong>BitLocker may demand its recovery key.</strong> The measurements it relies on have changed. This is the reason for the warning further up: have the key before you need it, not after.</li>
+            <li><strong>Dual-boot setups can stop booting.</strong> Secure Boot only runs signed bootloaders. Mainstream Linux distributions ship a signed shim and are fine; a custom or older one may not be, and the fix is either a distribution that supports Secure Boot or leaving Secure Boot off.</li>
+            <li><strong>Old expansion cards can go quiet.</strong> Hardware whose option ROM predates UEFI relies on the compatibility layer you have just switched off. That is rare on anything recent, and worth remembering if a display or a storage controller disappears.</li>
+          </ul>
+
+          <p>If the goal was a Windows 11 upgrade, re-run the PC Health Check app afterwards &mdash; it re-reads the state rather than caching its earlier verdict.</p>
+
+          <!-- fTPM caveat -->
+          <h2 id="ftpm-caveat">AMD fTPM: The Firmware Caveat Worth Knowing First</h2>
+
+          <p>A firmware TPM is firmware. That has one consequence people find surprising: when a flaw is found in it, the fix arrives as a motherboard BIOS update from your board vendor. Windows Update will not deliver it, and neither will a driver package.</p>
+
+          <p>That is not hypothetical. Two vulnerabilities in the Trusted Computing Group's TPM 2.0 reference code were published on 11 August 2026: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-6726" target="_blank" rel="noopener">CVE-2026-6726</a>, which the NVD entry describes as an information leakage issue allowing "a local attacker with elevated privileges to obtain a credential from a TPM-aware CA for a falsified TPM key", and <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-6727" target="_blank" rel="noopener">CVE-2026-6727</a>, a timing side-channel in RSA OAEP decryption reachable by "a privileged local attacker with access to the TPM command interface". Both require local privileged access, so neither is something a web page can do to you. AMD ships that reference code as fTPM, which is how a specification-level bug becomes a motherboard update.</p>
+
+          <p>ASUS's support article documents the same pattern for older AM4 boards, where an fTPM that anti-cheat rejects as out of date is resolved by updating the board's BIOS rather than anything in Windows.</p>
+
+          <p>So the practical advice, if you are about to turn fTPM on: check your board's support page for a BIOS newer than the one you are running, and look for a TPM or fTPM security fix in its release notes. Coverage varies by board and by vendor, and we have not verified which specific boards have received a fixed BIOS, so treat your own board's release notes as the answer. And save your BitLocker recovery key before flashing &mdash; our <a href="guide-bios-update.html">BIOS update guide</a> covers the safe order, including boards that can flash with no processor installed.</p>
+
+          <!-- Related Guides -->
+          <h2 id="related-guides" style="margin-top: 4rem;">Related Guides</h2>
+
+          <div class="grid grid-2" style="margin-top: 1.5rem;">
+            <a href="guide-storage.html" class="card guide-card">
+              <div class="card-img">
+                <img src="images/guides/guide-storage.png" alt="Storage &amp; M.2 Guide" loading="lazy">
+              </div>
+              <div class="card-body">
+                <span class="card-category">STORAGE</span>
+                <h3>Storage &amp; M.2</h3>
+                <p>MBR against GPT, how the boot drive is laid out, and what shares bandwidth with what.</p>
+                <span class="read-time">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  9 min read
+                </span>
+              </div>
+            </a>
+            <a href="guide-sockets.html" class="card guide-card">
+              <div class="card-img">
+                <img src="images/guides/guide-sockets.png" alt="CPU Sockets Explained" loading="lazy">
+              </div>
+              <div class="card-body">
+                <span class="card-category">PLATFORM</span>
+                <h3>CPU Sockets Explained</h3>
+                <p>Which platform you are on, and which generations carry a firmware TPM at all.</p>
+                <span class="read-time">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  7 min read
+                </span>
+              </div>
+            </a>
+          </div>
+
+          <div class="info-box" style="margin-top: 2rem;">
+            <h4>Sources</h4>
+            <ul>
+              <li>Microsoft Learn, documentation date 14 July 2026 &mdash; <a href="https://learn.microsoft.com/en-us/windows/whats-new/windows-11-requirements" target="_blank" rel="noopener">Windows 11 requirements</a></li>
+              <li>Microsoft Learn, documentation date 14 July 2026 &mdash; <a href="https://learn.microsoft.com/en-us/windows/deployment/mbr-to-gpt" target="_blank" rel="noopener">MBR2GPT</a></li>
+              <li>ASUS, last updated 15 October 2025 &mdash; <a href="https://www.asus.com/support/faq/1055973/" target="_blank" rel="noopener">Fix FPS game launch errors: enable Secure Boot and update TPM 2.0 (fTPM)</a></li>
+              <li>NIST National Vulnerability Database &mdash; <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-6726" target="_blank" rel="noopener">CVE-2026-6726</a> and <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-6727" target="_blank" rel="noopener">CVE-2026-6727</a>, both published 11 August 2026</li>
+            </ul>
+            <p>Menu paths appear on this page only where the vendor's own support page was readable to us at the time of writing. For every other brand we name the setting and send you to your board's manual, which is the only document guaranteed to match the firmware you are actually running.</p>
+          </div>
+
+        </div>
+        <!-- END .guide-content -->
+
+      </div>
+      <!-- END .guide-layout -->
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand Column -->
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <div class="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="2"/>
+                <circle cx="8" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="8" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <line x1="8" y1="9.5" x2="8" y2="14.5"/>
+                <line x1="16" y1="9.5" x2="16" y2="14.5"/>
+                <line x1="9.5" y1="8" x2="14.5" y2="8"/>
+                <line x1="9.5" y1="16" x2="14.5" y2="16"/>
+              </svg>
+            </div>
+            Motherboard<span>Central</span>
+          </a>
+          <p>Your go-to resource for motherboard reviews, buying guides, and hardware education. Helping PC builders make informed decisions since 2024.</p>
+        </div>
+
+        <!-- Reviews Column -->
+        <div class="footer-col">
+          <h4>Reviews</h4>
+          <ul>
+            <li><a href="reviews.html">All Reviews</a></li>
+            <li><a href="reviews.html?price=0-150">Budget Boards</a></li>
+            <li><a href="reviews.html?socket=LGA+1700">Intel Boards</a></li>
+            <li><a href="reviews.html?socket=AM5">AMD Boards</a></li>
+          </ul>
+        </div>
+
+        <!-- Guides Column -->
+        <div class="footer-col">
+          <h4>Guides</h4>
+          <ul>
+            <li><a href="guide-pcie.html">PCIe Speeds &amp; Slots</a></li>
+            <li><a href="guide-sockets.html">CPU Sockets Explained</a></li>
+            <li><a href="guide-ram.html">RAM &amp; Memory</a></li>
+            <li><a href="guide-usb.html">USB Headers &amp; Ports</a></li>
+            <li><a href="guide-cooling.html">Cooling &amp; Thermals</a></li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <p>&copy; 2026 MotherboardCentral.com. All rights reserved.</p>
+        <p>Built for PC enthusiasts</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+  <!-- JavaScript -->
+  <script src="js/main.js"></script>
+  <!-- Vercel Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

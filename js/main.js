@@ -2347,7 +2347,83 @@ document.addEventListener('DOMContentLoaded', () => {
             { label: 'Rating', key: 'rating', compare: 'higher', format: v => `${v} / 5.0` }
         ];
 
+        const MIN_SLOTS = 2;
+        const MAX_SLOTS = 5;
+        const BOARDS_PARAM = 'boards';
+
         let selectedBoards = [null, null];
+        let showDifferencesOnly = false;
+
+        // ---- Shareable URL state (issue #38) ------------------------------
+        // The comparison is addressable via ?boards=<slug>,<slug>. Slugs are
+        // derived from the board name, never from its index in
+        // motherboardDatabase, so inserting a board cannot silently repoint
+        // links people have already shared. The slug also matches the board's
+        // review-page filename (review-<slug>.html).
+
+        const slugify = (name) => String(name)
+            .toLowerCase()
+            .replace(/\./g, '')       // "M.2" -> "m2"
+            .replace(/\+/g, ' plus ') // "M.2+" -> "m2 plus"
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+
+        const boardSlugs = motherboardDatabase.map(b => slugify(b.name));
+
+        const slugToIndex = Object.create(null);
+        boardSlugs.forEach((slug, i) => {
+            if (!(slug in slugToIndex)) slugToIndex[slug] = i;
+        });
+
+        // Returns the slot array described by the URL, or null to keep today's
+        // default. Anything unrecognised (unknown, misspelled, blank or
+        // repeated) becomes an empty slot rather than an error.
+        function selectionFromUrl() {
+            const raw = new URLSearchParams(window.location.search).get(BOARDS_PARAM);
+            if (!raw) return null;
+
+            const taken = [];
+            const slots = raw.split(',').slice(0, MAX_SLOTS).map(part => {
+                const slug = part.trim().toLowerCase();
+                if (!(slug in slugToIndex)) return null;
+                if (taken.indexOf(slug) !== -1) return null;
+                taken.push(slug);
+                return slugToIndex[slug];
+            });
+
+            while (slots.length < MIN_SLOTS) slots.push(null);
+            return slots;
+        }
+
+        // Trailing empty slots carry no information, so they are dropped;
+        // an empty slot between two boards is kept so columns stay put.
+        function boardsParamValue() {
+            const slugs = selectedBoards.map(idx => idx !== null ? boardSlugs[idx] : '');
+            while (slugs.length && slugs[slugs.length - 1] === '') slugs.pop();
+            return slugs.join(',');
+        }
+
+        // replaceState, not pushState: a comparison is one destination, and a
+        // history entry per dropdown change would trap the back button.
+        function syncUrl() {
+            if (typeof history === 'undefined' || !history.replaceState) return;
+
+            const others = new URLSearchParams(window.location.search);
+            others.delete(BOARDS_PARAM);
+
+            const parts = [];
+            others.forEach((value, key) => {
+                parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+            });
+
+            // Appended raw: slugs are [a-z0-9-] only, so the commas that make
+            // the link readable need no escaping.
+            const value = boardsParamValue();
+            if (value) parts.push(BOARDS_PARAM + '=' + value);
+
+            const query = parts.length ? '?' + parts.join('&') : '';
+            history.replaceState(null, '', window.location.pathname + query + (window.location.hash || ''));
+        }
 
         const extractNumeric = (value, type) => {
             if (type === 'higher' || type === 'lower') return parseFloat(value) || 0;
@@ -2399,6 +2475,50 @@ document.addEventListener('DOMContentLoaded', () => {
             return 'https://www.amazon.com/s?k=' + board.amazonSearch + '&tag=' + AFFILIATE_TAG;
         };
 
+        // A row collapses only when every *selected* board renders the same
+        // string. Empty slots are ignored, and one board can never "match".
+        const rowIsIdentical = (displays, boards) => {
+            const shown = displays.filter((d, i) => boards[i] !== null);
+            if (shown.length < 2) return false;
+            return shown.every(d => String(d) === String(shown[0]));
+        };
+
+        const selectedBoardCount = () => {
+            return selectedBoards.filter(idx => idx !== null).length;
+        };
+
+        // "Show differences only" control. Built here rather than in
+        // compare.html so the page needs no markup change, and the checked
+        // state lives in JS so it survives the re-render on every selection
+        // change.
+        const diffToggleWrap = document.createElement('div');
+        diffToggleWrap.className = 'compare-diff-toggle';
+        diffToggleWrap.id = 'compare-diff-toggle';
+
+        const diffToggleInput = document.createElement('input');
+        diffToggleInput.type = 'checkbox';
+        diffToggleInput.id = 'compare-diff-only';
+
+        const diffToggleLabel = document.createElement('label');
+        diffToggleLabel.setAttribute('for', 'compare-diff-only');
+        diffToggleLabel.textContent = 'Show differences only';
+
+        diffToggleWrap.appendChild(diffToggleInput);
+        diffToggleWrap.appendChild(diffToggleLabel);
+        compareTableWrap.parentNode.insertBefore(diffToggleWrap, compareTableWrap);
+
+        diffToggleInput.addEventListener('change', () => {
+            showDifferencesOnly = diffToggleInput.checked;
+            renderTable();
+        });
+
+        // Nothing can differ with fewer than two boards on screen.
+        function updateDiffToggle() {
+            const usable = selectedBoardCount() >= 2;
+            diffToggleWrap.hidden = !usable;
+            diffToggleInput.disabled = !usable;
+        }
+
         function renderSlots() {
             let html = '';
             selectedBoards.forEach((boardIdx, slotIdx) => {
@@ -2417,13 +2537,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     html += '<span class="slot-meta">' + board.socket + ' &middot; ' + board.chipset + '</span>';
                     html += '</div>';
                 }
-                if (selectedBoards.length > 2) {
+                if (selectedBoards.length > MIN_SLOTS) {
                     html += '<button class="compare-remove-btn" data-slot="' + slotIdx + '" title="Remove">&times;</button>';
                 }
                 html += '</div>';
             });
 
-            if (selectedBoards.length < 5) {
+            if (selectedBoards.length < MAX_SLOTS) {
                 html += '<button class="compare-add-btn" id="add-board-btn">';
                 html += '<div class="plus-icon">+</div>';
                 html += '<span>Add Board</span>';
@@ -2437,6 +2557,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     var slot = parseInt(e.target.dataset.slot);
                     var val = e.target.value;
                     selectedBoards[slot] = val !== '' ? parseInt(val) : null;
+                    syncUrl();
                     renderSlots();
                     renderTable();
                 });
@@ -2446,6 +2567,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.addEventListener('click', function(e) {
                     var slot = parseInt(e.target.dataset.slot);
                     selectedBoards.splice(slot, 1);
+                    syncUrl();
                     renderSlots();
                     renderTable();
                 });
@@ -2455,6 +2577,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (addBtn) {
                 addBtn.addEventListener('click', function() {
                     selectedBoards.push(null);
+                    syncUrl();
                     renderSlots();
                 });
             }
@@ -2466,9 +2589,33 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             var anySelected = boards.some(function(b) { return b !== null; });
 
+            updateDiffToggle();
+
             if (!anySelected) {
                 compareTableWrap.innerHTML = '<div class="compare-placeholder"><p>Select motherboards above to compare specifications side-by-side.</p></div>';
                 return;
+            }
+
+            var rows = specRows.map(function(spec) {
+                return {
+                    spec: spec,
+                    values: boards.map(function(b) { return b ? b[spec.key] : null; }),
+                    displays: boards.map(function(b) {
+                        if (!b) return '--';
+                        return spec.format ? spec.format(b[spec.key]) : b[spec.key];
+                    })
+                };
+            });
+
+            if (showDifferencesOnly) {
+                rows = rows.filter(function(row) {
+                    return !rowIsIdentical(row.displays, boards);
+                });
+
+                if (rows.length === 0) {
+                    compareTableWrap.innerHTML = '<div class="compare-placeholder"><p>These boards match on every specification we compare. Switch off &ldquo;Show differences only&rdquo; to see the full table.</p></div>';
+                    return;
+                }
             }
 
             var html = '<table><thead><tr><th>Specification</th>';
@@ -2477,15 +2624,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             html += '</tr></thead><tbody>';
 
-            specRows.forEach(function(spec) {
-                var values = boards.map(function(b) { return b ? b[spec.key] : null; });
-                var displays = boards.map(function(b) {
-                    if (!b) return '--';
-                    return spec.format ? spec.format(b[spec.key]) : b[spec.key];
-                });
-                var bestIndices = getBestIndices(values, spec.compare);
+            rows.forEach(function(row) {
+                var displays = row.displays;
+                var bestIndices = getBestIndices(row.values, row.spec.compare);
 
-                html += '<tr><td>' + spec.label + '</td>';
+                html += '<tr><td>' + row.spec.label + '</td>';
                 boards.forEach(function(board, i) {
                     var cls = bestIndices.indexOf(i) !== -1 ? ' class="highlight"' : '';
                     html += '<td' + cls + '>' + displays[i] + '</td>';
@@ -2506,6 +2649,11 @@ document.addEventListener('DOMContentLoaded', () => {
             html += '</tbody></table>';
             compareTableWrap.innerHTML = html;
         }
+
+        // Preselect from the URL before the first paint. No syncUrl() here:
+        // arriving at a bare compare.html must not rewrite the address bar.
+        const urlSelection = selectionFromUrl();
+        if (urlSelection) selectedBoards = urlSelection;
 
         renderSlots();
         renderTable();
@@ -2572,3 +2720,383 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+
+/* ============================================================
+   9. GLOSSARY TOOLTIPS
+   Marks jargon inside spec tables with a short definition shown
+   on hover, tap or keyboard focus. Progressive enhancement:
+   with JS off the tables render exactly as the HTML ships them.
+   ============================================================ */
+
+(function (global) {
+    'use strict';
+
+    var VRM_GUIDE = 'guide-cooling.html#vrm-heatsinks';
+    var VRM_GUIDE_LABEL = 'VRM cooling guide';
+    var RAM_GUIDE = 'guide-ram.html#ddr4-vs-ddr5';
+    var RAM_GUIDE_LABEL = 'DDR4 vs DDR5 guide';
+    var DDR_SLOTS = 'DDR4 and DDR5 slots are physically incompatible, so a board takes one or the other.';
+
+    var TERMS = [
+        {
+            id: 'vrm',
+            label: 'VRM',
+            pattern: /\bVRMs?\b/,
+            definition: "The voltage regulator module steps the power supply's 12V rail down to the much lower voltage a CPU runs on. It works harder and runs hotter the more power the CPU draws.",
+            guide: VRM_GUIDE,
+            guideLabel: VRM_GUIDE_LABEL
+        },
+        {
+            id: 'power-phases',
+            label: 'Power phases',
+            pattern: /\b\d{1,2}\+\d{1,2}(?:\+\d{1,2})?\b/,
+            definition: 'Each phase is one stage of the VRM circuit that shares the work of stepping 12V down for the processor. A count like 14+2+1 groups the phases by what they feed: the CPU cores first, then the SoC or integrated graphics, then smaller rails.',
+            guide: VRM_GUIDE,
+            guideLabel: VRM_GUIDE_LABEL
+        },
+        {
+            id: 'alc',
+            label: 'Realtek ALC codec',
+            pattern: /\bALC\d{3,4}\b/,
+            definition: 'The model number of the Realtek codec chip that turns digital audio into the analog signal headphones and speakers need. A higher number means a newer part, not automatically better sound.'
+        },
+        {
+            id: 'pcie',
+            label: 'PCIe',
+            pattern: /\bPCIe\b/,
+            definition: 'PCI Express is the high-speed bus that connects graphics cards and NVMe drives to the CPU and chipset. The number after the x is how many lanes a slot carries, and each generation doubles the bandwidth per lane.',
+            guide: 'guide-pcie.html#what-is-pcie',
+            guideLabel: 'PCIe guide'
+        },
+        {
+            id: 'm2',
+            label: 'M.2',
+            pattern: /\bM\.2\b/,
+            definition: 'M.2 is the slot standard for the small, stick-shaped SSDs that mount flat on the board. Most M.2 slots run NVMe drives over PCIe lanes.',
+            guide: 'guide-storage.html#m2-nvme',
+            guideLabel: 'M.2 and NVMe guide'
+        },
+        {
+            id: 'wifi',
+            label: 'WiFi',
+            pattern: /\bWiFi(?:\s?(?:6E|7|6|5))?\b/,
+            definition: 'The wireless networking standard the onboard adapter supports. WiFi 6E and WiFi 7 can also use the 6GHz band, which is usually less crowded than 2.4GHz and 5GHz.'
+        },
+        {
+            id: 'bluetooth',
+            label: 'Bluetooth',
+            pattern: /\bBT\s?\d(?:\.\d)?\b/,
+            definition: "BT is the Bluetooth version of the board's wireless module, used for controllers, headsets and other peripherals. Later versions add range and low-energy features."
+        },
+        {
+            id: 'lan',
+            label: 'Ethernet speed',
+            pattern: /\b(?:10G|5G|2\.5G|1G)\b/,
+            definition: "The top speed of the board's wired Ethernet port in gigabits per second. The router or switch at the other end has to support the same speed for it to help."
+        },
+        {
+            id: 'memory-profile',
+            label: 'EXPO / XMP',
+            pattern: /\b(?:EXPO|XMP)\b/,
+            definition: "Stored profiles that let a memory kit run at its rated speed instead of the slower default, switched on with one BIOS setting. EXPO is AMD's version and XMP is Intel's.",
+            guide: 'guide-ram.html#xmp-expo',
+            guideLabel: 'XMP and EXPO guide'
+        },
+        {
+            id: 'mini-itx',
+            label: 'Mini-ITX',
+            pattern: /\bMini-?ITX\b/,
+            definition: 'The smallest mainstream board size at 170 x 170mm, built for small-form-factor cases. Space is tight, so it trades expansion room for size.',
+            guide: 'guide-cases.html#mini-itx',
+            guideLabel: 'Mini-ITX guide'
+        },
+        {
+            id: 'micro-atx',
+            label: 'Micro-ATX',
+            pattern: /\bMicro-?ATX\b/,
+            definition: 'A 244 x 244mm board, as wide as ATX but shorter and with fewer expansion slots. It fits Micro-ATX cases and most full-size ATX ones.',
+            guide: 'guide-cases.html#micro-atx',
+            guideLabel: 'Micro-ATX guide'
+        },
+        {
+            id: 'atx',
+            label: 'ATX',
+            pattern: /\bATX\b/,
+            definition: 'The full-size desktop board standard at 305 x 244mm, with the most expansion slots and headers. The case has to be rated for ATX to take one.',
+            guide: 'guide-cases.html#atx',
+            guideLabel: 'ATX guide'
+        },
+        {
+            id: 'ddr5',
+            label: 'DDR5',
+            pattern: /\bDDR5\b/,
+            definition: 'The current desktop memory generation, running at higher speeds than DDR4 and managing its own power on the module. ' + DDR_SLOTS,
+            guide: RAM_GUIDE,
+            guideLabel: RAM_GUIDE_LABEL
+        },
+        {
+            id: 'ddr4',
+            label: 'DDR4',
+            pattern: /\bDDR4\b/,
+            definition: 'The previous desktop memory generation, slower than DDR5 but cheaper per gigabyte. ' + DDR_SLOTS,
+            guide: RAM_GUIDE,
+            guideLabel: RAM_GUIDE_LABEL
+        }
+    ];
+
+    var CELL_SELECTOR = '.spec-table td, .compare-table td, .compare-table-wrap td';
+
+    var tipCount = 0;
+
+    function escapeHTML(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    // All matches in `text`, longest first at any position, one per term.
+    function findMatches(text) {
+        var hits = [];
+
+        TERMS.forEach(function (term) {
+            var re = new RegExp(term.pattern.source, 'g');
+            var match;
+            while ((match = re.exec(text)) !== null) {
+                hits.push({
+                    start: match.index,
+                    end: match.index + match[0].length,
+                    text: match[0],
+                    term: term
+                });
+            }
+        });
+
+        hits.sort(function (a, b) {
+            return (a.start - b.start) || ((b.end - b.start) - (a.end - a.start));
+        });
+
+        var kept = [];
+        var marked = {};
+        var cursor = 0;
+
+        hits.forEach(function (hit) {
+            if (hit.start < cursor) return;                       // inside a longer match
+            if (marked[hit.term.id]) return;                      // one mark per term per cell
+            if (hit.start > 0 && text.charAt(hit.start - 1) === '-') return;  // E-ATX, not ATX
+            marked[hit.term.id] = true;
+            cursor = hit.end;
+            kept.push(hit);
+        });
+
+        return kept;
+    }
+
+    function markup(hit) {
+        var term = hit.term;
+        var tipId = 'glossary-tip-' + term.id + '-' + (++tipCount);
+        var body = escapeHTML(term.definition);
+
+        if (term.guide) {
+            body += ' <a class="glossary-tip-link" href="' + escapeHTML(term.guide) + '">' +
+                escapeHTML(term.guideLabel) + '</a>';
+        }
+
+        return '<span class="glossary">' +
+            '<button type="button" class="glossary-term" aria-describedby="' + tipId +
+            '" aria-expanded="false">' + escapeHTML(hit.text) + '</button>' +
+            '<span class="glossary-tip" role="tooltip" id="' + tipId + '">' +
+            '<span class="glossary-tip-label">' + escapeHTML(term.label) + '</span> ' +
+            body + '</span></span>';
+    }
+
+    // Returns annotated HTML, or null when the text holds no known term.
+    function annotate(text) {
+        var hits = findMatches(text);
+        if (!hits.length) return null;
+
+        var html = '';
+        var pos = 0;
+
+        hits.forEach(function (hit) {
+            html += escapeHTML(text.slice(pos, hit.start)) + markup(hit);
+            pos = hit.end;
+        });
+
+        return html + escapeHTML(text.slice(pos));
+    }
+
+    function enhance(root) {
+        var scope = root || global.document;
+        var cells = scope.querySelectorAll(CELL_SELECTOR);
+        var changed = 0;
+
+        Array.prototype.forEach.call(cells, function (cell) {
+            if (cell.dataset.glossary === 'done') return;
+            if (cell.children.length) return;                     // leave markup alone
+
+            var html = annotate(cell.textContent);
+            if (!html) return;
+
+            cell.innerHTML = html;
+            cell.dataset.glossary = 'done';
+            changed++;
+        });
+
+        return changed;
+    }
+
+    var EDGE = 8;   // keep this far clear of the viewport edge
+    var GAP = 6;    // gap between the term and its tooltip
+
+    // Viewport coordinates for a tooltip anchored under `anchorRect`.
+    function tipPosition(anchorRect, tipSize, viewport) {
+        var left = anchorRect.left + (anchorRect.width / 2) - (tipSize.width / 2);
+        var maxLeft = viewport.width - tipSize.width - EDGE;
+        left = Math.max(EDGE, Math.min(left, Math.max(EDGE, maxLeft)));
+
+        var top = anchorRect.bottom + GAP;
+        if (top + tipSize.height > viewport.height - EDGE) {
+            top = anchorRect.top - tipSize.height - GAP;   // flip above
+        }
+        top = Math.max(EDGE, top);
+
+        return { left: left, top: top };
+    }
+
+    function place(wrap) {
+        var doc = global.document;
+        var term = wrap.querySelector('.glossary-term');
+        var tip = wrap.querySelector('.glossary-tip');
+        if (!term || !tip) return;
+
+        var pos = tipPosition(
+            term.getBoundingClientRect(),
+            { width: tip.offsetWidth, height: tip.offsetHeight },
+            {
+                width: global.innerWidth || doc.documentElement.clientWidth,
+                height: global.innerHeight || doc.documentElement.clientHeight
+            }
+        );
+
+        tip.style.left = pos.left + 'px';
+        tip.style.top = pos.top + 'px';
+    }
+
+    function open(wrap) {
+        wrap.classList.add('is-open');
+        var term = wrap.querySelector('.glossary-term');
+        if (term) term.setAttribute('aria-expanded', 'true');
+        place(wrap);
+    }
+
+    function closeAll(doc, except) {
+        Array.prototype.forEach.call(doc.querySelectorAll('.glossary.is-open'), function (el) {
+            if (el === except) return;
+            el.classList.remove('is-open');
+            var term = el.querySelector('.glossary-term');
+            if (term) term.setAttribute('aria-expanded', 'false');
+        });
+    }
+
+    function wrapOf(node) {
+        return node && node.closest ? node.closest('.glossary') : null;
+    }
+
+    function init() {
+        var doc = global.document;
+        if (!doc) return;
+
+        enhance(doc);
+
+        // compare.html rebuilds its table after load, so re-run on DOM changes.
+        if (typeof global.MutationObserver === 'function' && doc.body) {
+            var pending = false;
+            var observer = new global.MutationObserver(function () {
+                if (pending) return;
+                pending = true;
+                global.setTimeout(function () {
+                    pending = false;
+                    enhance(doc);
+                }, 0);
+            });
+            observer.observe(doc.body, { childList: true, subtree: true });
+        }
+
+        // Hover, mouse only - touch is handled by the click below.
+        doc.addEventListener('pointerover', function (event) {
+            if (event.pointerType && event.pointerType !== 'mouse') return;
+            var wrap = wrapOf(event.target);
+            if (!wrap) {
+                closeAll(doc, wrapOf(doc.activeElement));   // leave a focused one open
+                return;
+            }
+            closeAll(doc, wrap);
+            open(wrap);
+        });
+
+        doc.addEventListener('pointerout', function (event) {
+            if (event.pointerType && event.pointerType !== 'mouse') return;
+            var wrap = wrapOf(event.target);
+            if (!wrap || wrapOf(event.relatedTarget) === wrap) return;
+            if (wrap.contains(doc.activeElement)) return;   // keyboard focus is inside
+            closeAll(doc, wrapOf(doc.activeElement));
+        });
+
+        // Tap to open, tap away to close.
+        doc.addEventListener('click', function (event) {
+            var term = event.target.closest ? event.target.closest('.glossary-term') : null;
+
+            if (!term) {
+                if (!wrapOf(event.target)) closeAll(doc);
+                return;
+            }
+
+            var wrap = term.parentNode;
+            if (event.detail === 0) return;   // keyboard activation, focus already opened it
+
+            var wasOpen = wrap.classList.contains('is-open');
+            closeAll(doc);
+            if (!wasOpen) open(wrap);
+        });
+
+        // Keyboard: focus opens, Esc closes.
+        doc.addEventListener('focusin', function (event) {
+            var wrap = wrapOf(event.target);
+            closeAll(doc, wrap);
+            if (wrap) open(wrap);
+        });
+
+        doc.addEventListener('focusout', function (event) {
+            var wrap = wrapOf(event.target);
+            if (!wrap || wrapOf(event.relatedTarget) === wrap) return;
+            closeAll(doc);
+        });
+
+        doc.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' || event.key === 'Esc') closeAll(doc);
+        });
+
+        // Keep an open tooltip pinned to its term.
+        var reposition = function () {
+            Array.prototype.forEach.call(doc.querySelectorAll('.glossary.is-open'), place);
+        };
+        global.addEventListener('scroll', reposition, true);
+        global.addEventListener('resize', reposition);
+    }
+
+    global.MBCGlossary = {
+        TERMS: TERMS,
+        CELL_SELECTOR: CELL_SELECTOR,
+        annotate: annotate,
+        enhance: enhance,
+        tipPosition: tipPosition,
+        init: init
+    };
+
+    if (global.document && global.document.addEventListener) {
+        global.document.addEventListener('DOMContentLoaded', init);
+    }
+})(typeof window !== 'undefined' ? window : this);
