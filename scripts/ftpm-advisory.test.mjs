@@ -16,11 +16,14 @@ const VENDOR_LINKS = {
   msi: 'https://csr.msi.com/global/product-security-advisories',
 };
 
-/* Same selector the issue specifies: every AM4/AM5 review page by filename. */
+/* Select by socket, not filename: #20's filename filter missed three AM4 pages
+   whose names carry no chipset token. Mirrors the issue #83 grep:
+   grep -lE '<td>Socket</td>[[:space:]]*<td>AM[45]' review-*.html */
+const SOCKET_ROW = /<td>Socket<\/td>\s*<td>AM[45]/;
 const PAGES = fs
   .readdirSync(ROOT)
   .filter((f) => /^review-.*\.html$/.test(f))
-  .filter((f) => /b550|x570|a620|b650|x670|x870/i.test(f))
+  .filter((f) => SOCKET_ROW.test(fs.readFileSync(path.join(ROOT, f), 'utf8')))
   .sort();
 
 const brandOf = (file) => file.replace(/^review-/, '').split('-')[0];
@@ -35,8 +38,8 @@ function advisoryBlock(html, file) {
   return html.slice(start, end);
 }
 
-test('the AMD advisory scope covers at least the 35 pages issue #20 names', () => {
-  assert.ok(PAGES.length >= 35, `expected >= 35 AMD review pages, found ${PAGES.length}`);
+test('the AMD advisory scope covers all 38 AM4/AM5 review pages', () => {
+  assert.ok(PAGES.length >= 38, `expected >= 38 AMD review pages, found ${PAGES.length}`);
 });
 
 test('every AMD review page carries exactly one advisory block', () => {
