@@ -231,7 +231,11 @@ test('reviews.html reports the new board count', () => {
   assert.ok(shown, 'no "Showing N motherboards" counter');
   const cards = page.match(/class="card review-card/g) || [];
   assert.equal(Number(shown[1]), cards.length, 'counter disagrees with the number of cards');
-  assert.equal(cards.length, 73, 'expected the new B760M card on top of the existing 72');
+  /* The absolute total is deliberately not asserted here — same reason as the
+   * note in gigabyte-b450m-d3hp.test.mjs: it belongs to whichever board batch
+   * was added last (currently the four B850 boards, #35), not to this suite.
+   * What this suite owns is the invariant above plus its own card, asserted
+   * in the preceding test. */
 });
 
 /* No published price, so the card must fall outside every price bucket

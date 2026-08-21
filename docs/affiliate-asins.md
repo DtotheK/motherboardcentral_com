@@ -65,6 +65,10 @@ Renewed, not a bundle).
 | MSI MPG Z890 Carbon WiFi | B0DJPTRFN6 | `review-msi-mpg-z890-carbon-wifi.html` | 2026-08-21 (#45) |
 | MSI MPG Z890 Edge TI WiFi | B0DK4C8GYK | `review-msi-mpg-z890-edge-ti-wifi.html` | 2026-08-21 (#45) |
 | MSI PRO Z890-A WiFi | B0DH6W5M6R | `review-msi-pro-z890-a-wifi.html` | 2026-08-21 (#45) |
+| ASUS TUF Gaming B850-Plus WiFi | B0DPLPLR88 | `review-asus-tuf-gaming-b850-plus-wifi.html` | 2026-08-21 (#35) |
+| ASUS ROG Strix B850-E Gaming WiFi | B0DPLQXPG2 | `review-asus-rog-strix-b850-e-gaming-wifi.html` | 2026-08-21 (#35) |
+| ASUS TUF Gaming B850M-Plus WiFi | B0DPLQQ7VJ | `review-asus-tuf-gaming-b850m-plus-wifi.html` | 2026-08-21 (#35) |
+| ASUS ROG Strix B850-I Gaming WiFi | B0DHCQ1MPZ | `review-asus-rog-strix-b850-i-gaming-wifi.html` | 2026-08-21 (#35) |
 
 ## Unconverted
 
@@ -78,6 +82,14 @@ URL:
 `B0BGPF7K2P` is not recorded above, because the board was not converted.
 
 None from batch #52 — all nine boards converted.
+
+None from #35 (B850) — all four boards converted. Two model-name hazards were
+live during that batch and both were checked before the ASIN was accepted:
+`B0FTNXMLRQ` is the TUF Gaming B850M-PLUS **WIFI7** board (Wi-Fi 7), a
+different product from the **WIFI** board at `B0DPLQQ7VJ` (Wi-Fi 6E) that we
+cover; and the TUF Gaming B850-Plus WiFi has a second live listing,
+`B0DP5DQPRC`, which is not recorded here because the board is mapped to
+`B0DPLPLR88`.
 
 From batch #53 (A620), three boards remain UNVERIFIED and keep their search
 URLs:
