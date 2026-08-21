@@ -43,3 +43,6 @@ introduce frameworks or build tooling unless an issue explicitly says so.
 - Never delete pages (redirect or flag instead)
 - Never claim testing we didn't do
 - Never invent product names, prices, or release dates
+- Never delete pages (redirect or flag instead)
+- Never claim testing we didn't do
+- Never invent product names, prices, or release dates
