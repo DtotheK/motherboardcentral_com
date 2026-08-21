@@ -30,6 +30,11 @@ Renewed, not a bundle).
 | MSI MAG B650 Tomahawk WiFi | B0BHCCNSRH | `review-msi-mag-b650-tomahawk-wifi.html` | 2026-08-19 (#52) |
 | MSI MAG B650M Mortar WiFi | B0BHC39YG7 | `review-msi-mag-b650m-mortar-wifi.html` | 2026-08-19 (#52) |
 | MSI PRO B650-P WiFi | B0BHBT5BD3 | `review-msi-pro-b650-p-wifi.html` | 2026-08-19 (#52) |
+| ASUS Prime X870-P WiFi | B0DDZY6HTW | `review-asus-prime-x870-p-wifi.html` | 2026-08-20 (#50) |
+| ASUS TUF Gaming X870-Plus WiFi | B0DGB8Q19Y | `review-asus-tuf-gaming-x870-plus-wifi.html` | 2026-08-20 (#50) |
+| GIGABYTE X870 AORUS Elite WiFi7 | B0DGVC3DDW | `review-gigabyte-x870-aorus-elite-wifi7.html` | 2026-08-20 (#50) |
+| MSI MAG X870 Tomahawk WiFi | B0DG3HK897 | `review-msi-mag-x870-tomahawk-wifi.html` | 2026-08-20 (#50) |
+| MSI PRO X870-P WiFi | B0DG3SSGLF | `review-msi-pro-x870-p-wifi.html` | 2026-08-20 (#50) |
 | ASRock B550M Steel Legend | B089W2Q2QC | `review-asrock-b550m-steel-legend.html` | 2026-08-20 (#54) |
 | ASUS ROG Strix B550-F Gaming WiFi II | B09GP7P1XS | `review-asus-rog-strix-b550-f-gaming-wifi-ii.html` | 2026-08-20 (#54) |
 | GIGABYTE B550 AORUS Elite V2 | B08JHDL4WP | `review-gigabyte-b550-aorus-elite-v2.html` | 2026-08-20 (#54) |
@@ -68,6 +73,8 @@ URL:
 `B0BGPF7K2P` is not recorded above, because the board was not converted.
 
 None from batch #52 — all nine boards converted.
+
+None from batch #50 — all five boards converted.
 
 Batch #54 (AM4 legacy) left two boards on search URLs, both PENDING-HUMAN:
 
