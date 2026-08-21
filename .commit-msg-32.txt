@@ -1,0 +1,41 @@
+Add AM5 slow-boot guide: memory training and Memory Context Restore
+
+We carry a large AM5 catalogue, and the most common complaint from people
+who have just built on those boards is a 40-60 second black screen with the
+DRAM light on once EXPO is enabled. Readers reliably misdiagnose it as
+faulty memory. This adds guide-am5-slow-boot.html explaining what memory
+training is, why EXPO makes it rerun, and what Memory Context Restore
+trades away.
+
+We measured nothing for this page, so the sourcing discipline is the point.
+Both XDA reports were fetched and verified this run:
+
+- 25 January 2026 -- Ryzen 5 7600X, 32 GB DDR5-6000: ~10s with EXPO off,
+  ~53s with EXPO on, roughly halved with Memory Context Restore. Also
+  carries the reader account of a board that would not POST after MCR held
+  on to bad cached training data.
+- 16 February 2026 -- readers at 45-50s reaching 10-20s with MCR plus Power
+  Down Enable, with random BSODs and failure to POST as the stated risk and
+  clearing CMOS as the recovery path.
+
+Two places where the page is deliberately narrower than the issue outline:
+
+- The issue's ASUS ROG forum source still returns HTTP 403 to automated
+  fetching, confirmed again this run. Nothing on this page is attributed to
+  it and it is not listed as a source, so the Q-Code 15 detail is dropped as
+  the issue permits. The POST-code section stays generic and sends readers
+  to their board manual and to guide-no-post.html.
+- The two XDA articles describe Power Down Enable differently (powering down
+  idle RAM vs lowering idle RAM voltage), so the page states both and
+  declines to pick a mechanism.
+
+Tests encode the acceptance criteria as guards: nav and footer byte-
+identical to the existing guide template, every timing figure -- in digits
+or spelled out -- confined to an attributed sentence, no hands-on claims,
+no AGESA version strings, MCR never presented without its instability risk
+and clear-CMOS recovery path, and nothing attributed to the source we could
+not read.
+
+Closes #32
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>

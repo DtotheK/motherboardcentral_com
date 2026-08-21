@@ -1,0 +1,9 @@
+Affiliate batch 9/12: convert B650 / B650E search URLs to direct product links
+
+All 9 boards in the batch verified against all four tests and converted.
+href values only — no markup, nav, footer, layout, text, rel or spec-table
+changes. Baseline shrinks 181 -> 159 (the 22 converted (page, URL) pairs).
+
+Closes #52
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>

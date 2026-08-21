@@ -1,0 +1,21 @@
+Add inline glossary tooltips for spec-table jargon
+
+Marks known jargon in .spec-table / .compare-table cells at runtime and
+attaches a short definition shown on hover, tap or keyboard focus, with a
+link to the matching guide where one exists. Fourteen terms: power phases,
+VRM, ALC codecs, PCIe, M.2, WiFi, Bluetooth, LAN speed, EXPO/XMP, the three
+form factors and DDR4/DDR5.
+
+Definitions are conceptual only and their figures come from our own guides,
+so no tooltip can contradict a spec on the page. Spec tables clip their
+overflow, so the tooltip is fixed to the viewport and placed from JS,
+clamped to the edges and flipped above the term when there is no room
+below. A MutationObserver re-runs the pass so compare.html's rendered table
+is covered as well as the static review tables.
+
+Progressive enhancement: with JS off the tables render exactly as before.
+No HTML page is touched.
+
+Closes #64
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>

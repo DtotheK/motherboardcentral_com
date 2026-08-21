@@ -22,7 +22,7 @@ agent PRs. You never create new content.
       <x> --add-label agent-ok). State the issue number in your comment.
 3. If a healed PR had auto-merge enabled it will now merge on green; if
    not, run gh pr merge <n> --auto --squash UNLESS it carries the
-   needs-human label — needs-human PRs get healed but never merged by you.
+   needs-review label — needs-review PRs get healed but never merged by you.
 4. End by reporting: healed PRs, requeued PRs (with issue numbers),
    and anything skipped and why.
 Never force-push. Never touch main directly. One pass per run.
