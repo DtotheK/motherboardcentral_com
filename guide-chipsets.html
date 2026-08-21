@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MN6VW6GV50"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MN6VW6GV50');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="What you actually give up moving from X870 to B850 or Z890 to B860: overclocking, PCIe generation, M.2 and USB4 compared across every current AMD and Intel desktop chipset.">
+  <title>Motherboard Chipsets Compared: X870 vs B850, Z890 vs B860 - MotherboardCentral</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="canonical" href="https://motherboardcentral.com/guide-chipsets.html">
+  <meta property="og:title" content="Motherboard Chipsets Compared: X870 vs B850, Z890 vs B860">
+  <meta property="og:description" content="Overclocking, PCIe generation, M.2 and USB4 across every current AMD and Intel desktop chipset, with the board-dependent values marked as board-dependent.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://motherboardcentral.com/guide-chipsets.html">
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION BAR
+       ============================================ -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="6" y1="2" x2="6" y2="22"/><line x1="18" y1="2" x2="18" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+        </div>
+        Motherboard<span>Central</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="guides.html" class="active">Guides</a>
+        <a href="compare.html">Compare</a>
+      </div>
+      <div class="nav-search">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" class="search-input" placeholder="Search motherboards...">
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       PAGE HERO
+       ============================================ -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">&gt;</span>
+        <a href="guides.html">Guides</a>
+        <span class="separator">&gt;</span>
+        <span class="current">Chipsets Compared</span>
+      </nav>
+      <h1>Motherboard <span class="gradient-text">Chipsets Compared</span></h1>
+      <p>What you actually give up moving from X870 to B850, or from Z890 to B860</p>
+    </div>
+  </section>
+
+  <!-- ============================================
+       GUIDE LAYOUT
+       ============================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="guide-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="guide-sidebar">
+          <nav class="guide-toc">
+            <h4>Table of Contents</h4>
+            <ul>
+              <li><a href="#how-to-read" class="active">How to Read These Tables</a></li>
+              <li><a href="#amd-current">AMD, Current (AM5)</a></li>
+              <li><a href="#intel-current">Intel, Current (LGA 1851)</a></li>
+              <li><a href="#previous-gen">Previous-Generation Platforms</a></li>
+              <li><a href="#which-one">Which One Do You Actually Need?</a></li>
+              <li><a href="#what-the-chipset-does-not-decide">What the Chipset Does Not Decide</a></li>
+              <li><a href="#related-guides">Related Guides</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- CONTENT -->
+        <div class="guide-content">
+
+          <div class="info-box">
+            <h4>How This Page Is Sourced</h4>
+            <p>Everything here is based on published specifications. We have not tested a chipset, and there is no performance figure anywhere on this page. AMD's and Intel's own chipset pages did not load for us while this page was being written &mdash; AMD's timed out repeatedly and Intel's returned an access error &mdash; so every chipset-level value below comes from two independent published sources that agree with each other. Where they disagreed, the cell says so instead of picking a winner. The sources are listed at the foot of the page.</p>
+          </div>
+
+          <!-- How to read -->
+          <h2 id="how-to-read">How to Read These Tables</h2>
+
+          <p>The single most common mistake in a chipset comparison is treating everything in the table as a promise. It is not. Some of these values are things the chipset itself guarantees, so every board built on it must have them. Others are things the chipset merely permits, which means one board has it and the board next to it on the shelf does not.</p>
+
+          <p>Mixing the two is how a reader ends up buying a board expecting a feature it was never going to have. So we have split each platform into two tables. The first holds only guarantees. The second holds everything that depends on the individual board, and no cell in it is allowed to state a flat value.</p>
+
+          <p>Five forms of answer appear in the board-dependent tables, and nothing else:</p>
+
+          <ul>
+            <li><strong>Required</strong> &mdash; the chipset mandates it, so every board on that chipset provides it.</li>
+            <li><strong>Minimum</strong> &mdash; the chipset sets a floor and individual boards may exceed it.</li>
+            <li><strong>Optional</strong> &mdash; the chipset allows the feature but does not require it, so only some boards have it.</li>
+            <li><strong>Not supported</strong> &mdash; the chipset does not provide it at all.</li>
+            <li><strong>Board-dependent</strong> &mdash; our sources disagreed, so we could not verify a chipset-level figure. Check the specific board.</li>
+          </ul>
+
+          <p>One more thing worth saying before the tables. The graphics slot and the fastest M.2 slot are wired to the processor, not to the chipset. What the chipset decides is the minimum a board maker is allowed to ship, which is why these rows belong in the board-dependent table even when the answer is "required".</p>
+
+          <!-- AMD current -->
+          <h2 id="amd-current">AMD, Current Generation (AM5)</h2>
+
+          <p>Nine chipsets are in play on AM5, which is more than the naming suggests, because the 600 and 800 series overlap rather than replace one another. The short version: the X870 pair are the only ones that mandate USB4, the E suffix is what buys you a PCIe 5.0 graphics slot on the 600 series, and B840 is an A-series chipset wearing a B-series badge.</p>
+
+          <p>First, what AMD guarantees on every board built on each chipset:</p>
+
+          <div class="compare-container">
+            <table class="spec-table" id="amd-guaranteed">
+              <thead>
+                <tr>
+                  <th>Chipset</th>
+                  <th>Socket</th>
+                  <th>CPU generations</th>
+                  <th>CPU overclocking</th>
+                  <th>Memory overclocking</th>
+                  <th>Memory type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>A620</td>
+                  <td>AM5</td>
+                  <td>Ryzen 7000 and 9000 series</td>
+                  <td>No</td>
+                  <td>Yes, EXPO</td>
+                  <td>DDR5</td>
+                </tr>
+                <tr>
+                  <td>B840</td>
+                  <td>AM5</td>
+                  <td>Ryzen 7000 and 9000 series</td>
+                  <td>No</td>
+                  <td>Yes, EXPO</td>
+                  <td>DDR5</td>
+                </tr>
+                <tr>
+                  <td>B650</td>
+                  <td>AM5</td>
+                  <td>Ryzen 7000 and 9000 series</td>
+                  <td>Yes</td>
+                  <td>Yes, EXPO</td>
+                  <td>DDR5</td>
+                </tr>
+                <tr>
+                  <td>B850</td>
+                  <td>AM5</td>
+                  <td>Ryzen 7000 and 9000 series</td>
+                  <td>Yes</td>
+                  <td>Yes, EXPO</td>
+                  <td>DDR5</td>
+                </tr>
+                <tr>
+                  <td>B650E</td>
+                  <td>AM5</td>
+                  <td>Ryzen 7000 and 9000 series</td>
+                  <td>Yes</td>
+                  <td>Yes, EXPO</td>
+                  <td>DDR5</td>
+                </tr>
+                <tr>
+                  <td>X670</td>
+                  <td>AM5</td>
+                  <td>Ryzen 7000 and 9000 series</td>
+                  <td>Yes</td>
+                  <td>Yes, EXPO</td>
+                  <td>DDR5</td>
+                </tr>
+                <tr>
+                  <td>X670E</td>
+                  <td>AM5</td>
+                  <td>Ryzen 7000 and 9000 series</td>
+                  <td>Yes</td>
+                  <td>Yes, EXPO</td>
+                  <td>DDR5</td>
+                </tr>
+                <tr>
+                  <td>X870</td>
+                  <td>AM5</td>
+                  <td>Ryzen 7000 and 9000 series</td>
+                  <td>Yes</td>
+                  <td>Yes, EXPO</td>
+                  <td>DDR5</td>
+                </tr>
+                <tr>
+                  <td>X870E</td>
+                  <td>AM5</td>
+                  <td>Ryzen 7000 and 9000 series</td>
+                  <td>Yes</td>
+                  <td>Yes, EXPO</td>
+                  <td>DDR5</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>Reaching a given processor generation also needs a BIOS new enough to know about it. A board that has sat in a warehouse since launch may need updating before a newer chip will POST, which our <a href="guide-bios-update.html">BIOS update guide</a> covers.</p>
+
+          <p><strong>How to read this table.</strong> A bare value is something the chipset itself guarantees, and none appear below. "Required" means every board on that chipset must provide it. "Minimum" means the chipset sets a floor and individual boards may exceed it. "Optional" means the chipset allows the feature but does not require it. "Board-dependent" means our sources disagreed and we could not verify a chipset-level figure &mdash; check the specific board. Everything here is based on published specifications; we have not tested these chipsets.</p>
+
+          <div class="compare-container">
+            <table class="spec-table" id="amd-board-dependent">
+              <thead>
+                <tr>
+                  <th>Chipset</th>
+                  <th>Graphics slot</th>
+                  <th>Primary M.2</th>
+                  <th>USB4</th>
+                  <th>Boards we've reviewed</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>A620</td>
+                  <td>PCIe 4.0 x16 required</td>
+                  <td>PCIe 4.0 x4 required</td>
+                  <td>Board-dependent &mdash; sources disagree, check the board</td>
+                  <td><a href="reviews.html?chipset=A620">4 boards</a></td>
+                </tr>
+                <tr>
+                  <td>B840</td>
+                  <td>Board-dependent &mdash; sources disagree, check the board</td>
+                  <td>Board-dependent &mdash; sources disagree, check the board</td>
+                  <td>Board-dependent &mdash; sources disagree, check the board</td>
+                  <td>No reviews yet</td>
+                </tr>
+                <tr>
+                  <td>B650</td>
+                  <td>PCIe 4.0 x16 minimum &mdash; some boards run 5.0, check the board</td>
+                  <td>PCIe 4.0 x4 minimum &mdash; some boards run 5.0, check the board</td>
+                  <td>Optional &mdash; only on boards that implement it</td>
+                  <td><a href="reviews.html?chipset=B650">8 boards</a></td>
+                </tr>
+                <tr>
+                  <td>B850</td>
+                  <td>PCIe 4.0 x16 minimum &mdash; some boards run 5.0, check the board</td>
+                  <td>PCIe 5.0 x4 required</td>
+                  <td>Optional &mdash; only on boards that implement it</td>
+                  <td>No reviews yet</td>
+                </tr>
+                <tr>
+                  <td>B650E</td>
+                  <td>PCIe 5.0 x16 required</td>
+                  <td>PCIe 5.0 x4 required</td>
+                  <td>Optional &mdash; only on boards that implement it</td>
+                  <td><a href="reviews.html?chipset=B650E">2 boards</a></td>
+                </tr>
+                <tr>
+                  <td>X670</td>
+                  <td>PCIe 4.0 x16 required</td>
+                  <td>PCIe 4.0 x4 minimum &mdash; some boards run 5.0, check the board</td>
+                  <td>Optional &mdash; only on boards that implement it</td>
+                  <td>No reviews yet</td>
+                </tr>
+                <tr>
+                  <td>X670E</td>
+                  <td>PCIe 5.0 x16 required</td>
+                  <td>PCIe 5.0 x4 required</td>
+                  <td>Optional &mdash; only on boards that implement it</td>
+                  <td><a href="reviews.html?chipset=X670E">6 boards</a></td>
+                </tr>
+                <tr>
+                  <td>X870</td>
+                  <td>PCIe 5.0 x16 required</td>
+                  <td>PCIe 5.0 x4 required</td>
+                  <td>Required &mdash; every board on this chipset provides it</td>
+                  <td><a href="reviews.html?chipset=X870">5 boards</a></td>
+                </tr>
+                <tr>
+                  <td>X870E</td>
+                  <td>PCIe 5.0 x16 required</td>
+                  <td>PCIe 5.0 x4 required</td>
+                  <td>Required &mdash; every board on this chipset provides it</td>
+                  <td><a href="reviews.html?chipset=X870E">5 boards</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>Three of those rows deserve a sentence of their own.</p>
+
+          <p><strong>B850's graphics slot is the one to watch.</strong> AMD's floor for B850 is PCIe 4.0, but board makers are free to wire the slot for 5.0 and many do. That is why the cell says minimum rather than a flat number: two boards on the same chipset can genuinely differ here, and only the board's own specification will tell you which you are looking at. Its primary M.2 is the other way round &mdash; PCIe 5.0 there is required, not optional.</p>
+
+          <p><strong>B840 is where our sources stopped agreeing.</strong> Published sources split on whether its graphics slot and M.2 run at PCIe 3.0 or 4.0, and on whether USB4 is permitted at all. Rather than pick the more flattering figure we have left those cells empty of numbers. If you are considering a B840 board, its own specification page is the only thing that settles it.</p>
+
+          <p><strong>USB4 is the clearest 800-series dividing line.</strong> X870 and X870E are the only AM5 chipsets that require it, which is most of what the 800-series upgrade actually buys over an equivalent 600-series board. On everything else it is a feature a board maker may add, and most do not.</p>
+
+          <!-- Intel current -->
+          <h2 id="intel-current">Intel, Current Generation (LGA 1851)</h2>
+
+          <p>Intel's split is simpler and more familiar: one overclocking chipset, one mainstream chipset, one budget chipset. The interesting detail is at the bottom rather than the top &mdash; H810 gives up more than its price suggests.</p>
+
+          <div class="compare-container">
+            <table class="spec-table" id="intel-guaranteed">
+              <thead>
+                <tr>
+                  <th>Chipset</th>
+                  <th>Socket</th>
+                  <th>CPU generations</th>
+                  <th>CPU overclocking</th>
+                  <th>Memory overclocking</th>
+                  <th>Memory type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>H810</td>
+                  <td>LGA 1851</td>
+                  <td>Intel Core Ultra Series 2</td>
+                  <td>No</td>
+                  <td>No, XMP included</td>
+                  <td>DDR5</td>
+                </tr>
+                <tr>
+                  <td>B860</td>
+                  <td>LGA 1851</td>
+                  <td>Intel Core Ultra Series 2</td>
+                  <td>No</td>
+                  <td>Yes, XMP</td>
+                  <td>DDR5</td>
+                </tr>
+                <tr>
+                  <td>Z890</td>
+                  <td>LGA 1851</td>
+                  <td>Intel Core Ultra Series 2</td>
+                  <td>Yes</td>
+                  <td>Yes, XMP</td>
+                  <td>DDR5</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>That H810 row is the one people get caught by. It is the only chipset on this page that supports no memory overclocking at all, XMP profiles included, so a fast DDR5 kit in an H810 board runs at its default speed and the money spent on the kit does nothing. If you have bought rated memory, H810 is the wrong board.</p>
+
+          <p><strong>How to read this table.</strong> A bare value is something the chipset itself guarantees, and none appear below. "Required" means every board on that chipset must provide it. "Minimum" means the chipset sets a floor and individual boards may exceed it. "Optional" means the chipset allows the feature but does not require it. "Board-dependent" means our sources disagreed and we could not verify a chipset-level figure &mdash; check the specific board. Everything here is based on published specifications; we have not tested these chipsets.</p>
+
+          <div class="compare-container">
+            <table class="spec-table" id="intel-board-dependent">
+              <thead>
+                <tr>
+                  <th>Chipset</th>
+                  <th>Graphics slot</th>
+                  <th>Primary M.2</th>
+                  <th>USB4</th>
+                  <th>Boards we've reviewed</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>H810</td>
+                  <td>PCIe 5.0 x16 required</td>
+                  <td>Not supported from the processor &mdash; M.2 slots run from the chipset</td>
+                  <td>Optional &mdash; only on boards that implement it</td>
+                  <td>No reviews yet</td>
+                </tr>
+                <tr>
+                  <td>B860</td>
+                  <td>PCIe 5.0 x16 required</td>
+                  <td>PCIe 5.0 x4 required</td>
+                  <td>Optional &mdash; only on boards that implement it</td>
+                  <td><a href="reviews.html?chipset=B860">4 boards</a></td>
+                </tr>
+                <tr>
+                  <td>Z890</td>
+                  <td>PCIe 5.0 x16 required</td>
+                  <td>PCIe 5.0 x4 required</td>
+                  <td>Optional &mdash; only on boards that implement it</td>
+                  <td><a href="reviews.html?chipset=Z890">10 boards</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>Two notes on that table. The graphics slot is identical across all three, because those lanes come from the processor rather than the chipset &mdash; what you lose stepping down is the ability to split them, not their speed. And Intel's approach to USB4 is to build Thunderbolt 4 support into the platform rather than to mandate USB4 ports, so whether a given board has the sockets on the back is a decision its maker made. Our sources also disagreed on how to count that, which is the second reason none of those cells states a number.</p>
+
+          <!-- Previous generation -->
+          <h2 id="previous-gen">Previous-Generation Platforms</h2>
+
+          <p>These are separate tables rather than extra rows above, because an AM4 or LGA 1700 board is not cross-shoppable with a current one &mdash; it takes different processors and, on AM4, different memory. They are here because we still review boards on them and people still buy them.</p>
+
+          <p>The PCIe story on both is short. On AM4, X570 and B550 give the graphics card and one M.2 slot PCIe 4.0 while B450 tops out at 3.0; none of the three does PCIe 5.0 and none does USB4. On LGA 1700 the graphics slot is PCIe 5.0 across the range, the fast M.2 varies by board, and USB4 is again something a board maker adds rather than something the chipset brings.</p>
+
+          <h3>AMD, AM4</h3>
+
+          <div class="compare-container">
+            <table class="spec-table" id="amd-previous">
+              <thead>
+                <tr>
+                  <th>Chipset</th>
+                  <th>Socket</th>
+                  <th>CPU generations</th>
+                  <th>CPU overclocking</th>
+                  <th>Memory type</th>
+                  <th>Boards we've reviewed</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>B450</td>
+                  <td>AM4</td>
+                  <td>Varies by board and BIOS</td>
+                  <td>Yes</td>
+                  <td>DDR4</td>
+                  <td><a href="reviews.html?chipset=B450">2 boards</a></td>
+                </tr>
+                <tr>
+                  <td>B550</td>
+                  <td>AM4</td>
+                  <td>Varies by board and BIOS</td>
+                  <td>Yes</td>
+                  <td>DDR4</td>
+                  <td><a href="reviews.html?chipset=B550">4 boards</a></td>
+                </tr>
+                <tr>
+                  <td>X570</td>
+                  <td>AM4</td>
+                  <td>Varies by board and BIOS</td>
+                  <td>Yes</td>
+                  <td>DDR4</td>
+                  <td><a href="reviews.html?chipset=X570">2 boards</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>The CPU-generation column is deliberately vague on AM4, and that is not an oversight. AM4 ran for years and support for the later Ryzen parts arrived on older chipsets through BIOS updates rather than all at once, so what a given board accepts depends on the board and on which firmware it is running. Two boards on the same chipset can differ. The board maker's own CPU support list is the authority, and it is the first thing to check before buying an AM4 board for a specific processor.</p>
+
+          <h3>Intel, LGA 1700</h3>
+
+          <div class="compare-container">
+            <table class="spec-table" id="intel-previous">
+              <thead>
+                <tr>
+                  <th>Chipset</th>
+                  <th>Socket</th>
+                  <th>CPU generations</th>
+                  <th>CPU overclocking</th>
+                  <th>Memory type</th>
+                  <th>Boards we've reviewed</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>H610</td>
+                  <td>LGA 1700</td>
+                  <td>Intel Core 12th, 13th and 14th Gen</td>
+                  <td>No</td>
+                  <td>DDR4 or DDR5, set by the board</td>
+                  <td>No reviews yet</td>
+                </tr>
+                <tr>
+                  <td>B760</td>
+                  <td>LGA 1700</td>
+                  <td>Intel Core 12th, 13th and 14th Gen</td>
+                  <td>No</td>
+                  <td>DDR4 or DDR5, set by the board</td>
+                  <td><a href="reviews.html?chipset=B760">10 boards</a></td>
+                </tr>
+                <tr>
+                  <td>H770</td>
+                  <td>LGA 1700</td>
+                  <td>Intel Core 12th, 13th and 14th Gen</td>
+                  <td>No</td>
+                  <td>DDR4 or DDR5, set by the board</td>
+                  <td>No reviews yet</td>
+                </tr>
+                <tr>
+                  <td>Z790</td>
+                  <td>LGA 1700</td>
+                  <td>Intel Core 12th, 13th and 14th Gen</td>
+                  <td>Yes</td>
+                  <td>DDR4 or DDR5, set by the board</td>
+                  <td><a href="reviews.html?chipset=Z790">11 boards</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>LGA 1700 is the one current-ish platform where memory type is a board decision rather than a platform one. A board takes DDR4 or DDR5, never both, and the two are not interchangeable in the slot. Our <a href="guide-ram.html">RAM and memory guide</a> covers what that choice costs you.</p>
+
+          <!-- Which one -->
+          <h2 id="which-one">Which One Do You Actually Need?</h2>
+
+          <p><strong>If you are not overclocking the processor, the mainstream chipset is the answer.</strong> B850 on AMD, B860 on Intel. Both run rated memory profiles, both give you a current graphics slot and a fast M.2, and the money saved against the flagship buys a better board in every respect that is not a chipset feature. This is the right answer for most builds and it is not a compromise.</p>
+
+          <p><strong>Step up to X870, X870E or Z890 for three specific reasons.</strong> Processor overclocking, which only Z890 offers on Intel and which AMD gives you on everything except A620 and B840. Guaranteed USB4, which on AM5 means the X870 pair and nothing else. And more chipset lanes, which matters if you intend to fill several M.2 slots and add expansion cards at the same time. If none of those three describes you, the extra spend is buying board quality, not chipset features.</p>
+
+          <p><strong>Go below the mainstream tier only with your eyes open.</strong> A620 and B840 both drop processor overclocking, which is fine if your chip is locked anyway, and both are a reasonable home for a budget build. H810 is a harder recommendation, because it drops memory overclocking too &mdash; including XMP &mdash; and that is a cost you pay every day rather than a feature you never use.</p>
+
+          <p><strong>On the previous-generation platforms, buy the board rather than the chipset.</strong> If you already own an AM4 or LGA 1700 processor, the chipset question is mostly settled for you by what your chip needs and what you can find. Check the board maker's CPU support list first, especially on AM4, and treat the chipset as a filter rather than a decision.</p>
+
+          <!-- What the chipset does not decide -->
+          <h2 id="what-the-chipset-does-not-decide">What the Chipset Does Not Decide</h2>
+
+          <p>A comparison table like the one above is useful for narrowing the field and useless for picking the board. Within a single socket and chipset, everything below is a decision the board maker made, and none of it appears in a chipset specification:</p>
+
+          <ul>
+            <li><strong>Power delivery.</strong> Two B850 boards can have very different VRM designs, and that is what decides how a high-core-count processor behaves under sustained load.</li>
+            <li><strong>How many M.2 slots there are, and where their lanes come from.</strong> The chipset sets a floor for the fastest one. Everything after that is the board's own layout, and slots often share lanes with SATA ports or the second graphics slot.</li>
+            <li><strong>Rear I/O.</strong> The number and type of USB ports on the back panel, the video outputs, and whether there is a BIOS flashback button are all board decisions.</li>
+            <li><strong>Networking.</strong> The Ethernet controller and the wireless card are chosen by the board maker, not supplied by the chipset.</li>
+            <li><strong>Firmware quality.</strong> How usable the BIOS is, how quickly it is updated, and how well it handles memory training vary enormously between makers on identical silicon.</li>
+          </ul>
+
+          <p>So the chipset narrows the field to a shortlist, and the board page decides between them. That is what our <a href="reviews.html">board reviews</a> and <a href="compare.html">comparison tool</a> are for. For the socket-level view of how these platforms relate to one another, see our <a href="guide-sockets.html">CPU sockets guide</a>; for what the PCIe generations in the tables above actually mean in practice, see our <a href="guide-pcie.html">PCIe speeds and slots guide</a>.</p>
+
+          <!-- Related Guides -->
+          <h2 id="related-guides" style="margin-top: 4rem;">Related Guides</h2>
+
+          <div class="grid grid-2" style="margin-top: 1.5rem;">
+            <a href="guide-sockets.html" class="card guide-card">
+              <div class="card-img">
+                <img src="images/guides/guide-sockets.png" alt="CPU Sockets Explained" loading="lazy">
+              </div>
+              <div class="card-body">
+                <span class="card-category">PLATFORM</span>
+                <h3>CPU Sockets Explained</h3>
+                <p>Where AM5 sits against AM4 and Intel's current sockets, and what each platform commits you to.</p>
+                <span class="read-time">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  7 min read
+                </span>
+              </div>
+            </a>
+            <a href="guide-pcie.html" class="card guide-card">
+              <div class="card-img">
+                <img src="images/guides/guide-pcie.png" alt="PCIe Speeds &amp; Slots" loading="lazy">
+              </div>
+              <div class="card-body">
+                <span class="card-category">CONNECTIVITY</span>
+                <h3>PCIe Speeds &amp; Slots</h3>
+                <p>What the generations and lane counts mean, and when a slower slot actually costs you performance.</p>
+                <span class="read-time">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  8 min read
+                </span>
+              </div>
+            </a>
+          </div>
+
+          <div class="info-box" style="margin-top: 2rem;">
+            <h4>Sources</h4>
+            <p>All sources below were accessed on 21 August 2026. We could not reach AMD's or Intel's own chipset specification pages from our tooling on that date &mdash; AMD's timed out and Intel's returned an access error &mdash; so no cell on this page is sourced from either vendor directly.</p>
+            <ul>
+              <li><a href="https://gamersnexus.net/cpus/amd-strikes-back-zen-5-cpu-architecture-changes-chipset-differences-x870e-vs-x870-b850-b840" target="_blank" rel="noopener noreferrer">GamersNexus &mdash; Zen 5 architecture and chipset differences (X870E, X870, B850, B840)</a></li>
+              <li><a href="https://gamersnexus.net/guides/3582-amd-chipset-differences-b550-vs-x570-b450-x470-zen-3" target="_blank" rel="noopener noreferrer">GamersNexus &mdash; AMD chipset differences: B550 vs X570, B450, X470</a></li>
+              <li><a href="https://www.hwcooling.net/en/x870-x870e-b850-and-b840-boards-for-amd-differences-and-release-dates/" target="_blank" rel="noopener noreferrer">HWCooling &mdash; X870, X870E, B850 and B840: differences and release dates</a></li>
+              <li><a href="https://www.hwcooling.net/en/a620-chipset-specs-in-detail-a-pcie-gen4-uplink-surprise/" target="_blank" rel="noopener noreferrer">HWCooling &mdash; A620 chipset specs in detail</a></li>
+              <li><a href="https://www.hwcooling.net/en/z890-b860-h810-chipsets-for-intel-arrow-lake-specs-and-differences/" target="_blank" rel="noopener noreferrer">HWCooling &mdash; Z890, B860 and H810 chipsets for Intel Arrow Lake</a></li>
+              <li><a href="https://www.pugetsystems.com/labs/articles/z890-vs-b860-vs-h810/" target="_blank" rel="noopener noreferrer">Puget Systems &mdash; Z890 vs B860 vs H810</a></li>
+              <li><a href="https://www.pugetsystems.com/labs/articles/amd-x870e-vs-x870-vs-x670e-vs-x670-vs-b650e-vs-b650/" target="_blank" rel="noopener noreferrer">Puget Systems &mdash; X870E vs X870 vs X670E vs X670 vs B650E vs B650</a></li>
+              <li><a href="https://www.pugetsystems.com/labs/articles/amd-x570-vs-b550-vs-a520-chipset-comparison-1969/" target="_blank" rel="noopener noreferrer">Puget Systems &mdash; X570 vs B550 vs A520 chipset comparison</a></li>
+              <li><a href="https://www.pcworld.com/article/2203134/when-does-a-b760-and-when-does-a-z790-mainboard-make-more-sense.html" target="_blank" rel="noopener noreferrer">PCWorld &mdash; B760 vs Z790: which type of Intel motherboard should you buy?</a></li>
+              <li><a href="https://pchardware.org/chipsets/intel-z890/" target="_blank" rel="noopener noreferrer">pchardware.org &mdash; Intel chipset specification pages (Z890, B860, H810, Z790, H770, B760, H610)</a></li>
+              <li><a href="https://graphicscardhub.com/amd-am5-chipsets-comparison/" target="_blank" rel="noopener noreferrer">GraphicsCardHub &mdash; AMD AM5 chipsets comparison</a></li>
+              <li><a href="https://www.itechguides.com/amd-am5-chipsets-explained-x870e-x870-b850-b840-all-the-others/" target="_blank" rel="noopener noreferrer">iTechGuides &mdash; AMD AM5 chipsets explained</a></li>
+              <li><a href="https://mightygadget.com/amd-x570-vs-b550-vs-b450-chipset-comparison/" target="_blank" rel="noopener noreferrer">Mighty Gadget &mdash; X570 vs B550 vs B450 chipset comparison</a></li>
+            </ul>
+            <p>Board-level values in the "Boards we've reviewed" column come from our own review pages. Where a chipset-level source disagreed with another, the cell says "Board-dependent" rather than choosing between them.</p>
+          </div>
+
+        </div>
+        <!-- END .guide-content -->
+
+      </div>
+      <!-- END .guide-layout -->
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand Column -->
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <div class="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="2"/>
+                <circle cx="8" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="8" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <line x1="8" y1="9.5" x2="8" y2="14.5"/>
+                <line x1="16" y1="9.5" x2="16" y2="14.5"/>
+                <line x1="9.5" y1="8" x2="14.5" y2="8"/>
+                <line x1="9.5" y1="16" x2="14.5" y2="16"/>
+              </svg>
+            </div>
+            Motherboard<span>Central</span>
+          </a>
+          <p>Your go-to resource for motherboard reviews, buying guides, and hardware education. Helping PC builders make informed decisions since 2024.</p>
+        </div>
+
+        <!-- Reviews Column -->
+        <div class="footer-col">
+          <h4>Reviews</h4>
+          <ul>
+            <li><a href="reviews.html">All Reviews</a></li>
+            <li><a href="reviews.html?price=0-150">Budget Boards</a></li>
+            <li><a href="reviews.html?socket=LGA+1700">Intel Boards</a></li>
+            <li><a href="reviews.html?socket=AM5">AMD Boards</a></li>
+          </ul>
+        </div>
+
+        <!-- Guides Column -->
+        <div class="footer-col">
+          <h4>Guides</h4>
+          <ul>
+            <li><a href="guide-pcie.html">PCIe Speeds &amp; Slots</a></li>
+            <li><a href="guide-sockets.html">CPU Sockets Explained</a></li>
+            <li><a href="guide-ram.html">RAM &amp; Memory</a></li>
+            <li><a href="guide-usb.html">USB Headers &amp; Ports</a></li>
+            <li><a href="guide-cooling.html">Cooling &amp; Thermals</a></li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <p>&copy; 2026 MotherboardCentral.com. All rights reserved.</p>
+        <p>Built for PC enthusiasts</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+  <!-- JavaScript -->
+  <script src="js/main.js"></script>
+  <!-- Vercel Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
