@@ -60,7 +60,7 @@ introduce frameworks or build tooling unless an issue explicitly says so.
 
 
 
-\## Tripwire — label needs-human instead of auto-merging when:
+\## Tripwire — label needs-review instead of auto-merging when:
 
 \- A change touches more than 15 files
 
