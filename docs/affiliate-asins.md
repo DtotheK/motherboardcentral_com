@@ -46,6 +46,11 @@ Renewed, not a bundle).
 | MSI MPG Z790 Carbon WiFi | B0BHCJ1QK8 | `review-msi-mpg-z790-carbon-wifi.html` | 2026-08-20 (#47) |
 | MSI MPG Z790 Edge WiFi | B0BL92SPJQ | `review-msi-mpg-z790-edge-wifi.html` | 2026-08-20 (#47) |
 | MSI MPG Z790I Edge WiFi | B0BHCJ6KQ2 | `review-msi-mpg-z790i-edge-wifi.html` | 2026-08-20 (#47) |
+| ASUS Prime Z890-P WiFi | B0DGWTQWL3 | `review-asus-prime-z890-p-wifi.html` | 2026-08-21 (#45) |
+| ASUS TUF Gaming Z890-Plus WiFi | B0DGWNVCHL | `review-asus-tuf-gaming-z890-plus-wifi.html` | 2026-08-21 (#45) |
+| MSI MPG Z890 Carbon WiFi | B0DJPTRFN6 | `review-msi-mpg-z890-carbon-wifi.html` | 2026-08-21 (#45) |
+| MSI MPG Z890 Edge TI WiFi | B0DK4C8GYK | `review-msi-mpg-z890-edge-ti-wifi.html` | 2026-08-21 (#45) |
+| MSI PRO Z890-A WiFi | B0DH6W5M6R | `review-msi-pro-z890-a-wifi.html` | 2026-08-21 (#45) |
 
 ## Unconverted
 
@@ -91,3 +96,28 @@ Batch #47 (Z790) converted nine of ten boards. The tenth keeps its search URL:
 | ASUS ROG Strix Z790-E Gaming WiFi II | `review-asus-rog-strix-z790-e-gaming-wifi-ii.html` | PENDING-HUMAN | Candidate `B0CJMQ2S5M` is the right board and agrees on socket, chipset, memory generation and form factor, but both the listing and ASUS's own spec page report Wi-Fi 7 while our table says `WiFi 6E`. ASUS also lists five M.2 slots against our four. WiFi variant is part of the comparison set, so the ASIN was not used. |
 
 `B0CJMQ2S5M` is not recorded above, because the board was not converted.
+
+Batch #45 (Z890 mainstream) converted all five boards. Each one passed the
+full comparison set used by every previous batch — exact model name, live
+`/dp/` fetch, socket, chipset, memory generation, form factor and WiFi
+variant. No board was left on a search URL, so there are no UNVERIFIED or
+PENDING-HUMAN entries for this batch.
+
+Every board in the batch did, however, turn up a spec-table discrepancy
+outside that comparison set. None of them casts doubt on board identity, and
+no spec table was edited (issue #45 forbids it), but all five are recorded
+here so a human can settle them:
+
+| Board | Spec | Our table | Source consulted | Source says |
+|---|---|---|---|---|
+| ASUS Prime Z890-P WiFi | M.2 slots | `3x M.2` | ASUS techspec page | 4 x M.2 |
+| ASUS TUF Gaming Z890-Plus WiFi | M.2 slots | `3x M.2` | ASUS techspec page | 4 x M.2 |
+| MSI MPG Z890 Carbon WiFi | LAN | `2.5G` | secondary (MSI 403s) | dual LAN: 5G Killer E5000B + 2.5G Intel I226V |
+| MSI MPG Z890 Edge TI WiFi | M.2 slots / LAN | `4x M.2` / `2.5G` | secondary (MSI 403s) | 5x M.2 / 5G Killer E5000B |
+| MSI PRO Z890-A WiFi | M.2 slots / LAN / SATA | `3x M.2` / `2.5G` / `6` | secondary (MSI 403s) | 4x M.2 / 5G Realtek / 4x SATA |
+
+The two ASUS rows are confirmed against ASUS's own techspec pages, so our
+tables are wrong there. The three MSI rows are **not** settled: MSI's spec
+pages return HTTP 403, so those figures come from retailer and reviewer
+sources rather than the manufacturer, and need a human check against MSI's
+own page before any table is edited.
