@@ -17,6 +17,10 @@ Renewed, not a bundle).
 | ASUS ROG Strix X670E-E Gaming WiFi | B0BDTHQTJV | `review-asus-rog-strix-x670e-e-gaming-wifi.html` | pilot (#3) |
 | GIGABYTE B650 AORUS ELITE AX | B0BH7GTY9C | `review-gigabyte-b650-aorus-elite-ax.html` | pilot (#3) |
 | MSI MAG B760 Tomahawk WiFi | B0BRQV1P6M | `review-msi-mag-b760-tomahawk-wifi.html` | pilot (#3) |
+| ASUS ROG Crosshair X670E Hero | B0BDTN8SNJ | `review-asus-rog-crosshair-x670e-hero.html` | 2026-08-19 (#51) |
+| GIGABYTE X670E AORUS Master | B0BFNVND8B | `review-gigabyte-x670e-aorus-master.html` | 2026-08-19 (#51) |
+| MSI MEG X670E ACE | B0B6Q4X5NF | `review-msi-meg-x670e-ace.html` | 2026-08-19 (#51) |
+| MSI MPG X670E Carbon WiFi | B0B6Q23SPC | `review-msi-mpg-x670e-carbon-wifi.html` | 2026-08-19 (#51) |
 | ASUS ROG Strix B650E-E Gaming WiFi | B0BHMTC99Q | `review-asus-rog-strix-b650e-e-gaming-wifi.html` | 2026-08-19 (#52) |
 | ASUS ROG Strix B650E-I Gaming WiFi | B0BP9LJBP8 | `review-asus-rog-strix-b650e-i-gaming-wifi.html` | 2026-08-19 (#52) |
 | ASUS Prime B650M-A AX II | B0BSP52VJC | `review-asus-prime-b650m-a-ax-ii.html` | 2026-08-19 (#52) |
@@ -53,6 +57,15 @@ Renewed, not a bundle).
 | MSI PRO Z890-A WiFi | B0DH6W5M6R | `review-msi-pro-z890-a-wifi.html` | 2026-08-21 (#45) |
 
 ## Unconverted
+
+Batch #51 (X670E) converted four of five boards. The fifth keeps its search
+URL:
+
+| Board | Review page | Status | Notes |
+|---|---|---|---|
+| ASRock X670E Taichi | `review-asrock-x670e-taichi.html` | UNVERIFIED (#51) | Only genuine listing found is B0BGPF7K2P; every fetch of it returned HTTP 500, so test (b) could not pass. Links left as search URLs. Every other candidate was rejected by the reject list (Carrara SKU, "Fit for" clones, RAM accessories). |
+
+`B0BGPF7K2P` is not recorded above, because the board was not converted.
 
 None from batch #52 — all nine boards converted.
 
