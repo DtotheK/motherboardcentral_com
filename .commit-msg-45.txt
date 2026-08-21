@@ -1,0 +1,28 @@
+Affiliate batch 2/12: Z890 mainstream (5 of 5 boards converted)
+
+Convert this batch's Amazon search URLs (/s?k=) to direct product links
+(/dp/<ASIN>) for all five Z890 mainstream boards.
+
+Board -> ASIN:
+  ASUS Prime Z890-P WiFi          B0DGWTQWL3
+  ASUS TUF Gaming Z890-Plus WiFi  B0DGWNVCHL
+  MSI MPG Z890 Carbon WiFi        B0DJPTRFN6
+  MSI MPG Z890 Edge TI WiFi       B0DK4C8GYK
+  MSI PRO Z890-A WiFi             B0DH6W5M6R
+
+Each ASIN passed the four verification tests plus form factor and WiFi
+variant: exact model-name match, a live /dp/ fetch, agreement on socket,
+chipset and memory generation, and a new, bare listing.
+
+23 href values across 8 content files. Tag count across the corpus is
+unchanged at 341. Baseline shrinks 98 -> 85, all 13 removed entries
+affiliate-search-url.
+
+Every board also turned up a spec-table discrepancy outside the comparison
+set (M.2 count, LAN speed, SATA count). No spec table was edited -- issue #45
+forbids it -- and all five are recorded in docs/affiliate-asins.md for a human
+to settle. The two ASUS M.2 discrepancies are confirmed against ASUS's own
+techspec pages; the three MSI ones rest on secondary sources because MSI's
+spec pages return HTTP 403.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>

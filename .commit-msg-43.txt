@@ -1,0 +1,18 @@
+Fix homepage star ratings that disagreed with their review pages
+
+The MSI MAG B760 Tomahawk WiFi (4.6) and ASUS ROG Strix X670E-E Gaming
+WiFi (4.7) cards on index.html drew four filled stars plus an outline,
+while the same boards' review pages drew five. Tapping either card
+showed the reader a different star count one click later.
+
+The sitewide rule -- verified across all 70 review-*.html pages -- is
+>= 4.6 draws five filled stars, <= 4.5 draws four filled plus one
+outline. index.html was using a different cutoff. Both cards now follow
+the sitewide rule. The numeric ratings are untouched.
+
+Adds scripts/homepage-star-ratings.test.mjs, which checks every homepage
+review card against both the sitewide rule and its own review page.
+
+Closes #43
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>

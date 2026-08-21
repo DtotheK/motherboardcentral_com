@@ -1,0 +1,44 @@
+Add review pages for the GIGABYTE B450M D3HP and B450M D3HP WIFI6E
+
+GIGABYTE announced both boards on 14 August 2026. The site had broad AM4
+coverage but no B450 board records at all, while the Ryzen 3000/5000
+buying guides we already rank for point straight at this segment.
+
+Two new pages, built from GIGABYTE's own published specification text and
+corroborated against Igor's Lab, ThinkComputers, TweakTown and VideoCardz:
+
+- AM4 / B450 / Micro-ATX, Ryzen 5000 / 4000 / 3000 support
+- 4 x DDR4 DIMM, up to 128GB; digital 4+2-phase VRM
+- 2 x M.2 - one CPU-connected at PCIe 3.0 x4, one chipset-connected at
+  PCIe 2.0 x2; 4 x SATA 6 Gb/s
+- Rear I/O: 4 x USB 3.2 Gen 1, 3 x USB 2.0, 1 x DisplayPort, 2 x HDMI
+- Realtek Gigabit Ethernet on both models; the WIFI6E adds a Realtek
+  RTL8852CE for Wi-Fi 6E (2.4/5/6 GHz) and Bluetooth 5.4 alongside the
+  wired port rather than in place of it
+
+The second M.2 slot is the trap in this spec sheet, so it is called out
+in the table, in its own "Storage: the M.2 catch" section, and in the
+cons list on both pages. It is never described as a second full-speed
+NVMe slot.
+
+What the pages deliberately do NOT carry, because GIGABYTE has not
+published it: a price, an on-sale date, an audio codec, a memory speed
+list, or an Amazon link (no ASIN confirmed - CLAUDE.md rule 3). Each page
+has a "What GIGABYTE has not published" section saying so. There is no
+star rating either: we have not tested these boards, and every analytical
+claim is framed as based on published specifications.
+
+scripts/gigabyte-b450m-d3hp.test.mjs encodes the issue's acceptance
+criteria as assertions - the verified spec values, cross-page agreement
+on every shared field, the PCIe 2.0 x2 slot in both table and prose, and
+the whole "do not publish" list - so a later edit cannot quietly
+reintroduce a fabricated spec.
+
+reviews.html gets both cards, a B450 chipset filter option and a corrected
+board count. The cards carry data-price="-1" so a board with no published
+price cannot fall into the "Under $150" filter bucket. No nav, footer or
+layout markup changed.
+
+Closes #26
+
+Co-authored-by: Claude Opus 5 (1M context) <noreply@anthropic.com>

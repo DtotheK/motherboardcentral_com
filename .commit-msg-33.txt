@@ -1,0 +1,46 @@
+Add TPM 2.0 and Secure Boot guide (Windows 11 and anti-cheat)
+
+Two large demand streams land on the same two BIOS settings -- "this PC
+can't run Windows 11" and a competitive title that refuses to launch --
+and we had nothing on either. This adds guide-tpm-secure-boot.html.
+
+The risk on a page like this is menu paths. A BIOS path is a spec: send a
+reader to a menu that does not exist on their board and they conclude the
+hardware is broken. Only two of the sources the issue names were readable
+this run:
+
+- Microsoft's Windows 11 requirements page (documentation date 14 July
+  2026) still lists "UEFI, Secure Boot capable" and "Trusted Platform
+  Module (TPM) version 2.0". The page states that in Microsoft's wording
+  and explicitly refuses the recurring "Microsoft dropped the TPM
+  requirement" claim.
+- Microsoft's MBR2GPT documentation, for the disk prerequisites, the
+  /validate-then-/convert order, the tool's own "These changes cannot be
+  undone!" warning, the BitLocker-suspension requirement, and the
+  switch-the-firmware-to-UEFI step people miss.
+- ASUS FAQ 1055973 (last updated 15 October 2025) for the anti-cheat
+  rationale, the GPT/UEFI/TPM prerequisites, the ordering warning about
+  not enabling Secure Boot on an MBR disk, and the only two BIOS menu
+  paths on the page -- fTPM and Secure Boot, both ASUS.
+
+The ASUS FAQ 1046215 URL in the issue returns 404 in every regional form
+tried, and the MSI, GIGABYTE, ASRock and Intel support pages return 403 or
+render empty to automated fetching. So no menu path is printed for those
+brands. The Intel section says so in as many words and names the setting
+instead, which is the fallback the issue's acceptance criteria allow.
+
+The fTPM caveat section cites CVE-2026-6726 and CVE-2026-6727 from NVD
+rather than a vendor summary, and prints no CVSS score: AMD's CVSS 4.0
+figures and NVD's CISA-ADP CVSS 3.1 figures disagree, and a guide does not
+need the number. No AGESA version string, same rule as #20 and #32.
+
+Tests encode the acceptance criteria as guards: nav and footer byte-
+identical to guide-storage.html, every BIOS menu path accompanied by a
+link to the source it came from, no menu path beside a vendor whose page
+we could not read, the MBR2GPT irreversibility warning ahead of the
+convert command, /validate before /convert, and the BitLocker recovery-key
+warning above the first enable step.
+
+Closes #33
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>

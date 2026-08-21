@@ -1,0 +1,47 @@
+Add BIOS update guide (including flashing with no CPU installed)
+
+New page guide-bios-update.html, built from the existing guide-*.html
+template with the nav and footer copied unchanged. Covers when an update
+is actually warranted, finding the board model and current version, the
+in-BIOS flash tools, the no-CPU USB flash button, USB stick preparation
+and file naming, why an interrupted flash is unrecoverable, what a flash
+resets, recovery options, and what to do on boards without a flash button.
+
+Sourcing is the point of this page, because a wrong filename can leave a
+reader with a dead board. Per-vendor rules are only stated where they
+could be read at the vendor's own source:
+
+- ASUS: USB BIOS FlashBack FAQ (asus.com/support/faq/1038568) for the
+  FAT16/32 MBR single-sector requirement, the .CAP file and BIOSRenamer,
+  the three-second button press, the three-blink start signal, the
+  five-seconds-then-solid failure signal, the eight-minute ceiling and
+  the verbatim do-not-interrupt list. A second ASUS FAQ (1053582) is
+  cited for models that take .AS rather than .CAP.
+- MSI: MSI's own BIOS user guide PDF for the MSI.ROM rename, the root
+  directory placement, both power connectors with no CPU or memory
+  installed, the rear Flash BIOS Port, and the LED-off completion
+  signal, plus the M-FLASH sequence.
+- GIGABYTE and ASRock: no filename is printed. GIGABYTE's site blocks
+  automated retrieval and its naming rule has changed across board
+  generations; ASRock publishes its flash procedure as image-only PDFs.
+  Both sections say so and send the reader to their board's own support
+  page, as the issue requires.
+
+The BitLocker warning is sourced to Microsoft's own recovery
+documentation, which lists a BIOS or UEFI firmware upgrade as a trigger
+and recommends suspending protection for a planned update.
+
+No AGESA or BIOS version string is named anywhere, per the conflict
+flagged in #20. No hands-on claim is made; the page states plainly that
+it is based on published manufacturer documentation.
+
+scripts/guide-bios-update.test.mjs encodes the issue's acceptance
+criteria as 29 tests, including the sourcing rules: a rename rule may
+only appear in a section that links the vendor page it came from, and
+the unconfirmed vendors must point at the reader's own board page. That
+test caught the MSI rename rule being stated without its citation.
+
+Other files touched are the two the issue allows: one card in
+guides.html and one <loc> in sitemap.xml.
+
+Closes #31

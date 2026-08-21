@@ -32,7 +32,7 @@ Task:
 
 &#x20;  baseline in the same branch. If you can't get green: comment findings,
 
-&#x20;  label needs-human, stop. No PR.
+&#x20;  label needs-review, stop. No PR.
 
 5\. gh pr create — body includes "Closes #<n>" and every changed page as a
 
@@ -40,7 +40,7 @@ Task:
 
 6\. If the change touches >15 files or any shared template/layout: add label
 
-&#x20;  needs-human and do NOT enable auto-merge. Otherwise: gh pr merge --auto --squash
+&#x20;  needs-review and do NOT enable auto-merge. Otherwise: gh pr merge --auto --squash
 
 One issue per run. Never push main directly.
 

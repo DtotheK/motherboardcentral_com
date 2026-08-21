@@ -1,0 +1,23 @@
+Add 'best motherboard for Ryzen 7 9800X3D' page
+
+Closes the biggest per-CPU content gap: no page on the site mentioned any
+current-generation X3D part. Built from the existing per-CPU template, with
+five picks drawn only from boards we already have review pages for -- one
+budget, one mid-range, one overall, one high-end and one Mini-ITX.
+
+Two deliberate departures from the issue text, both flagged in the PR:
+
+- The issue describes the 9800X3D as "a 65 W-class TDP part with locked-down
+  X3D behaviour". Published specifications say 120W default TDP and unlocked
+  for overclocking. The page states the published figures.
+- The sibling pages carry a "Budget Guide" table of invented price bands. The
+  issue's own acceptance criteria forbid fabricated prices, so that section is
+  a price-free "Chipset Guide" here.
+
+Every Amazon link is copied byte-for-byte from the linked board's own review
+page; no affiliate tag was added, edited or removed.
+
+The new test file re-derives every hardware number in a pick box from the spec
+table of the review page that pick links to, so the two can never drift.
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>

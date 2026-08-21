@@ -1,0 +1,53 @@
+Add board record + review: GIGABYTE B760M GAMING WIFI6E DDR4 GEN5
+
+A refreshed LGA 1700 Micro-ATX board that pairs DDR4 memory with a
+PCIe 5.0 x16 graphics slot. We already cover two DDR4 B760 boards and
+rank for best-motherboard-for-i5-12400f, and none of those boards
+offer Gen5, so this fills a real gap for budget LGA 1700 builders who
+do not want to buy DDR5.
+
+Specifications published, each one attributed to this exact SKU:
+
+- LGA 1700 / Intel B760 / Micro-ATX, Intel 12th / 13th / 14th Gen Core
+- 2 x DDR4 DIMM, up to 64GB, dual channel, XMP
+- 1 x PCIe 5.0 x16 (reinforced, quick release), 1 x PCIe 3.0 x1
+- 2 x M.2, both PCIe 4.0 x4; 4 x SATA 6 Gb/s
+- 2.5 Gigabit Ethernet plus Wi-Fi 6E and Bluetooth, not one instead
+  of the other
+- Hybrid 6+2+1 phase VRM; 8-channel HD audio
+
+The two traps the issue calls out each get their own section rather
+than a single line in the table. "What the Gen5 slot covers" says the
+PCIe 5.0 link is the graphics slot and that both M.2 sockets are
+PCIe 4.0 x4; "Memory: two slots, not four" states the 64GB ceiling and
+warns against carrying the 4-slot layout across from our other B760M
+pages. Both points are repeated in the cons list.
+
+GIGABYTE sells at least four boards whose names differ from this one
+by a single word, so the page carries a "What we have not verified"
+section listing what was left blank rather than filled in from a
+sibling model's spec sheet: the rear panel layout and video outputs,
+the audio codec, the Bluetooth version, the memory speed list and a
+price. There is no release date (GIGABYTE has published no launch
+press release), no price, no star rating and no Amazon link, since no
+ASIN was confirmed for this exact SKU (CLAUDE.md rule 3).
+
+scripts/gigabyte-b760m-gaming-wifi6e-ddr4-gen5.test.mjs encodes the
+issue's acceptance criteria as assertions, including regex guards that
+fail if a later edit ever implies Gen5 storage, reintroduces the
+128GB / 4-DIMM layout, adopts the GAMING X phase count, or links the
+GAMING X specification page.
+
+reviews.html gets one card, filterable as LGA 1700 / B760 / Micro-ATX,
+carrying data-price="-1" so a board with no published price cannot
+fall into the "Under $150" bucket. No nav, footer or layout markup
+changed.
+
+The B450 suite's site-wide card-count assertion is replaced with a
+check that its own two cards are still present. That total belongs to
+whichever board page was added last, so as written it would have
+failed on every future board addition.
+
+Closes #27
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
