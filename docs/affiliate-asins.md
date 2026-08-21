@@ -46,6 +46,10 @@ Renewed, not a bundle).
 | MSI MPG Z790 Carbon WiFi | B0BHCJ1QK8 | `review-msi-mpg-z790-carbon-wifi.html` | 2026-08-20 (#47) |
 | MSI MPG Z790 Edge WiFi | B0BL92SPJQ | `review-msi-mpg-z790-edge-wifi.html` | 2026-08-20 (#47) |
 | MSI MPG Z790I Edge WiFi | B0BHCJ6KQ2 | `review-msi-mpg-z790i-edge-wifi.html` | 2026-08-20 (#47) |
+| ASUS ROG Maximus Z890 Hero | B0DGWWRTPV | `review-asus-rog-maximus-z890-hero.html` | 2026-08-21 (#44) |
+| ASUS ROG Strix Z890-E Gaming WiFi | B0DJDFY3FL | `review-asus-rog-strix-z890-e-gaming-wifi.html` | 2026-08-21 (#44) |
+| GIGABYTE Z890 AORUS Master | B0DK7JMBBX | `review-gigabyte-z890-aorus-master.html` | 2026-08-21 (#44) |
+| MSI MEG Z890 ACE | B0DJPTRP57 | `review-msi-meg-z890-ace.html` | 2026-08-21 (#44) |
 
 ## Unconverted
 
@@ -91,3 +95,12 @@ Batch #47 (Z790) converted nine of ten boards. The tenth keeps its search URL:
 | ASUS ROG Strix Z790-E Gaming WiFi II | `review-asus-rog-strix-z790-e-gaming-wifi-ii.html` | PENDING-HUMAN | Candidate `B0CJMQ2S5M` is the right board and agrees on socket, chipset, memory generation and form factor, but both the listing and ASUS's own spec page report Wi-Fi 7 while our table says `WiFi 6E`. ASUS also lists five M.2 slots against our four. WiFi variant is part of the comparison set, so the ASIN was not used. |
 
 `B0CJMQ2S5M` is not recorded above, because the board was not converted.
+
+Batch #44 (Z890 flagship) converted four of five boards. The fifth keeps its
+search URL:
+
+| Board | Review page | Status | Reason |
+|---|---|---|---|
+| ASRock Z890 Taichi | `review-asrock-z890-taichi.html` | UNVERIFIED | The only exact-name search hit, `B0DJRNZWGN`, no longer resolves to this board: a live fetch of `/dp/B0DJRNZWGN` returns "ASRock Intel Core Ultra Z890 Lightning WiFi 7 Phantom Gaming …", so the exact-name test fails. A control fetch of `B0DJRPLRJB` returned its own correct title (Z890 Taichi OCF), so the mismatch is the listing's, not the fetcher's. The remaining Taichi listings are `OCF`, `Lite` and `Aqua` — all rejected as revision-token mismatches. |
+
+`B0DJRNZWGN` is not recorded above, because the board was not converted.
