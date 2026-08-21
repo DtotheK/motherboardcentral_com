@@ -30,6 +30,7 @@ Renewed, not a bundle).
 | MSI MAG B650 Tomahawk WiFi | B0BHCCNSRH | `review-msi-mag-b650-tomahawk-wifi.html` | 2026-08-19 (#52) |
 | MSI MAG B650M Mortar WiFi | B0BHC39YG7 | `review-msi-mag-b650m-mortar-wifi.html` | 2026-08-19 (#52) |
 | MSI PRO B650-P WiFi | B0BHBT5BD3 | `review-msi-pro-b650-p-wifi.html` | 2026-08-19 (#52) |
+| MSI PRO A620M-E | B0BZW9RG3P | `review-msi-pro-a620m-e.html` | 2026-08-20 (#53) |
 | ASUS Prime X870-P WiFi | B0DDZY6HTW | `review-asus-prime-x870-p-wifi.html` | 2026-08-20 (#50) |
 | ASUS TUF Gaming X870-Plus WiFi | B0DGB8Q19Y | `review-asus-tuf-gaming-x870-plus-wifi.html` | 2026-08-20 (#50) |
 | GIGABYTE X870 AORUS Elite WiFi7 | B0DGVC3DDW | `review-gigabyte-x870-aorus-elite-wifi7.html` | 2026-08-20 (#50) |
@@ -73,6 +74,15 @@ URL:
 `B0BGPF7K2P` is not recorded above, because the board was not converted.
 
 None from batch #52 — all nine boards converted.
+
+From batch #53 (A620), three boards remain UNVERIFIED and keep their search
+URLs:
+
+| Board | Reason |
+|---|---|
+| ASRock A620M-HDV/M.2+ | Candidate `B0C1ZZDZTJ` matches the model exactly, but `/dp/` and the long SEO URL both returned HTTP 500. No other genuine listing found. |
+| ASUS Prime A620M-A | No candidate survived the reject list. Amazon lists `Prime A620M-A-CSM` (`B0C3ZLCSVP`), a different SKU token, and `Prime A620M-K CSM`. Never fetched. |
+| GIGABYTE A620M DS3H | Candidate `B0CD2KY2G7` matches the model exactly, but `/dp/` and the long SEO URL both returned HTTP 500. No other genuine listing found. |
 
 None from batch #50 — all five boards converted.
 
