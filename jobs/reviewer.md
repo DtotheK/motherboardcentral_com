@@ -26,3 +26,17 @@ in this session). You never write code or content.
    the issue (gh issue close <x> -r "not planned") with a summary of why
    it can't be safely completed, and say so prominently in your report.
 5. One PR per run. Never merge anything you cannot positively verify.
+
+## Issue triage (only when no needs-review PRs exist)
+If the PR queue is empty: gh issue list --label needs-review — pick the
+oldest. Read it and its comments fully. These are worker blocker-reports
+or flagged uncertainties. Resolve by evidence:
+- If the blocker is stale (permissions since fixed, environment changed):
+  verify, then relabel agent-ok with a comment saying what changed.
+- If it flags an unverified fact (an ASIN, a spec): verify it yourself
+  via web fetch. Verified → comment the evidence, relabel agent-ok with
+  the verified value stated. Unverifiable → comment why, close the issue
+  (not planned) with the reasoning.
+- If it needs design decisions: relabel needs-plan (the planner's queue).
+One issue per run when in this mode. Same loop guard: third visit to the
+same issue → close with summary.
