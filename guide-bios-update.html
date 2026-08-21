@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MN6VW6GV50"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MN6VW6GV50');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="How to update your motherboard BIOS safely: when you actually need to, how to flash from inside the BIOS, and how to flash with no CPU installed using a USB flash button.">
+  <title>How to Update Your Motherboard BIOS (Including With No CPU Installed) - MotherboardCentral</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="canonical" href="https://motherboardcentral.com/guide-bios-update.html">
+  <meta property="og:title" content="How to Update Your Motherboard BIOS, With or Without a CPU">
+  <meta property="og:description" content="When a BIOS update is worth doing, how to flash from inside the BIOS, and how USB BIOS FlashBack lets you flash with no CPU installed.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://motherboardcentral.com/guide-bios-update.html">
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION BAR
+       ============================================ -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="6" y1="2" x2="6" y2="22"/><line x1="18" y1="2" x2="18" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+        </div>
+        Motherboard<span>Central</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="guides.html" class="active">Guides</a>
+        <a href="compare.html">Compare</a>
+      </div>
+      <div class="nav-search">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" class="search-input" placeholder="Search motherboards...">
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       PAGE HERO
+       ============================================ -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">&gt;</span>
+        <a href="guides.html">Guides</a>
+        <span class="separator">&gt;</span>
+        <span class="current">How to Update Your BIOS</span>
+      </nav>
+      <h1>How to Update Your <span class="gradient-text">Motherboard BIOS</span></h1>
+      <p>When an update is worth doing, how to flash from inside the BIOS, and how to flash with no CPU installed</p>
+    </div>
+  </section>
+
+  <!-- ============================================
+       GUIDE LAYOUT
+       ============================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="guide-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="guide-sidebar">
+          <nav class="guide-toc">
+            <h4>Table of Contents</h4>
+            <ul>
+              <li><a href="#when" class="active">When You Actually Need an Update</a></li>
+              <li><a href="#find-version">Find Your Board and BIOS Version</a></li>
+              <li><a href="#in-bios">Method 1: From Inside the BIOS</a></li>
+              <li><a href="#no-cpu">Method 2: Flashing With No CPU</a></li>
+              <li><a href="#usb-prep">The USB Stick and the Filename</a></li>
+              <li><a href="#do-not-interrupt">What "Do Not Interrupt" Means</a></li>
+              <li><a href="#after">After the Update</a></li>
+              <li><a href="#recovery">Dual-BIOS and Recovery</a></li>
+              <li><a href="#no-button">Boards With No Flash Button</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- CONTENT -->
+        <div class="guide-content">
+
+          <div class="info-box">
+            <h4>How This Guide Is Sourced</h4>
+            <p>Everything below is based on published manufacturer documentation. We have not flashed a board to write this page, and nothing here is a test result. A flash is the one routine job that can leave you with a motherboard that will not start, so where a step is specific to one brand it is attributed to that brand and linked to that brand's own support page. Where a vendor's current rule could not be read at the vendor's own source, this page says so and sends you to your board's own support page instead of guessing.</p>
+          </div>
+
+          <!-- When you need it -->
+          <h2 id="when">When You Actually Need an Update</h2>
+
+          <p>A BIOS update is not maintenance. Firmware that works does not need replacing, and every flash carries a small risk that the older firmware did not. There are three good reasons to do one.</p>
+
+          <ol>
+            <li><strong>A newer CPU than the board shipped with.</strong> This is the common one. A board sold before a processor existed does not know how to start it, and the symptom is a machine that powers up and never posts. The board's CPU support list on the vendor's site names the minimum BIOS version for each supported chip. If your chip needs a version newer than the one on the board, a flash is the fix, not a different processor. Our <a href="guide-sockets.html">CPU sockets guide</a> covers which processors physically fit a given socket, which is a separate question from whether the firmware recognises them.</li>
+            <li><strong>A security advisory that names your platform.</strong> Firmware fixes for processor and platform vulnerabilities reach you as a motherboard BIOS update, not through Windows Update. If a vendor has published one for your board, nothing else will install it for you.</li>
+            <li><strong>A specific bug you are hitting.</strong> Read the release notes for the versions between yours and the latest. If one of them names your problem, that is a reason. If none of them do, you do not have a reason yet.</li>
+          </ol>
+
+          <p>Otherwise, leave it. A stable machine gains nothing from a firmware version number going up, and vendors do occasionally ship a release that regresses memory compatibility or fan control for some boards. Read the notes before you decide.</p>
+
+          <div class="info-box warning">
+            <h4>If Your Drive Is Encrypted, Deal With That First</h4>
+            <p>Microsoft lists "upgrading critical early startup components, such as a BIOS or UEFI firmware upgrade" as one of the events that puts a machine into <a href="https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/recovery-overview" target="_blank" rel="noopener">BitLocker recovery</a>. In plain terms: after the flash, Windows may ask for a 48-digit recovery key before it will unlock your own drive. Microsoft's guidance for a planned firmware update is to suspend BitLocker protection first, and resume it afterwards. Whichever route you take, find and save your recovery key before you start, not after. This is the step that turns a bad flash into lost data.</p>
+          </div>
+
+          <!-- Find your version -->
+          <h2 id="find-version">Find Your Board and Your Current BIOS Version</h2>
+
+          <p>Two pieces of information decide everything else: the exact model of the board, and the firmware version currently on it.</p>
+
+          <p><strong>The model.</strong> It is silk-screened on the board itself, usually between the memory slots and the top PCIe slot. Take the revision with it if there is one printed alongside — boards sold under the same name in different revisions can take different BIOS files, and this is a place where "close enough" can brick a board. In Windows, <strong>System Information</strong> (run <strong>msinfo32</strong>) reports the same thing as BaseBoard Manufacturer and BaseBoard Product.</p>
+
+          <p><strong>The version.</strong> The same System Information window shows BIOS Version/Date. You can also read it on the board's own firmware screen, which every vendor prints at the top of its BIOS home page. Write it down before you flash, so you know what you are going back to if you need to.</p>
+
+          <p>Then download the firmware from the support page for that exact model, and nowhere else. Vendor download pages are organised by model and often by revision; a BIOS file for a similar board from the same family is not a substitute.</p>
+
+          <!-- Method 1 -->
+          <h2 id="in-bios">Method 1: Update From Inside the BIOS</h2>
+
+          <p>This is the normal route, and the one to use whenever the machine still starts. Every vendor builds a flashing tool into the firmware itself, so there is no operating system involved and no Windows utility to trust. Put the BIOS file on a USB stick, boot into the firmware, and point the built-in tool at the file.</p>
+
+          <ul>
+            <li><strong>ASUS</strong> calls it <strong>EZ Flash</strong>, in the Tool menu of its firmware. ASUS publishes per-model instructions on each board's own <a href="https://www.asus.com/support/" target="_blank" rel="noopener">support page</a>.</li>
+            <li><strong>MSI</strong> calls it <strong>M-FLASH</strong>. According to MSI's own <a href="https://download-2.msi.com/archive/mnu_exe/mb/Intel600BIOS.pdf" target="_blank" rel="noopener">BIOS user guide</a>, you save the BIOS file to a USB flash drive, then either press <strong>Ctrl + F5</strong> during POST, or press <strong>Del</strong> to enter the BIOS and click the M-FLASH button; either way the system reboots into flash mode, you select the BIOS file, and the system restarts by itself once the process reaches 100%.</li>
+            <li><strong>GIGABYTE</strong> calls it <strong>Q-Flash</strong>, reached from the firmware or by a key press at POST. GIGABYTE's site blocks automated retrieval, so we have not read its current instructions at the source and are not going to paraphrase them from elsewhere — take the procedure from your board's own support page on the <a href="https://www.gigabyte.com/Support" target="_blank" rel="noopener">GIGABYTE support site</a>.</li>
+            <li><strong>ASRock</strong> calls it <strong>Instant Flash</strong>, and reaches it with F6 at POST or from the Tool menu. ASRock publishes the procedure as image-only PDFs that we could not read mechanically, so again: use the guide linked from your board's page on <a href="https://www.asrock.com/support/index.asp?cat=BIOS" target="_blank" rel="noopener">ASRock's BIOS support page</a> rather than a version of it copied by us.</li>
+          </ul>
+
+          <p>Whichever tool it is, the pattern is the same: unzip the download, put the BIOS file on a stick, boot the firmware, select the file, confirm, and do not touch anything until the board restarts on its own.</p>
+
+          <!-- Method 2 -->
+          <h2 id="no-cpu">Method 2: Flashing With No CPU Installed</h2>
+
+          <p>This is the feature that saves a build where the board is too old for the processor you bought. It flashes the firmware from a USB stick with nothing but the power supply connected — no processor, no memory, no graphics card — because the flash is handled by a small controller on the board rather than by the CPU. ASUS calls it <strong>USB BIOS FlashBack</strong>, MSI calls it the <strong>Flash BIOS Button</strong>, GIGABYTE calls it <strong>Q-Flash Plus</strong>, and ASRock calls it <strong>BIOS Flashback</strong>.</p>
+
+          <p>Two rules apply to all of them. The stick goes in one specific rear USB port, which is marked on the board's rear I/O and named in the manual — not any port that happens to be free. And the button is on the rear I/O panel or on the board itself, next to that port. Our <a href="guide-usb.html">USB headers and ports guide</a> covers how to tell the rear ports apart if the labelling on your board is not obvious.</p>
+
+          <p>According to ASUS's <a href="https://www.asus.com/support/faq/1038568/" target="_blank" rel="noopener">official USB BIOS FlashBack FAQ</a>, the ASUS procedure is:</p>
+
+          <ol>
+            <li>Prepare a USB flash drive as described in the next section, with the renamed BIOS file in its root directory.</li>
+            <li>Connect the drive to the USB FlashBack port on the motherboard. ASUS says to refer to your model's manual for where that port is.</li>
+            <li>Press the BIOS FlashBack button for three seconds, until the FlashBack LED blinks three times. Three blinks means the flash has started.</li>
+            <li>Wait until the light goes out. That is ASUS's completion signal, and ASUS says the process can be completed in eight minutes.</li>
+          </ol>
+
+          <p>MSI's own <a href="https://download-2.msi.com/archive/mnu_exe/mb/Intel600BIOS.pdf" target="_blank" rel="noopener">BIOS user guide</a> gives the equivalent sequence for the Flash BIOS Button: rename the BIOS file to <strong>MSI.ROM</strong> and save it to the root of the USB drive, connect the power supply to the CPU and ATX power connectors — the guide states directly that there is no need to install CPU and memory — plug the drive into the Flash BIOS Port on the rear I/O panel, press the Flash BIOS Button, and the LED starts flashing. MSI's completion signal is the same as ASUS's: the LED turns off when the process is done.</p>
+
+          <div class="info-box tip">
+            <h4>Both Power Connectors, Even With No CPU</h4>
+            <p>MSI's instruction to connect both the CPU power connector and the 24-pin ATX connector is worth repeating, because the board is otherwise fully unpopulated and it is easy to assume the 8-pin CPU lead is not needed. If the flash button does nothing at all, check that both are seated and that the PSU's rear switch is on.</p>
+          </div>
+
+          <p>For GIGABYTE's Q-Flash Plus and ASRock's BIOS Flashback the button behaviour is broadly the same — one marked port, one button, an LED that blinks while it works — but the file naming rule is where they differ, and that is covered next.</p>
+
+          <!-- USB prep -->
+          <h2 id="usb-prep">The USB Stick and the Filename</h2>
+
+          <p>This section is the one to get exactly right. The board's flash controller looks for one file, in one place, on a drive it can read. Any of the three being wrong means the flash does not start — which is a wasted trip, not a disaster. Using the wrong file for your board is the part that does damage.</p>
+
+          <p><strong>ASUS.</strong> The FlashBack FAQ specifies "a single sector USB flash drive in FAT16 / 32 MBR format" — one partition, MBR rather than GPT. The ASUS download contains the BIOS file, in <strong>.CAP</strong> format, together with a tool called <strong>BIOSRenamer</strong>; ASUS's instruction is to double-click BIOSRenamer to rename the file automatically, then copy the renamed file to the root directory of the drive. Use the tool rather than renaming by hand. A <a href="https://www.asus.com/us/support/faq/1053582/" target="_blank" rel="noopener">second ASUS FAQ</a>, covering its ROG desktop systems, lists models that expect a <strong>.AS</strong> file instead of <strong>.CAP</strong>, which is the clearest illustration of why the file from your own model's download page is the only one to use.</p>
+
+          <p><strong>MSI.</strong> MSI's <a href="https://download-2.msi.com/archive/mnu_exe/mb/Intel600BIOS.pdf" target="_blank" rel="noopener">BIOS user guide</a> says to rename the BIOS file to <strong>MSI.ROM</strong> and save it to the root of the USB flash drive — exactly that name, in the root, not inside a folder. If Windows is hiding known file extensions, check that you have not produced <strong>MSI.ROM.rom</strong>. That guide does not state a filesystem for this method; FAT32 is the safe choice, since it is what the other documented procedures ask for, and a drive the board cannot read simply fails to start rather than doing harm. If your board's page states something different, follow the page.</p>
+
+          <p><strong>GIGABYTE and ASRock.</strong> We are deliberately not printing a filename for either. GIGABYTE's naming rule has changed across board generations — some downloads now ship a rename utility rather than expecting a fixed name — and ASRock's flash documentation is published as image-only PDFs we could not read at the source. Get the current rule from your board's own support page, from the readme inside the BIOS download, or from the manual for your exact model. A filename copied from a forum post about a different board is the most common way this goes wrong.</p>
+
+          <div class="info-box warning">
+            <h4>Check the File Against Your Exact Model and Revision</h4>
+            <p>Every vendor's recovery advice starts with the same check: confirm that the board model, and the revision if the board has one, matches the BIOS file you downloaded. Flashing a file intended for a different model is the one mistake in this whole process that the board cannot recover from by itself.</p>
+          </div>
+
+          <!-- Do not interrupt -->
+          <h2 id="do-not-interrupt">What "Do Not Interrupt" Means, and What Happens If You Do</h2>
+
+          <p>A flash erases the chip holding the firmware and writes a new image to it. Between those two events the board has no working firmware. Cutting power in that window leaves the chip half-written, and a board with a half-written BIOS does not start — no display, no POST, nothing to flash from.</p>
+
+          <p>ASUS states the rule plainly in its FlashBack FAQ: "Please do not remove the USB flash drive, unplug the power supply, turn on the power or press the CLR_CMOS button during the execution." Note what is on that list besides the obvious. Pressing the power button, or clearing CMOS, counts as interrupting it.</p>
+
+          <p>So, before you press the button: plug the machine into a wall socket rather than a switched extension lead someone might knock, and if you are on a laptop-style setup or a home with unreliable power, wait for a better moment. Then start it and walk away. An in-BIOS flash typically finishes in a couple of minutes; ASUS says a FlashBack update can take up to eight, and a screen that has been still for four minutes is normal, not stuck.</p>
+
+          <p>Read the LED rather than the clock. According to ASUS's FAQ, if the light flashes for five seconds and then turns into a solid light, the FlashBack process is not operating properly — that is the failure signal, and it means stop and check the file and the drive, not press the button again and hope. On both ASUS and MSI boards a successful flash ends with the light going out.</p>
+
+          <!-- After -->
+          <h2 id="after">After the Update: Everything You Set Is Gone</h2>
+
+          <p>A BIOS update resets the firmware to its defaults. That is by design, and it catches people out every time, because the machine that boots afterwards is not configured the way yours was.</p>
+
+          <ul>
+            <li><strong>Your memory profile is off.</strong> XMP on Intel, EXPO on AMD. Until you re-enable it, the kit runs at its JEDEC base speed and the machine is measurably slower. Our <a href="guide-ram.html">RAM and memory guide</a> covers where the profile lives and what it actually changes.</li>
+            <li><strong>Boot order is back to default.</strong> If the machine boots to the wrong drive, or straight into the firmware, this is why. Set it again and save.</li>
+            <li><strong>Fan curves, RGB settings and any overclock are gone.</strong> Fans running loud after an update is the defaults doing their job, not a fault.</li>
+            <li><strong>Secure Boot and TPM settings may have moved.</strong> Check them if you rely on either, and re-save before you conclude something is broken.</li>
+            <li><strong>The first boot may be slow.</strong> On AM5 in particular, memory has to be trained again from scratch after a firmware change, which can take several minutes with the DRAM light on. Our <a href="guide-no-post.html">no-POST guide</a> covers how to tell that apart from a genuine memory fault.</li>
+          </ul>
+
+          <p>Go back into the firmware once, set the handful of things you care about, save, and reboot. Do not do it in the same sitting as diagnosing something else — you want to know which change caused what.</p>
+
+          <!-- Recovery -->
+          <h2 id="recovery">Dual-BIOS and Recovery Options</h2>
+
+          <p>Some boards carry two firmware chips, so a failed or corrupt flash on the first can be recovered from the second. Some carry one chip and rely on the no-CPU flash button as the recovery path. Which of those your board has is in its manual, and it is worth knowing before you flash rather than after.</p>
+
+          <p>Three practical points. First, if the board has a working flash button, a failed in-BIOS update is usually recoverable by that route — you are not out of options just because the machine will not post. Second, if the flash button itself fails, ASUS's guidance is to check that the model of the board and the model the BIOS file was downloaded for actually match, and then to contact your local service centre; the equivalent applies to every brand. Third, a board still under warranty is worth a support ticket before anything drastic. Vendors would rather tell you the recovery procedure than receive the board.</p>
+
+          <p>What is not a recovery option is repeatedly pressing the button on a board that keeps signalling failure. If the LED reports a failure twice with the same file, the file, the drive or the model match is wrong, and a third attempt changes nothing.</p>
+
+          <!-- No button -->
+          <h2 id="no-button">Boards With No No-CPU Flash Button</h2>
+
+          <p>Plenty of boards do not have this feature. It is common on mid-range and high-end models and often absent from budget ones, and no brand fits it to everything. The board's spec page and its rear I/O diagram tell you: if there is no marked flash port and no button, there is no no-CPU flash.</p>
+
+          <p>If that is your board and it will not post with the processor you bought, the options are:</p>
+
+          <ul>
+            <li><strong>Borrow a supported processor.</strong> Any chip on the board's CPU support list that works with the shipped firmware will get you into the BIOS, where the built-in flash tool takes a few minutes. It only has to work once.</li>
+            <li><strong>Ask the retailer.</strong> Some retailers will flash a board to a requested version before shipping, or will do it on a board you have already bought. It costs nothing to ask, and it is the fastest fix if they say yes.</li>
+            <li><strong>Ask the board vendor.</strong> Support may offer a firmware update service through a regional service centre. Response times vary, so ask early rather than after two weeks of trying.</li>
+            <li><strong>Check whether the board shipped recent enough firmware anyway.</strong> Boards sold today have often been on the shelf for months, not years. The version printed on the box sticker, where there is one, may already be past the minimum your processor needs.</li>
+          </ul>
+
+          <p>And when you are choosing a board in the first place: on a platform where new processors keep arriving on an existing socket, a flash button is worth real money the day you need it. It is one of the specs we list on our review pages for exactly that reason.</p>
+
+          <!-- Related Guides -->
+          <h2 id="related-guides" style="margin-top: 4rem;">Related Guides</h2>
+
+          <div class="grid grid-2" style="margin-top: 1.5rem;">
+            <a href="guide-sockets.html" class="card guide-card">
+              <div class="card-img">
+                <img src="images/guides/guide-sockets.png" alt="CPU Sockets Explained" loading="lazy">
+              </div>
+              <div class="card-body">
+                <span class="card-category">FUNDAMENTALS</span>
+                <h3>CPU Sockets Explained</h3>
+                <p>Which processors fit which socket, and why a chip that fits can still need newer firmware before the board will start it.</p>
+                <span class="read-time">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  7 min read
+                </span>
+              </div>
+            </a>
+            <a href="guide-ram.html" class="card guide-card">
+              <div class="card-img">
+                <img src="images/guides/guide-ram.png" alt="RAM &amp; Memory Guide" loading="lazy">
+              </div>
+              <div class="card-body">
+                <span class="card-category">MEMORY</span>
+                <h3>RAM &amp; Memory</h3>
+                <p>Where the XMP and EXPO profiles live, and what to re-enable after a BIOS update has reset the firmware to defaults.</p>
+                <span class="read-time">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  10 min read
+                </span>
+              </div>
+            </a>
+          </div>
+
+        </div>
+        <!-- END .guide-content -->
+
+      </div>
+      <!-- END .guide-layout -->
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand Column -->
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <div class="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="2"/>
+                <circle cx="8" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="8" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <line x1="8" y1="9.5" x2="8" y2="14.5"/>
+                <line x1="16" y1="9.5" x2="16" y2="14.5"/>
+                <line x1="9.5" y1="8" x2="14.5" y2="8"/>
+                <line x1="9.5" y1="16" x2="14.5" y2="16"/>
+              </svg>
+            </div>
+            Motherboard<span>Central</span>
+          </a>
+          <p>Your go-to resource for motherboard reviews, buying guides, and hardware education. Helping PC builders make informed decisions since 2024.</p>
+        </div>
+
+        <!-- Reviews Column -->
+        <div class="footer-col">
+          <h4>Reviews</h4>
+          <ul>
+            <li><a href="reviews.html">All Reviews</a></li>
+            <li><a href="reviews.html?price=0-150">Budget Boards</a></li>
+            <li><a href="reviews.html?socket=LGA+1700">Intel Boards</a></li>
+            <li><a href="reviews.html?socket=AM5">AMD Boards</a></li>
+          </ul>
+        </div>
+
+        <!-- Guides Column -->
+        <div class="footer-col">
+          <h4>Guides</h4>
+          <ul>
+            <li><a href="guide-pcie.html">PCIe Speeds &amp; Slots</a></li>
+            <li><a href="guide-sockets.html">CPU Sockets Explained</a></li>
+            <li><a href="guide-ram.html">RAM &amp; Memory</a></li>
+            <li><a href="guide-usb.html">USB Headers &amp; Ports</a></li>
+            <li><a href="guide-cooling.html">Cooling &amp; Thermals</a></li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <p>&copy; 2026 MotherboardCentral.com. All rights reserved.</p>
+        <p>Built for PC enthusiasts</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+  <!-- JavaScript -->
+  <script src="js/main.js"></script>
+  <!-- Vercel Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

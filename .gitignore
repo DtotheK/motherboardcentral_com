@@ -27,3 +27,10 @@ package-lock.json
 
 # .claude is local state, but project settings are policy and must be tracked
 !.claude/settings.json
+
+# agent scratch files — never commit
+.commit-msg-*
+.pr-body-*
+.pr-*-comment*
+.issue-*
+scripts/tmp-*
