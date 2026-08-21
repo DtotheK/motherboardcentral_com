@@ -267,6 +267,79 @@ export function checkSpecContradictions(page) {
   return findings;
 }
 
+/* ============================================================ deal note == */
+
+const DEAL_NOTE_RE = /<aside class="deal-note">([\s\S]*?)<\/aside>/gi;
+
+/**
+ * (e) Deal notes on review pages. See docs/deal-note-pattern.md.
+ *
+ * The load-bearing rule is `deal-note-unlabelled-price`: Amazon's Associates
+ * operating agreement only permits displaying a retailer price served by
+ * Amazon or fetched from PA-API and refreshed every 24 hours, which a static
+ * page cannot do. The only dollar figure allowed in the block is therefore a
+ * launch MSRP, which is manufacturer information rather than Amazon pricing
+ * data. Do not soften this rule.
+ */
+export function checkDealNote(page) {
+  const blocks = [...page.html.matchAll(DEAL_NOTE_RE)];
+  if (blocks.length === 0) return [];
+
+  const findings = [];
+
+  if (blocks.length > 1) {
+    findings.push({
+      file: page.file,
+      rule: 'deal-note-duplicate',
+      detail: `${blocks.length} deal notes on one page`,
+      line: lineOf(page.html, blocks[1][0]),
+    });
+  }
+
+  for (const match of blocks) {
+    const block = match[0];
+    const line = lineOf(page.html, block);
+
+    if (!/<time[^>]*\sdatetime=["']\d{4}-\d{2}-\d{2}["']/i.test(block)) {
+      findings.push({
+        file: page.file,
+        rule: 'deal-note-missing-date',
+        detail: 'no <time datetime="YYYY-MM-DD"> in the block',
+        line,
+      });
+    }
+
+    const text = stripTags(block);
+    for (const m of text.matchAll(/\$\d[\d,.]*/g)) {
+      const window = text.slice(Math.max(0, m.index - 40), m.index);
+      const label = window.toLowerCase().lastIndexOf('launch msrp');
+      // Labelled only if "Launch MSRP" introduces *this* figure -- an earlier
+      // MSRP does not license a second, unlabelled price after it.
+      if (label !== -1 && !window.slice(label).includes('$')) continue;
+      findings.push({
+        file: page.file,
+        rule: 'deal-note-unlabelled-price',
+        detail: `${m[0]} is not a labelled launch MSRP`,
+        line,
+      });
+    }
+
+    const hasProductLink = extractRefs(block).some(
+      (ref) => /amazon\.com\/dp\//i.test(ref) && ref.includes(`tag=${AFFILIATE_TAG}`),
+    );
+    if (!hasProductLink) {
+      findings.push({
+        file: page.file,
+        rule: 'deal-note-no-affiliate-link',
+        detail: `no amazon.com/dp/ link carrying tag=${AFFILIATE_TAG}`,
+        line,
+      });
+    }
+  }
+
+  return findings;
+}
+
 /* ==================================================== baseline ratchet == */
 
 export function fingerprint(f) {
@@ -330,6 +403,7 @@ export function runChecks(pages, existsFn, ignorePaths = DEFAULT_IGNORE_PATHS) {
     findings.push(...checkAffiliate(page));
     findings.push(...checkCanonical(page));
     findings.push(...checkSpecContradictions(page));
+    findings.push(...checkDealNote(page));
   }
   findings.push(...checkMeta(pages));
   return findings;
@@ -355,6 +429,10 @@ const RULE_LABELS = {
   'meta-duplicate': 'Duplicate title/description',
   'canonical-missing': 'Missing canonical URL',
   'spec-contradiction': 'Spec contradicts body text',
+  'deal-note-duplicate': 'More than one deal note on a page',
+  'deal-note-missing-date': 'Deal note missing a dated <time>',
+  'deal-note-unlabelled-price': 'Deal note shows a price that is not a labelled launch MSRP',
+  'deal-note-no-affiliate-link': 'Deal note missing its direct Amazon product link',
 };
 
 function main(argv) {

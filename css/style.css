@@ -1095,6 +1095,33 @@ h4 { font-size: 1.25rem; }
   font-size: 0.95rem;
 }
 
+/* Deal note (review pages) — see docs/deal-note-pattern.md */
+.deal-note {
+  background: rgba(0, 212, 255, 0.05);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem 1.5rem;
+  margin: 0 0 2rem;
+}
+
+.deal-note h4 {
+  color: var(--primary);
+  margin-bottom: 0.4rem;
+  font-size: 1rem;
+}
+
+.deal-note p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+.deal-note .deal-note-meta {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 0.6rem;
+}
+
 /* Spec Table in guides */
 .spec-table {
   width: 100%;

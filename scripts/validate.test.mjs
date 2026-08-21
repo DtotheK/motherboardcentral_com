@@ -8,6 +8,7 @@ import {
   checkMeta,
   parseSpecTable,
   checkSpecContradictions,
+  checkDealNote,
   fingerprint,
   diffBaseline,
   dedupeFindings,
@@ -228,6 +229,104 @@ test('ignores prose before the spec table', () => {
 
 test('returns nothing when there is no spec table', () => {
   assert.deepEqual(checkSpecContradictions({ file: 'a.html', html: '<p>WiFi 7</p>' }), []);
+});
+
+/* ------------------------------------------------------------ deal note -- */
+
+const dealNote = (inner) => `<aside class="deal-note">${inner}</aside>`;
+
+const goodNote = dealNote(
+  '<h4>Price check</h4>' +
+    '<p>Launch MSRP <strong>$499</strong>, per <a href="https://www.pcworld.com/article/1384251/x.html">PCWorld</a> ' +
+    "(23 November 2022). That is the launch figure, not a current price &mdash; street prices move week to week and we don&#x27;t publish live prices. " +
+    `<a href="https://www.amazon.com/dp/B0BDTHQTJV?tag=${AFFILIATE_TAG}">Check the current price on Amazon</a>.</p>` +
+    '<p class="deal-note-meta">Launch MSRP and affiliate link last verified <time datetime="2026-08-21">21 August 2026</time>.</p>',
+);
+
+test('a well-formed deal note produces no findings', () => {
+  assert.deepEqual(checkDealNote({ file: 'a.html', html: goodNote }), []);
+});
+
+test('a page with no deal note produces no findings', () => {
+  assert.deepEqual(checkDealNote({ file: 'a.html', html: '<p>No note here. $499 elsewhere.</p>' }), []);
+});
+
+test('flags more than one deal note on a page', () => {
+  const f = checkDealNote({ file: 'a.html', html: goodNote + goodNote });
+  assert.equal(f.filter((x) => x.rule === 'deal-note-duplicate').length, 1);
+});
+
+test('flags a deal note with no dated time element', () => {
+  const html = dealNote(
+    `<p>Launch MSRP $499. <a href="https://www.amazon.com/dp/B0BDTHQTJV?tag=${AFFILIATE_TAG}">Amazon</a></p>`,
+  );
+  const f = checkDealNote({ file: 'a.html', html });
+  assert.equal(f.length, 1);
+  assert.equal(f[0].rule, 'deal-note-missing-date');
+});
+
+test('flags a time element whose datetime is not YYYY-MM-DD', () => {
+  const html = dealNote(
+    '<p>Launch MSRP $499. <time datetime="21 Aug 2026">21 August 2026</time> ' +
+      `<a href="https://www.amazon.com/dp/B0BDTHQTJV?tag=${AFFILIATE_TAG}">Amazon</a></p>`,
+  );
+  const f = checkDealNote({ file: 'a.html', html });
+  assert.equal(f.length, 1);
+  assert.equal(f[0].rule, 'deal-note-missing-date');
+});
+
+test('flags a price that is not a labelled launch MSRP', () => {
+  const html = dealNote(
+    '<p>Street price $329.99 today. <time datetime="2026-08-21">21 August 2026</time> ' +
+      `<a href="https://www.amazon.com/dp/B0BDTHQTJV?tag=${AFFILIATE_TAG}">Amazon</a></p>`,
+  );
+  const f = checkDealNote({ file: 'a.html', html });
+  assert.equal(f.length, 1);
+  assert.equal(f[0].rule, 'deal-note-unlabelled-price');
+});
+
+test('does not flag a price introduced by "Launch MSRP"', () => {
+  const html = dealNote(
+    '<p>Launch MSRP <strong>$629</strong>. <time datetime="2026-08-21">21 August 2026</time> ' +
+      `<a href="https://www.amazon.com/dp/B0BG6M53DG?tag=${AFFILIATE_TAG}">Amazon</a></p>`,
+  );
+  assert.deepEqual(checkDealNote({ file: 'a.html', html }), []);
+});
+
+test('flags a second, unlabelled price alongside a labelled one', () => {
+  const html = dealNote(
+    '<p>Launch MSRP $499, now $329.99 at retail. <time datetime="2026-08-21">21 August 2026</time> ' +
+      `<a href="https://www.amazon.com/dp/B0BDTHQTJV?tag=${AFFILIATE_TAG}">Amazon</a></p>`,
+  );
+  const f = checkDealNote({ file: 'a.html', html });
+  assert.equal(f.length, 1);
+  assert.equal(f[0].rule, 'deal-note-unlabelled-price');
+});
+
+test('flags a deal note whose only Amazon link is a search URL', () => {
+  const html = dealNote(
+    '<p>Launch MSRP $499. <time datetime="2026-08-21">21 August 2026</time> ' +
+      `<a href="https://www.amazon.com/s?k=asus+x670e&tag=${AFFILIATE_TAG}">Amazon</a></p>`,
+  );
+  const f = checkDealNote({ file: 'a.html', html });
+  assert.equal(f.length, 1);
+  assert.equal(f[0].rule, 'deal-note-no-affiliate-link');
+});
+
+test('flags a deal note whose direct product link is missing our tag', () => {
+  const html = dealNote(
+    '<p>Launch MSRP $499. <time datetime="2026-08-21">21 August 2026</time> ' +
+      '<a href="https://www.amazon.com/dp/B0BDTHQTJV">Amazon</a></p>',
+  );
+  const f = checkDealNote({ file: 'a.html', html });
+  assert.equal(f.length, 1);
+  assert.equal(f[0].rule, 'deal-note-no-affiliate-link');
+});
+
+test('deal-note findings carry the page file name', () => {
+  const f = checkDealNote({ file: 'review-x.html', html: dealNote('<p>Launch MSRP $499.</p>') });
+  assert.ok(f.length > 0);
+  for (const finding of f) assert.equal(finding.file, 'review-x.html');
 });
 
 /* --------------------------------------------------------- baseline ratchet */
