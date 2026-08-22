@@ -3,7 +3,11 @@ set -euo pipefail
 JOB="$1"
 cd "$(dirname "$0")/.."
 [ -s "jobs/$JOB.md" ] || { echo "FATAL: jobs/$JOB.md missing or empty" >&2; exit 64; }
-git checkout main && git pull
+git checkout -f main
+git fetch origin
+git reset --hard origin/main
+git clean -fd
+git worktree prune
 STAMP="$(date +%F-%H%M)"
 LOG="logs/$STAMP-$JOB.json"
 TXT="logs/$STAMP-$JOB.txt"

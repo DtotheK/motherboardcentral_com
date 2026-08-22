@@ -34,3 +34,7 @@ package-lock.json
 .pr-*-comment*
 .issue-*
 scripts/tmp-*
+.plan-*
+.pr-*-comment*
+.issue-*
+scripts/tmp-*
