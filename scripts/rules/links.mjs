@@ -3,13 +3,14 @@
  *
  * Universal: no site vocabulary. The one site-shaped input is ignorePaths,
  * which names paths the host injects at runtime and are correctly absent from
- * the repo. Step 2 lifts that into harness.config.json.
+ * the repo, and now comes from harness.config.json.
  */
 
 import { extractRefs, lineOf } from '../core/extract.mjs';
+import { config } from '../core/config.mjs';
 
 /** Paths that legitimately do not exist in the repo (injected at runtime). */
-export const DEFAULT_IGNORE_PATHS = ['/_vercel'];
+export const DEFAULT_IGNORE_PATHS = config.validator.ignorePaths;
 
 export function checkLinks(page, existsFn, ignorePaths = DEFAULT_IGNORE_PATHS) {
   const findings = [];

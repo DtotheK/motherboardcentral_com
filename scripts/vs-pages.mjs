@@ -21,6 +21,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import { config, re } from './core/config.mjs';
 
 /* ======================================================= 1. database == */
 
@@ -86,7 +87,7 @@ export const slugify = (name) => String(name)
 
 /* ================================================= 2. review pages == */
 
-const AFFILIATE_TAG = 'motherboardcentral.com-20';
+const AFFILIATE_TAG = config.validator.affiliate.tag;
 
 const DP_RE = new RegExp(
   `href="(https://www\\.amazon\\.com/dp/[A-Z0-9]{10}\\?tag=${AFFILIATE_TAG.replace(/\./g, '\\.')})"`,
@@ -104,8 +105,10 @@ export function extractDpLink(reviewHtml) {
   return m ? m[1] : null;
 }
 
-/** Same row regex validate.mjs uses, so both read a spec table identically. */
-const ROW_RE = /<tr>\s*<td>([^<]+)<\/td>\s*<td>([^<]*)<\/td>\s*<\/tr>/gi;
+/* The row shape now comes from harness.config.json, so the generator and the
+ * validator cannot drift: the comment here used to say "same row regex
+ * validate.mjs uses", which is exactly the kind of duplication a manifest ends. */
+const ROW_RE = re(config.validator.pageShape.specTableRowPattern, 'gi');
 
 export function extractReviewSpecs(reviewHtml) {
   const map = new Map();
@@ -371,7 +374,7 @@ export function validatePair(pair, ctx) {
 
 /* ===================================================== 5. rendering == */
 
-const SITE = 'https://motherboardcentral.com';
+const SITE = config.site.url;
 
 /**
  * D11. Emitted by the generator rather than typed per page, so it cannot be

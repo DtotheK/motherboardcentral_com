@@ -11,6 +11,7 @@
  */
 
 import { stripTags, parseSpecTable } from '../core/extract.mjs';
+import { config, re } from '../core/config.mjs';
 
 /* Spec cells are terse ("2.5G"); prose is verbose ("2.5 Gigabit Ethernet").
  * Body extraction is deliberately stricter so unrelated numbers -- 128GB of
@@ -32,17 +33,24 @@ const BODY_TOKENS = {
   Socket: SPEC_TOKENS.Socket,
 };
 
-const FIELDS = ['LAN', 'WiFi', 'Socket'];
+// WHICH fields are cross-checked is a config slot; HOW each tokenises is the
+// code above, and stays here. A new site replaces this module, not the list.
+const FIELDS = config.validator.specFields;
 
 /** Heading id that ends the region counting as claims about this board. */
-const RELATED_SECTION_RE = /<h[1-6][^>]*id=["']related["']/i;
+const ROW_RE = re(config.validator.pageShape.specTableRowPattern, 'gi');
+
+const RELATED_SECTION_RE = re(
+  `<h[1-6][^>]*id=["']${config.validator.pageShape.relatedSectionId}["']`,
+  'i',
+);
 
 function sentences(text) {
   return text.split(/(?<=[.!?])\s+/).filter(Boolean);
 }
 
 export function checkSpecContradictions(page) {
-  const specs = parseSpecTable(page.html);
+  const specs = parseSpecTable(page.html, ROW_RE);
   if (specs.size === 0) return [];
 
   // Only prose *after* the spec table counts; nav and intro copy are not claims.
