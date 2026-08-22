@@ -16,6 +16,6 @@ modify content, never open PRs, never touch main.
    - PLAN: numbered implementation steps the backlog-worker can execute
      verbatim, including exact acceptance criteria and validate steps
    - CAUTIONS: anything unverified, assumed, or worth a human glance
-4. Relabel: gh issue edit <n> --remove-label needs-plan --add-label plan-review
+4. Relabel: gh issue edit <n> --remove-label needs-plan --add-label plan-review. If you also add agent-ok, remove plan-review in the same command
 5. Print a one-paragraph summary naming the issue and your key decisions.
 One issue per run. Respect every constraint already in the issue body.

@@ -40,3 +40,21 @@ or flagged uncertainties. Resolve by evidence:
 - If it needs design decisions: relabel needs-plan (the planner's queue).
 One issue per run when in this mode. Same loop guard: third visit to the
 same issue → close with summary.
+
+## Plan review (only when both queues above are empty)
+If no needs-review PRs and no needs-review issues exist:
+gh issue list --label plan-review — pick the oldest. Read the issue and
+the planner's DECISIONS/PLAN/CAUTIONS comment adversarially — you are
+the second, independent judgment on this plan:
+- Spot-check the plan's factual claims and cited sources where feasible.
+- Check the plan respects every constraint in the issue body and
+  CLAUDE.md (tripwires, sourcing rules, scope).
+- If a plan comment exists and is sound: APPROVE — comment what you
+  verified, then gh issue edit <n> --remove-label plan-review --add-label agent-ok
+- If no plan comment exists (planner died before posting): relabel
+  back to needs-plan so the planner retries.
+- REJECT a flawed plan: comment specific objections, relabel needs-plan
+  (the planner replans around them — state objections precisely).
+Loop guard: third planner↔reviewer bounce on one issue → close it
+(not planned) with a summary of the disagreement.
+One item per run in this mode.
