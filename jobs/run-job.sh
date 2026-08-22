@@ -8,6 +8,7 @@ git fetch origin
 git reset --hard origin/main
 git clean -fd
 git worktree prune
+rm -rf .claude/worktrees/
 STAMP="$(date +%F-%H%M)"
 LOG="logs/$STAMP-$JOB.json"
 TXT="logs/$STAMP-$JOB.txt"
