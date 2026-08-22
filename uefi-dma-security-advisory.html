@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MN6VW6GV50"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MN6VW6GV50');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VU#382314 in plain English: why some ASUS, GIGABYTE, MSI and ASRock boards report DMA protection as active without enabling the IOMMU, and the BIOS setting a firmware update may not turn on.">
+  <title>UEFI Early-Boot DMA Advisory (VU#382314) Explained - MotherboardCentral</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="canonical" href="https://motherboardcentral.com/uefi-dma-security-advisory.html">
+  <meta property="og:title" content="UEFI Early-Boot DMA Advisory (VU#382314) Explained">
+  <meta property="og:description" content="VU#382314 in plain English: why some ASUS, GIGABYTE, MSI and ASRock boards report DMA protection as active without enabling the IOMMU, and the BIOS setting a firmware update may not turn on.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://motherboardcentral.com/uefi-dma-security-advisory.html">
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION BAR
+       ============================================ -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="6" y1="2" x2="6" y2="22"/><line x1="18" y1="2" x2="18" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+        </div>
+        Motherboard<span>Central</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="guides.html" class="active">Guides</a>
+        <a href="compare.html">Compare</a>
+      </div>
+      <div class="nav-search">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" class="search-input" placeholder="Search motherboards...">
+      </div>
+      <button class="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       PAGE HERO
+       ============================================ -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">&gt;</span>
+        <a href="guides.html">Guides</a>
+        <span class="separator">&gt;</span>
+        <span class="current">UEFI Early-Boot DMA Advisory</span>
+      </nav>
+      <h1>UEFI Early-Boot <span class="gradient-text">DMA Advisory</span></h1>
+      <p>VU#382314: what it is, what it is not, and the BIOS setting a firmware update may not turn on for you</p>
+    </div>
+  </section>
+
+  <!-- ============================================
+       GUIDE LAYOUT
+       ============================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="guide-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="guide-sidebar">
+          <nav class="guide-toc">
+            <h4>Table of Contents</h4>
+            <ul>
+              <li><a href="#what" class="active">What Was Disclosed</a></li>
+              <li><a href="#not">What This Is Not</a></li>
+              <li><a href="#scope">Which Boards Are Affected</a></li>
+              <li><a href="#do">What To Do</a></li>
+              <li><a href="#status">Where Each Vendor Stands</a></li>
+              <li><a href="#sources">Sources</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- CONTENT -->
+        <div class="guide-content">
+
+          <div class="info-box">
+            <h4>The short version</h4>
+            <p>In December 2025 CERT/CC published VU#382314. On certain motherboard models from ASUS, GIGABYTE, MSI and ASRock, the firmware reports that DMA protection is active while the IOMMU has not actually been enabled during early boot. Someone with physical access to the machine could use a DMA-capable PCIe device to read or modify system memory before the operating system's own protections load. It is not remotely exploitable, and there is nothing physically wrong with your board. On ASUS boards the fix is a firmware update <em>plus</em> a BIOS setting you have to enable yourself.</p>
+          </div>
+
+          <!-- What was disclosed -->
+          <h2 id="what">What Was Disclosed</h2>
+
+          <p>The IOMMU is the part of the platform that stops a device plugged into a PCIe slot from reading whatever memory it likes. Devices ask for memory addresses, and the IOMMU decides which ones they are allowed to touch. Until it is switched on, a DMA-capable card is trusted absolutely.</p>
+
+          <p>On the affected boards, the firmware sets the flag that says DMA protection is active without completing the work behind it. Anything downstream that checks that flag &mdash; including the operating system &mdash; is told the machine is protected during a window in which it is not. CERT/CC describes it as a discrepancy in which the firmware "asserts that DMA protections are active" but "fails to properly configure and enable the IOMMU during the early hand-off phase in the boot sequence."</p>
+
+          <p>Four CVE identifiers were issued, one per vendor implementation, because each vendor's firmware arrived at the same gap by a different route:</p>
+
+          <ul>
+            <li><strong>CVE-2025-11901</strong> &mdash; ASUS</li>
+            <li><strong>CVE-2025-14302</strong> &mdash; GIGABYTE</li>
+            <li><strong>CVE-2025-14303</strong> &mdash; MSI</li>
+            <li><strong>CVE-2025-14304</strong> &mdash; ASRock, ASRock Rack and ASRock Industrial</li>
+          </ul>
+
+          <p>The flaw was disclosed by Nick Peterson and Mohamed Al-Sharifi of Riot Games, and coordinated through the Taiwanese CERT.</p>
+
+          <!-- What this is not -->
+          <h2 id="not">What This Is Not</h2>
+
+          <p>All four CVE records classify this as requiring physical access. Nobody reaches it over the internet. No web page, email attachment or downloaded program exploits it on its own. An attacker has to be at the machine, opening the case, and connecting a malicious PCIe device before the operating system starts.</p>
+
+          <p>That puts it in a specific bracket. It matters if a machine sits somewhere other people can reach it unattended &mdash; an office, a lab, a rental, a dock in a shared space &mdash; and it matters a great deal in managed fleets where a machine leaving your control is part of the threat model. For a desktop at home behind a locked front door, it is close to theoretical. Neither of those is a reason to leave it unfixed, but the first is a reason to prioritise it and the second is a reason not to panic about it.</p>
+
+          <p>This is not a recall. No board is defective, none is being replaced, and none that we cover has been withdrawn.</p>
+
+          <!-- Scope -->
+          <h2 id="scope">Which Boards Are Affected</h2>
+
+          <p>Each vendor's published scope is different, and the differences are not intuitive &mdash; a chipset family that appears on one vendor's list is absent from another's. These are the affected chipset families as recorded in the CVE records themselves:</p>
+
+          <table>
+            <tr><td>ASUS</td><td>Intel B460, B560, B660, B760, H410, H470, H510, H610, W480, W680, Z590, Z690 and Z790 series chipsets</td></tr>
+            <tr><td>GIGABYTE</td><td>Intel 600, 700 and 800 series; AMD 600 and 800 series; TRX50</td></tr>
+            <tr><td>MSI</td><td>Intel 600 and 700 series</td></tr>
+            <tr><td>ASRock</td><td>Intel 500, 600, 700 and 800 series</td></tr>
+          </table>
+
+          <div class="info-box">
+            <h4>A chipset match does not mean your board is affected</h4>
+            <p>Every one of the four CVE records is scoped to certain motherboard models &mdash; not to every board built on a listed chipset. The model-by-model lists are published by each vendor on its own security page, linked below, and those pages are the only place to settle the question for a particular board. We do not publish a per-board status here, because we cannot verify it for every model, and a list that is wrong is worse than no list at all.</p>
+          </div>
+
+          <!-- What to do -->
+          <h2 id="do">What To Do</h2>
+
+          <p>Three steps, in order.</p>
+
+          <ol>
+            <li><strong>Check whether your model is listed.</strong> Open your vendor's security advisory page below and look for your exact board model, not just its chipset.</li>
+            <li><strong>Install the firmware update if one is listed for your board.</strong> This arrives as a motherboard BIOS update. Windows Update will not install it. Our <a href="guide-bios-update.html">BIOS update guide</a> covers doing that safely, including finding and saving a BitLocker recovery key before you start.</li>
+            <li><strong>Check the BIOS setting afterwards.</strong> This is the step most people will miss. ASUS's own guidance, as recorded by CERT/CC, is that after updating you should open the BIOS Setup Utility and set <strong>IOMMU DMA Protection</strong> to <strong>"Enable with Full Protection."</strong> The update on its own does not do it for you.</li>
+          </ol>
+
+          <p>That third step is documented by ASUS. The advisories published for GIGABYTE, MSI and ASRock through the Taiwanese CERT say only to update to the latest firmware, and do not describe a manual setting. If your board is one of those and its BIOS offers an IOMMU or DMA protection option, it is worth reading your board's release notes to see whether the update enables it for you.</p>
+
+          <!-- Vendor status -->
+          <h2 id="status">Where Each Vendor Stands</h2>
+
+          <p>CERT/CC's note records statements from ASUS and GIGABYTE. At its last revision, on 22 December 2025, it recorded <strong>no statement</strong> received from either MSI or ASRock. That is not the same as saying those vendors have shipped nothing &mdash; it means they had not filed a position with CERT/CC at that point.</p>
+
+          <p>That is the position as CERT/CC recorded it in December 2025. We could not read any of the four vendors' own advisory listings to check whether it has changed since &mdash; two refused our request outright and two returned an empty list &mdash; so we are not telling you that a fix exists for your board, and not telling you that one does not. Your vendor's own page below is the authority, and it is worth checking even if the note above says your vendor stayed quiet.</p>
+
+          <ul>
+            <li><a href="https://www.asus.com/security-advisory/" target="_blank" rel="noopener noreferrer">ASUS security advisories</a></li>
+            <li><a href="https://www.gigabyte.com/Support/Security" target="_blank" rel="noopener noreferrer">GIGABYTE security advisories</a></li>
+            <li><a href="https://csr.msi.com/global/product-security-advisories" target="_blank" rel="noopener noreferrer">MSI product security advisories</a></li>
+            <li><a href="https://www.asrock.com/support/Security.asp" target="_blank" rel="noopener noreferrer">ASRock security page</a></li>
+          </ul>
+
+          <div class="info-box">
+            <h4>What we checked, and what we didn't</h4>
+            <p>The CVE identifiers, dates, affected chipset lists and technical description on this page come from the CERT/CC note and the published CVE records, all linked below and all read in full. Nothing on this page is a test result: no board was flashed, and no exploit was reproduced. We could not read the four vendors' own advisory listings, so this page attributes each vendor's position to CERT/CC's record of it rather than to the vendor's current page, and it does not reproduce any vendor's per-model list.</p>
+          </div>
+
+          <!-- Sources -->
+          <h2 id="sources">Sources</h2>
+
+          <ul>
+            <li><a href="https://kb.cert.org/vuls/id/382314" target="_blank" rel="noopener noreferrer">CERT/CC VU#382314</a> &mdash; published 17 December 2025, last revised 22 December 2025</li>
+            <li><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-11901" target="_blank" rel="noopener noreferrer">CVE-2025-11901</a> (ASUS) &mdash; published 17 December 2025</li>
+            <li><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14302" target="_blank" rel="noopener noreferrer">CVE-2025-14302</a> (GIGABYTE) &mdash; published 16 December 2025</li>
+            <li><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14303" target="_blank" rel="noopener noreferrer">CVE-2025-14303</a> (MSI) &mdash; published 16 December 2025</li>
+            <li><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-14304" target="_blank" rel="noopener noreferrer">CVE-2025-14304</a> (ASRock) &mdash; published 16 December 2025</li>
+          </ul>
+
+          <p style="font-size:0.85rem;color:var(--text-secondary);">Published 21 August 2026. Vendor positions last checked against CERT/CC on 21 August 2026.</p>
+
+        </div>
+        <!-- END .guide-content -->
+
+      </div>
+      <!-- END .guide-layout -->
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand Column -->
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <div class="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="2"/>
+                <circle cx="8" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="8" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="8" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <circle cx="16" cy="16" r="1.5" fill="#fff" stroke="none"/>
+                <line x1="8" y1="9.5" x2="8" y2="14.5"/>
+                <line x1="16" y1="9.5" x2="16" y2="14.5"/>
+                <line x1="9.5" y1="8" x2="14.5" y2="8"/>
+                <line x1="9.5" y1="16" x2="14.5" y2="16"/>
+              </svg>
+            </div>
+            Motherboard<span>Central</span>
+          </a>
+          <p>Your go-to resource for motherboard reviews, buying guides, and hardware education. Helping PC builders make informed decisions since 2024.</p>
+        </div>
+
+        <!-- Reviews Column -->
+        <div class="footer-col">
+          <h4>Reviews</h4>
+          <ul>
+            <li><a href="reviews.html">All Reviews</a></li>
+            <li><a href="reviews.html?price=0-150">Budget Boards</a></li>
+            <li><a href="reviews.html?socket=LGA+1700">Intel Boards</a></li>
+            <li><a href="reviews.html?socket=AM5">AMD Boards</a></li>
+          </ul>
+        </div>
+
+        <!-- Guides Column -->
+        <div class="footer-col">
+          <h4>Guides</h4>
+          <ul>
+            <li><a href="guide-pcie.html">PCIe Speeds &amp; Slots</a></li>
+            <li><a href="guide-sockets.html">CPU Sockets Explained</a></li>
+            <li><a href="guide-ram.html">RAM &amp; Memory</a></li>
+            <li><a href="guide-usb.html">USB Headers &amp; Ports</a></li>
+            <li><a href="guide-cooling.html">Cooling &amp; Thermals</a></li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <p>&copy; 2026 MotherboardCentral.com. All rights reserved.</p>
+        <p>Built for PC enthusiasts</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+  <!-- JavaScript -->
+  <script src="js/main.js"></script>
+  <!-- Vercel Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
