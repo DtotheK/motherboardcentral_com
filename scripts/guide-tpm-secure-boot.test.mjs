@@ -406,6 +406,7 @@ const CERT_VU_431093 = 'https://kb.cert.org/vuls/id/431093';
 const INTEL_SA_01371 = 'https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-01371.html';
 const INTEL_SA_01372 = 'https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-01372.html';
 const HEISE = 'https://www.heise.de/en/news/The-security-co-processor-in-many-CPUs-is-insecure-11411956.html';
+const DELL_DSA = 'https://www.dell.com/support/kbdoc/en-us/000498836/';
 
 /** The text of the caveat section's own <h2>. */
 const caveatHeading = () => {
@@ -465,14 +466,22 @@ test('the caveat cites Intel\'s own advisories rather than only NVD', () => {
   assert.ok(refs.some((r) => r.startsWith(INTEL_SA_01372)), `not linked: ${INTEL_SA_01372}`);
 });
 
-test('the caveat does not assert which CVE each Intel advisory covers', () => {
-  // intel.com returned 403 to every fetch, so nobody here has read either
-  // advisory. Pairing an INTEL-SA number with a CVE number would be a guess.
+test('each Intel advisory is mapped to the CVE it covers', () => {
+  // intel.com 403s, so the mapping is not readable at source. Dell's
+  // DSA-2026-212 client BIOS advisory lists both numbers against their CVEs,
+  // and that is where the pairing on the page comes from.
   const sec = stripTags(section('ftpm-caveat'));
-  assert.doesNotMatch(sec, /INTEL-SA-0137[12][^.]{0,40}CVE-2026-672[67]/i,
-    'an unread advisory is mapped to a specific CVE');
-  assert.doesNotMatch(sec, /CVE-2026-672[67][^.]{0,40}INTEL-SA-0137[12]/i,
-    'an unread advisory is mapped to a specific CVE');
+  assert.match(sec, /INTEL-SA-01372[^.]{0,40}CVE-2026-6726/i,
+    'INTEL-SA-01372 is not paired with CVE-2026-6726');
+  assert.match(sec, /INTEL-SA-01371[^.]{0,40}CVE-2026-6727/i,
+    'INTEL-SA-01371 is not paired with CVE-2026-6727');
+});
+
+test('the advisory-to-CVE mapping says where it came from, since intel.com was unreadable', () => {
+  const sec = stripTags(section('ftpm-caveat'));
+  assert.match(sec, /DSA-2026-212/, 'the source of the mapping is not named');
+  assert.ok(extractRefs(html()).some((r) => r.startsWith(DELL_DSA)),
+    `the mapping source is not linked: ${DELL_DSA}`);
 });
 
 test('the caveat gives the Intel reader the same check-your-BIOS advice', () => {
