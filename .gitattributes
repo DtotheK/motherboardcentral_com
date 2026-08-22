@@ -1,5 +1,8 @@
-* text=auto
-*.sh text eol=lf
-*.md text eol=lf
-*.mjs text eol=lf
-*.yml text eol=lf
+# Every text file checks out LF on every platform.
+#
+# text=auto, not bare text: auto keeps git's binary detection, so the png/jpg
+# blobs are left alone. Bare `text` would mark them as text and corrupt them.
+# Without an explicit eol, a Windows checkout (core.autocrlf=true) produced
+# CRLF working-tree files while the blobs stayed LF, which broke every test
+# fixture that string-matches on \n. See docs/harness-audit-2026-08.md mode 10.
+* text=auto eol=lf
