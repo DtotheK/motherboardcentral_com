@@ -69,6 +69,8 @@ Renewed, not a bundle).
 | ASUS ROG Strix B850-E Gaming WiFi | B0DPLQXPG2 | `review-asus-rog-strix-b850-e-gaming-wifi.html` | 2026-08-21 (#35) |
 | ASUS TUF Gaming B850M-Plus WiFi | B0DPLQQ7VJ | `review-asus-tuf-gaming-b850m-plus-wifi.html` | 2026-08-21 (#35) |
 | ASUS ROG Strix B850-I Gaming WiFi | B0DHCQ1MPZ | `review-asus-rog-strix-b850-i-gaming-wifi.html` | 2026-08-21 (#35) |
+| ASUS TUF Gaming B860-Plus WiFi | B0DFPNHCMX | `review-asus-tuf-gaming-b860-plus-wifi.html` | 2026-08-22 (#46) |
+| MSI MAG B860 Tomahawk WiFi | B0DQBJ64KH | `review-msi-mag-b860-tomahawk-wifi.html` | 2026-08-22 (#46) |
 
 ## Unconverted
 
@@ -176,3 +178,19 @@ tables are wrong there. The three MSI rows are **not** settled: MSI's spec
 pages return HTTP 403, so those figures come from retailer and reviewer
 sources rather than the manufacturer, and need a human check against MSI's
 own page before any table is edited.
+
+Batch #46 (B860) converted two of four boards. The other two keep their search
+URLs:
+
+| Board | Review page | Status | Reason |
+|---|---|---|---|
+| GIGABYTE B860 AORUS Elite WiFi7 | `review-gigabyte-b860-aorus-elite-wifi7.html` | UNVERIFIED | Every Amazon listing found for this model is the **ICE** revision (`B0DQ2773J1`, `B0DQLH4ZTR`). `ICE` is on the recipe's revision reject list, and the ICE board is a distinct SKU from the non-ICE one we review, so neither ASIN was used. Two searches, one with `site:amazon.com` and one without, surfaced no non-ICE listing. GIGABYTE's own product page returns HTTP 403, so the non-ICE model could not be confirmed from the vendor either. |
+| ASRock B860M Pro RS WiFi | `review-asrock-b860m-pro-rs-wifi.html` | PENDING-HUMAN | Candidate `B0DRTTSWNJ` is the right board and agrees on socket (`LGA 1851`), chipset (`B860`), memory generation (`DDR5`) and form factor (`Micro-ATX`), but both the listing title and ASRock's own spec page and manual describe an 802.11axe **Wi-Fi 6E** module, while our table says `WiFi 7`. WiFi variant is part of the comparison set, so the ASIN was not used. Same shape as the `ASRock B760M-ITX/D4 WiFi` row above. |
+
+`B0DRTTSWNJ`, `B0DQ2773J1` and `B0DQLH4ZTR` are not recorded in the table
+above, because none of those boards was converted.
+
+The ASRock row is a live spec-accuracy defect on a published page, not just a
+blocked conversion: our review page claims WiFi 7 for a board the manufacturer
+documents as Wi-Fi 6E. Issue #46 forbids editing a spec table, so it is
+recorded here for a human rather than fixed in that PR.
