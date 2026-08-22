@@ -7,8 +7,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = new URL('..', import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL('..', import.meta.url));
 // Built by concatenation so this file does not itself count as an occurrence
 // of the affiliate tag when the tag-count invariant is checked across the repo.
 const TAG = ['tag=motherboardcentral', 'com-20'].join('.');
