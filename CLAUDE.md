@@ -79,3 +79,6 @@ introduce frameworks or build tooling unless an issue explicitly says so.
 - Never delete pages (redirect or flag instead)
 - Never claim testing we didn't do
 - Never invent product names, prices, or release dates
+
+## Lessons
+- A guard that has never failed isn't a guard — verify guards by breaking them.
