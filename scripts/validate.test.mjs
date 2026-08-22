@@ -1,7 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 import {
+  collectHtmlFiles,
   checkLinks,
   checkAffiliate,
   checkCanonical,
@@ -284,4 +288,55 @@ test('keeps genuinely distinct findings separate', () => {
   const a = { file: 'a.html', rule: 'broken-link', detail: 'x.html' };
   const b = { file: 'a.html', rule: 'broken-link', detail: 'y.html' };
   assert.equal(dedupeFindings([a, b]).length, 2);
+});
+
+/* ------------------------------------------------------------ collection -- */
+
+// Builds a throwaway site root so collection can be tested without depending on
+// what happens to be lying around in the real repo. `files` may be a list of
+// paths (each gets placeholder markup) or a path -> markup map.
+function fixtureRoot(files) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'mbc-collect-'));
+  const entries = Array.isArray(files)
+    ? files.map((rel) => [rel, '<html></html>'])
+    : Object.entries(files);
+  for (const [rel, html] of entries) {
+    const full = path.join(root, rel);
+    fs.mkdirSync(path.dirname(full), { recursive: true });
+    fs.writeFileSync(full, html);
+  }
+  return root;
+}
+
+test('skips pages inside dot-directories such as agent worktrees', () => {
+  const root = fixtureRoot([
+    'index.html',
+    '.claude/worktrees/issue-1/index.html',
+    '.claude/worktrees/issue-1/reviews.html',
+  ]);
+  assert.deepEqual(collectHtmlFiles(root), ['index.html']);
+});
+
+test('skips a dot-directory nested below a real content directory', () => {
+  const root = fixtureRoot(['guides/a.html', 'guides/.cache/a.html']);
+  assert.deepEqual(collectHtmlFiles(root), [path.join('guides', 'a.html')]);
+});
+
+test('still collects pages from ordinary nested directories', () => {
+  const root = fixtureRoot(['index.html', 'guides/b.html']);
+  assert.deepEqual(collectHtmlFiles(root), [path.join('guides', 'b.html'), 'index.html']);
+});
+
+test('a leftover worktree snapshot raises no false meta-duplicates', () => {
+  const page = '<title>Best B650 Motherboards</title><meta name="description" content="Our B650 picks.">';
+  const root = fixtureRoot({
+    'guide-b650.html': page,
+    // A stale agent worktree holds a byte-identical copy of the same page.
+    '.claude/worktrees/issue-1/guide-b650.html': page,
+  });
+  const pages = collectHtmlFiles(root).map((file) => ({
+    file,
+    html: fs.readFileSync(path.join(root, file), 'utf8'),
+  }));
+  assert.deepEqual(checkMeta(pages), []);
 });
