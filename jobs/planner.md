@@ -19,3 +19,12 @@ modify content, never open PRs, never touch main.
 4. Relabel: gh issue edit <n> --remove-label needs-plan --add-label plan-review. If you also add agent-ok, remove plan-review in the same command
 5. Print a one-paragraph summary naming the issue and your key decisions.
 One issue per run. Respect every constraint already in the issue body.
+
+## Plan durability rule
+Never gate acceptance on absolute counts of world-state (total test
+count, page count, baseline size, file totals). Main moves daily; such
+plans rot before execution and get rejected. Express acceptance as
+relative deltas ("baseline shrinks by exactly N", "adds 4 pages") or
+instruct the worker to re-derive the count at execution time and state
+what it must include/exclude. The only permitted absolutes are
+properties of the change itself, never of the repo around it.
