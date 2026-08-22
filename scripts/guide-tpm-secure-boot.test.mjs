@@ -141,7 +141,7 @@ test('covers every section the issue outline specifies', () => {
     'enabling Secure Boot and CSM': /id="secure-boot"/,
     'MBR to GPT conversion': /id="mbr-to-gpt"/,
     'after you enable it': /id="after"/,
-    'the AMD fTPM firmware caveat': /id="ftpm-caveat"/,
+    'the firmware TPM caveat': /id="ftpm-caveat"/,
     'related guides': /id="related-guides"/,
   };
   for (const [label, re] of Object.entries(sections)) {
@@ -387,6 +387,150 @@ test('the fTPM caveat section names the CVEs it refers to', () => {
 test('the fTPM caveat links our BIOS update guide', () => {
   assert.match(section('ftpm-caveat'), /href="guide-bios-update\.html/,
     'the reader is told to flash without being pointed at the how-to');
+});
+
+/* ============================ the caveat covers Intel as well as AMD (#89) == */
+
+/*
+ * CVE-2026-6726 and CVE-2026-6727 are bugs in the Trusted Computing Group's
+ * TPM 2.0 reference code, not AMD bugs. CERT/CC VU#431093 lists AMD *and*
+ * Intel as Affected. This page tells Intel readers to switch PTT on, so a
+ * caveat scoped to AMD reads as "Intel is fine". These tests pin the scope.
+ *
+ * Intel's own advisory pages return HTTP 403 to automated fetches, so the page
+ * links them and attributes their existence to heise rather than summarising
+ * contents nobody here has read.
+ */
+
+const CERT_VU_431093 = 'https://kb.cert.org/vuls/id/431093';
+const INTEL_SA_01371 = 'https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-01371.html';
+const INTEL_SA_01372 = 'https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-01372.html';
+const HEISE = 'https://www.heise.de/en/news/The-security-co-processor-in-many-CPUs-is-insecure-11411956.html';
+
+/** The text of the caveat section's own <h2>. */
+const caveatHeading = () => {
+  const m = html().match(/<h2 id="ftpm-caveat"[^>]*>([\s\S]*?)<\/h2>/i);
+  assert.ok(m, 'no <h2 id="ftpm-caveat">');
+  return stripTags(m[1]);
+};
+
+/** The text of the table-of-contents entry pointing at the caveat. */
+const caveatTocEntry = () => {
+  const toc = block(html(), '<nav class="guide-toc">', '</nav>');
+  const m = toc.match(/<a href="#ftpm-caveat"[^>]*>([\s\S]*?)<\/a>/i);
+  assert.ok(m, 'no table-of-contents entry for #ftpm-caveat');
+  return stripTags(m[1]);
+};
+
+test('the caveat heading is not scoped to AMD alone', () => {
+  const heading = caveatHeading();
+  assert.ok(
+    !/AMD/.test(heading) || /Intel/i.test(heading),
+    `the caveat heading names AMD but not Intel: "${heading}"`,
+  );
+});
+
+test('the table of contents entry for the caveat is not scoped to AMD alone', () => {
+  const entry = caveatTocEntry();
+  assert.ok(
+    !/AMD/.test(entry) || /Intel/i.test(entry),
+    `the contents entry names AMD but not Intel: "${entry}"`,
+  );
+});
+
+test('the caveat keeps the #ftpm-caveat anchor so existing links still resolve', () => {
+  assert.match(html(), /<h2 id="ftpm-caveat"/,
+    'the anchor changed -- in-page and external links to #ftpm-caveat would break');
+});
+
+test('the caveat says Intel is affected too, and cites CERT/CC for it', () => {
+  const sec = stripTags(section('ftpm-caveat'));
+  assert.match(sec, /Intel/, 'the caveat never mentions Intel');
+  assert.match(sec, /VU#431093/, 'the CERT/CC note is not named');
+  assert.ok(extractRefs(html()).some((r) => r.startsWith(CERT_VU_431093)),
+    `the CERT/CC note is not linked: ${CERT_VU_431093}`);
+});
+
+test('the caveat names the reader\'s Intel feature, PTT, as being in scope', () => {
+  assert.match(stripTags(section('ftpm-caveat')), /\bPTT\b/,
+    'the caveat never connects the flaw to PTT, which is the setting this page tells Intel readers to enable');
+});
+
+test('the caveat cites Intel\'s own advisories rather than only NVD', () => {
+  const sec = stripTags(section('ftpm-caveat'));
+  assert.match(sec, /INTEL-SA-01371/i, 'INTEL-SA-01371 is not named');
+  assert.match(sec, /INTEL-SA-01372/i, 'INTEL-SA-01372 is not named');
+  const refs = extractRefs(html());
+  assert.ok(refs.some((r) => r.startsWith(INTEL_SA_01371)), `not linked: ${INTEL_SA_01371}`);
+  assert.ok(refs.some((r) => r.startsWith(INTEL_SA_01372)), `not linked: ${INTEL_SA_01372}`);
+});
+
+test('the caveat does not assert which CVE each Intel advisory covers', () => {
+  // intel.com returned 403 to every fetch, so nobody here has read either
+  // advisory. Pairing an INTEL-SA number with a CVE number would be a guess.
+  const sec = stripTags(section('ftpm-caveat'));
+  assert.doesNotMatch(sec, /INTEL-SA-0137[12][^.]{0,40}CVE-2026-672[67]/i,
+    'an unread advisory is mapped to a specific CVE');
+  assert.doesNotMatch(sec, /CVE-2026-672[67][^.]{0,40}INTEL-SA-0137[12]/i,
+    'an unread advisory is mapped to a specific CVE');
+});
+
+test('the caveat gives the Intel reader the same check-your-BIOS advice', () => {
+  const sec = stripTags(section('ftpm-caveat'));
+  assert.match(sec, /release notes/i, 'the reader is never sent to the BIOS release notes');
+  assert.match(sec, /support page|support site/i, 'the reader is never sent to the board support page');
+  assert.match(sec, /\bPTT\b[^.]{0,200}release notes|release notes[^.]{0,200}\bPTT\b/i,
+    'the release-notes advice never mentions PTT, so it reads as AMD-only advice');
+});
+
+test('the caveat keeps the BitLocker recovery-key warning on the flashing advice', () => {
+  const sec = stripTags(section('ftpm-caveat'));
+  assert.match(sec, /BitLocker/, 'the BitLocker warning was dropped from the caveat');
+  assert.match(sec, /recovery key/i, 'the recovery key is not mentioned in the caveat');
+});
+
+test('the caveat keeps the local-privileged-access framing and does not escalate', () => {
+  const sec = stripTags(section('ftpm-caveat'));
+  assert.match(sec, /local(?:ly)?[^.]{0,40}privilege|privileged[^.]{0,40}local/i,
+    'the "local access with elevated privileges" framing is missing');
+  for (const re of [/\bemergency\b/i, /\brecall\b/i, /\burgently\b/i, /\bimmediately\b/i, /\bcritical\b/i]) {
+    assert.doesNotMatch(sec, re, `alarmist wording matching ${re}`);
+  }
+});
+
+test('the caveat prints no invented Intel BIOS menu path', () => {
+  const paths = [...section('ftpm-caveat').matchAll(/<code[^>]*>([\s\S]*?)<\/code>/gi)]
+    .map((m) => stripTags(m[1]))
+    .filter((t) => t.includes('›'));
+  assert.deepEqual(paths, [], `an unverified menu path is printed: ${paths.join(' | ')}`);
+});
+
+test('the caveat claims no specific board has or has not received a fixed BIOS', () => {
+  const sec = stripTags(section('ftpm-caveat'));
+  // Regression guard, not a behaviour change: the hedge sentence legitimately
+  // contains "have received a fixed BIOS" in negated form, so this matches only
+  // a positive claim attached to a vendor or platform.
+  assert.doesNotMatch(
+    sec,
+    /\b(?:ASUS|MSI|GIGABYTE|ASRock|Intel|AMD)\b[^.]{0,100}\b(?:already|now)\s+(?:has|have|ships?|shipped|carries)\b[^.]{0,60}(?:fixed|patched)\s+(?:BIOS|firmware)/i,
+    'the caveat asserts that some vendor already ships a fixed BIOS',
+  );
+  assert.match(sec, /(?:have not|has not|not) verified/i,
+    'the caveat drops the "we have not verified which boards are fixed" hedge');
+});
+
+test('the sources list carries the CERT/CC note, both Intel advisories and the dated report', () => {
+  const page = html();
+  const sources = page.slice(page.indexOf('<h4>Sources</h4>'));
+  const refs = extractRefs(sources);
+  for (const url of [CERT_VU_431093, INTEL_SA_01371, INTEL_SA_01372, HEISE]) {
+    assert.ok(refs.some((r) => r.startsWith(url)), `sources list is missing ${url}`);
+  }
+});
+
+test('the caveat records the date its advisory information was last checked', () => {
+  assert.match(stripTags(section('ftpm-caveat')), /last checked \d{1,2} [A-Z][a-z]+ 20\d\d/,
+    'no dated stamp on the section that changed');
 });
 
 /* ====================================================== interlinking == */

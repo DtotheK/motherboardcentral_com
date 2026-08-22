@@ -93,7 +93,7 @@
               <li><a href="#secure-boot">Secure Boot, and CSM</a></li>
               <li><a href="#mbr-to-gpt">If Your Disk Is Still MBR</a></li>
               <li><a href="#after">After You Enable It</a></li>
-              <li><a href="#ftpm-caveat">The AMD fTPM Caveat</a></li>
+              <li><a href="#ftpm-caveat">The Firmware TPM Caveat</a></li>
             </ul>
           </nav>
         </aside>
@@ -240,16 +240,22 @@
 
           <p>If the goal was a Windows 11 upgrade, re-run the PC Health Check app afterwards &mdash; it re-reads the state rather than caching its earlier verdict.</p>
 
-          <!-- fTPM caveat -->
-          <h2 id="ftpm-caveat">AMD fTPM: The Firmware Caveat Worth Knowing First</h2>
+          <!-- firmware TPM caveat -->
+          <h2 id="ftpm-caveat">Firmware TPM on AMD and Intel: The Caveat Worth Knowing First</h2>
 
           <p>A firmware TPM is firmware. That has one consequence people find surprising: when a flaw is found in it, the fix arrives as a motherboard BIOS update from your board vendor. Windows Update will not deliver it, and neither will a driver package.</p>
 
-          <p>That is not hypothetical. Two vulnerabilities in the Trusted Computing Group's TPM 2.0 reference code were published on 11 August 2026: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-6726" target="_blank" rel="noopener">CVE-2026-6726</a>, which the NVD entry describes as an information leakage issue allowing "a local attacker with elevated privileges to obtain a credential from a TPM-aware CA for a falsified TPM key", and <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-6727" target="_blank" rel="noopener">CVE-2026-6727</a>, a timing side-channel in RSA OAEP decryption reachable by "a privileged local attacker with access to the TPM command interface". Both require local privileged access, so neither is something a web page can do to you. AMD ships that reference code as fTPM, which is how a specification-level bug becomes a motherboard update.</p>
+          <p>That is not hypothetical. Two vulnerabilities in the Trusted Computing Group's TPM 2.0 reference code were published on 11 August 2026: <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-6726" target="_blank" rel="noopener">CVE-2026-6726</a>, which the NVD entry describes as an information leakage issue allowing "a local attacker with elevated privileges to obtain a credential from a TPM-aware CA for a falsified TPM key", and <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-6727" target="_blank" rel="noopener">CVE-2026-6727</a>, a timing side-channel in RSA OAEP decryption reachable by "a privileged local attacker with access to the TPM command interface". Both require local privileged access, so neither is something a web page can do to you.</p>
+
+          <p>The flawed code is the specification's own, not one vendor's, and that is the part worth reading twice: CERT/CC's note <a href="https://kb.cert.org/vuls/id/431093" target="_blank" rel="noopener">VU#431093</a>, published on 11 August 2026 and updated the following day, lists <strong>both AMD and Intel as affected</strong> by both CVEs. On AMD the firmware TPM is fTPM; on Intel it is PTT. So this is not somebody else's problem depending on which brand you bought &mdash; it applies to whichever of the two settings above you are about to switch on.</p>
+
+          <p>Intel published two advisories of its own alongside the disclosure, <a href="https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-01371.html" target="_blank" rel="noopener">INTEL-SA-01371</a> and <a href="https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-01372.html" target="_blank" rel="noopener">INTEL-SA-01372</a>, as reported by <a href="https://www.heise.de/en/news/The-security-co-processor-in-many-CPUs-is-insecure-11411956.html" target="_blank" rel="noopener">heise</a> on 12 August 2026. Neither Intel page returned anything to us, so we link them for you to read rather than summarise pages we have not seen, and we do not pair either advisory number with a particular CVE here.</p>
 
           <p>ASUS's support article documents the same pattern for older AM4 boards, where an fTPM that anti-cheat rejects as out of date is resolved by updating the board's BIOS rather than anything in Windows.</p>
 
-          <p>So the practical advice, if you are about to turn fTPM on: check your board's support page for a BIOS newer than the one you are running, and look for a TPM or fTPM security fix in its release notes. Coverage varies by board and by vendor, and we have not verified which specific boards have received a fixed BIOS, so treat your own board's release notes as the answer. And save your BitLocker recovery key before flashing &mdash; our <a href="guide-bios-update.html">BIOS update guide</a> covers the safe order, including boards that can flash with no processor installed.</p>
+          <p>So the practical advice, whether you are about to turn fTPM on or PTT on, is the same: check your board's support page for a BIOS newer than the one you are running, and look for a TPM, fTPM or PTT security fix in its release notes. Coverage varies by board and by vendor, and we have not verified which specific boards have a fixed BIOS on either platform, so treat your own board's release notes as the answer. And save your BitLocker recovery key before flashing &mdash; our <a href="guide-bios-update.html">BIOS update guide</a> covers the safe order, including boards that can flash with no processor installed.</p>
+
+          <p style="font-size:0.85rem;color:var(--text-secondary);">Advisory details in this section last checked 22 August 2026.</p>
 
           <!-- Related Guides -->
           <h2 id="related-guides" style="margin-top: 4rem;">Related Guides</h2>
@@ -292,6 +298,9 @@
               <li>Microsoft Learn, documentation date 14 July 2026 &mdash; <a href="https://learn.microsoft.com/en-us/windows/deployment/mbr-to-gpt" target="_blank" rel="noopener">MBR2GPT</a></li>
               <li>ASUS, last updated 15 October 2025 &mdash; <a href="https://www.asus.com/support/faq/1055973/" target="_blank" rel="noopener">Fix FPS game launch errors: enable Secure Boot and update TPM 2.0 (fTPM)</a></li>
               <li>NIST National Vulnerability Database &mdash; <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-6726" target="_blank" rel="noopener">CVE-2026-6726</a> and <a href="https://nvd.nist.gov/vuln/detail/CVE-2026-6727" target="_blank" rel="noopener">CVE-2026-6727</a>, both published 11 August 2026</li>
+              <li>CERT/CC, published 11 August 2026 and updated 12 August 2026 &mdash; <a href="https://kb.cert.org/vuls/id/431093" target="_blank" rel="noopener">VU#431093</a>, which records AMD and Intel as affected by both CVEs</li>
+              <li>Intel, dates not readable to us &mdash; <a href="https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-01371.html" target="_blank" rel="noopener">INTEL-SA-01371</a> and <a href="https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-01372.html" target="_blank" rel="noopener">INTEL-SA-01372</a>, linked because they are Intel's own advisories for this disclosure; neither page returned content to us</li>
+              <li>heise online, 12 August 2026 &mdash; <a href="https://www.heise.de/en/news/The-security-co-processor-in-many-CPUs-is-insecure-11411956.html" target="_blank" rel="noopener">The security co-processor in many CPUs is insecure</a>, the dated report the two Intel advisory numbers come from</li>
             </ul>
             <p>Menu paths appear on this page only where the vendor's own support page was readable to us at the time of writing. For every other brand we name the setting and send you to your board's manual, which is the only document guaranteed to match the firmware you are actually running.</p>
           </div>
