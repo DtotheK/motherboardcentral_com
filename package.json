@@ -10,6 +10,7 @@
   "scripts": {
     "validate": "node scripts/validate.mjs",
     "vs": "node scripts/vs-pages.mjs",
-    "test": "node --test"
+    "test": "node --test",
+    "jobs": "node scripts/compose-jobs.mjs --build"
   }
 }

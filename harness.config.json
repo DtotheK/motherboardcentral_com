@@ -37,7 +37,8 @@
     "ok": "agent-ok",
     "plan": "needs-plan",
     "planReview": "plan-review",
-    "review": "needs-review"
+    "review": "needs-review",
+    "enablement": "needs-enablement"
   },
 
   "caps": {

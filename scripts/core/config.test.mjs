@@ -142,10 +142,12 @@ test('config-held patterns compile to the regexes the rules expect', () => {
 
 /* ------------------------------------------- the manifest describes reality -- */
 
+/** Composed job prompts. Underscore-prefixed files are shared fragments
+ *  (_preamble.scout.md, _rules.enablement.md), not jobs. */
 const jobFiles = () =>
   fs
     .readdirSync(path.join(ROOT, 'jobs'))
-    .filter((f) => f.endsWith('.md'))
+    .filter((f) => f.endsWith('.md') && !f.startsWith('_'))
     .sort();
 
 test('every label the manifest declares is one the jobs actually use', () => {
