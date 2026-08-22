@@ -310,10 +310,13 @@ export function diffBaseline(findings, baseline) {
 
 export function collectHtmlFiles(root = ROOT) {
   const out = [];
-  const skip = new Set(['.git', 'node_modules', '.github', 'docs']);
+  // Any dot-directory is tooling state, not site content — .git, .github and
+  // agent worktrees under .claude/ alike. Collecting a worktree's snapshot of
+  // the site would double every page and fail the meta-duplicate check.
+  const skip = new Set(['node_modules', 'docs']);
   const walk = (dir) => {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      if (skip.has(entry.name)) continue;
+      if (skip.has(entry.name) || entry.name.startsWith('.')) continue;
       const full = path.join(dir, entry.name);
       if (entry.isDirectory()) walk(full);
       else if (entry.name.endsWith('.html')) out.push(path.relative(root, full));
