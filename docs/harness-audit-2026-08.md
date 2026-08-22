@@ -191,6 +191,29 @@ real and load-bearing — it is precisely why the #113 dot-directory fix landed 
 place and covered seven scanners at once. **The template must keep that seam and
 export the same helpers.**
 
+### Where the seam falls, and one place it deliberately does not
+
+Implemented in step 1 as `core/` (no site vocabulary) + `rules/` (universal) +
+`rules.site/` (motherboard-only), enforced by `scripts/core/seam.test.mjs`
+rather than by convention.
+
+One boundary is deliberately *not* drawn at the config file, and it should stay
+that way. `harness.config.json` declares **which** spec fields are cross-checked
+(`validator.specFields`: LAN, WiFi, Socket). It does **not** declare how each one
+is tokenised — that `2.5G`, `2.5GbE` and `2.5 Gigabit Ethernet` all collapse to
+`2.5g`, while a `6GHz` band or `20 Gbps` USB must never be read as a LAN claim.
+That logic is a pair of tokeniser tables in
+`scripts/rules.site/spec-contradiction.mjs`.
+
+**This is the intended design, not a gap in the manifest.** The rule is a good
+one for the boundary generally: a slot is config when it is a *value* a second
+site would supply, and code when it is *judgment* a second site would replace.
+Squeezing the tokenisers into JSON would mean either a regex-in-a-string
+mini-language nobody can review, or a stringly-typed rules engine — both worse
+than a module a new site swaps out wholesale, which is exactly what
+`rules.site/` exists for. Expect every extracted harness to have a few of these,
+and expect them to be named rather than quietly missing.
+
 ---
 
 ## 5. Inventory — runner, settings, CI
