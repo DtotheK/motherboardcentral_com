@@ -7,6 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const REAL_SCRIPT = fileURLToPath(new URL('./run-job.sh', import.meta.url));
+const REAL_EXTRACTOR = fileURLToPath(new URL('./extract-result.mjs', import.meta.url));
 
 /* ------------------------------------------------------------- harness -- */
 
@@ -23,6 +24,8 @@ function makeSandbox({ job = 'demo-job', claude }) {
 
   fs.copyFileSync(REAL_SCRIPT, path.join(dir, 'jobs', 'run-job.sh'));
   fs.chmodSync(path.join(dir, 'jobs', 'run-job.sh'), 0o755);
+  // The runner extracts its summary with this, so the sandbox needs it too.
+  fs.copyFileSync(REAL_EXTRACTOR, path.join(dir, 'jobs', 'extract-result.mjs'));
   fs.writeFileSync(path.join(dir, 'jobs', `${job}.md`), 'Do the thing.\n');
 
   writeBin(dir, 'git', '#!/usr/bin/env bash\nexit 0\n');
@@ -41,6 +44,21 @@ const env = (dir) => ({
   ...process.env,
   PATH: `${path.join(dir, 'bin')}:${process.env.PATH}`,
 });
+
+/**
+ * The sandbox bin prepended to a real PATH with every directory containing
+ * `tool` removed. Used to prove the runner's preflight fires: stripping PATH
+ * outright is not an option, because the OS needs it to find bash and the
+ * script needs it to find dirname/cat/date long before the preflight runs.
+ */
+function pathWithoutTool(dir, tool) {
+  const sep = process.platform === 'win32' ? ';' : ':';
+  const candidates = [tool, `${tool}.exe`, `${tool}.cmd`, `${tool}.bat`];
+  const kept = (process.env.PATH ?? '')
+    .split(sep)
+    .filter((d) => d && !candidates.some((c) => fs.existsSync(path.join(d, c))));
+  return `${path.join(dir, 'bin')}:${kept.join(sep)}`;
+}
 
 function runJob({ dir, job }) {
   return spawnSync('bash', [path.join(dir, 'jobs', 'run-job.sh'), job], {
@@ -182,6 +200,29 @@ test('extracts the result even when stderr noise is interleaved', () => {
 
   assert.equal(r.status, 0, r.stderr);
   assert.equal(fs.readFileSync(only(box.dir, '.txt'), 'utf8').trim(), 'survived the noise');
+});
+
+test('fails fast and by name when a required tool is missing', () => {
+  // jq used to be an undeclared dependency: when it was absent the runner still
+  // exited 0 and wrote an empty summary, so the failure was silent. Missing
+  // tools must now be loud. PATH holds only the sandbox bin, which has git but
+  // deliberately no claude.
+  const box = makeSandbox({ claude: '#!/usr/bin/env bash\nexit 0\n' });
+  fs.rmSync(path.join(box.dir, 'bin', 'claude'));
+
+  // Keep the real PATH -- the script needs dirname/cat/date, and the OS needs
+  // it to locate bash at all -- but drop any directory that actually holds a
+  // claude binary, so its absence is guaranteed rather than assumed. git is
+  // probed first and resolves to the sandbox stub, so the run reaches the
+  // claude check.
+  const r = spawnSync('bash', [path.join(box.dir, 'jobs', 'run-job.sh'), box.job], {
+    cwd: box.dir,
+    env: { ...process.env, PATH: pathWithoutTool(box.dir, 'claude') },
+    encoding: 'utf8',
+  });
+
+  assert.equal(r.status, 69, 'missing tool should exit 69, not run and produce an empty summary');
+  assert.match(r.stderr, /required tool 'claude' not found/);
 });
 
 test('still writes the .txt and propagates the exit code when the job fails', () => {
