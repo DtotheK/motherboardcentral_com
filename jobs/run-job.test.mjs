@@ -149,7 +149,10 @@ test('the .json grows while the job is still running', async () => {
       '  case "$1" in --output-format) fmt="$2"; shift 2 ;; *) shift ;; esac\n' +
       'done\n' +
       `[ "$fmt" = "stream-json" ] && echo '${JSON.stringify({ type: 'system', subtype: 'init' })}'\n` +
-      'sleep 2\n' +
+      // Long enough that the poll below cannot race the job's own exit under
+      // load. This test used to sleep 2 and read tail's output after a fixed
+      // 1s wait, which failed intermittently on a busy machine.
+      'sleep 6\n' +
       `echo '${JSON.stringify({ type: 'result', result: 'late' })}'\n`,
   });
 
@@ -171,7 +174,10 @@ test('the .json grows while the job is still running', async () => {
   const tail = spawn('tail', ['-f', '-n', '+1', log]);
   let tailed = '';
   tail.stdout.on('data', (d) => (tailed += d));
-  await sleep(1000);
+
+  // Poll rather than waiting a fixed interval: how fast tail flushes is a
+  // property of the machine's load, not of the runner being tested.
+  for (let i = 0; i < 60 && !/"type":"system"/.test(tailed); i++) await sleep(50);
 
   const stillRunning = child.exitCode === null;
   const midRunSize = fs.statSync(log).size;

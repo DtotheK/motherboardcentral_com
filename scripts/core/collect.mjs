@@ -4,17 +4,18 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-/** Repo root, two levels up from scripts/core/. */
-export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+import { ROOT } from './paths.mjs';
+import { config } from './config.mjs';
+
+export { ROOT };
 
 export function collectHtmlFiles(root = ROOT) {
   const out = [];
   // Any dot-directory is tooling state, not site content — .git, .github and
   // agent worktrees under .claude/ alike. Collecting a worktree's snapshot of
   // the site would double every page and fail the meta-duplicate check.
-  const skip = new Set(['node_modules', 'docs']);
+  const skip = new Set(config.validator.skipDirs);
   const walk = (dir) => {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       if (skip.has(entry.name) || entry.name.startsWith('.')) continue;

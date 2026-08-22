@@ -53,15 +53,15 @@ export function getDescription(html) {
 /**
  * A `<tr><td>key</td><td>value</td></tr>` table as a Map, first key winning.
  *
- * The row shape is generic two-column markup rather than site vocabulary, so it
- * lives here -- but it IS a shape this site's pages happen to share, and step 2
- * of the extraction plan lifts it into harness.config.json as a slot.
+ * The row shape is a site fact, so callers pass it in: rules.site/ supplies
+ * harness.config.json's validator.pageShape.specTableRowPattern. The default
+ * keeps the twelve payload tests that call this with one argument working.
  */
-const ROW_RE = /<tr>\s*<td>([^<]+)<\/td>\s*<td>([^<]*)<\/td>\s*<\/tr>/gi;
+export const DEFAULT_ROW_RE = /<tr>\s*<td>([^<]+)<\/td>\s*<td>([^<]*)<\/td>\s*<\/tr>/gi;
 
-export function parseSpecTable(html) {
+export function parseSpecTable(html, rowRe = DEFAULT_ROW_RE) {
   const map = new Map();
-  for (const m of html.matchAll(ROW_RE)) {
+  for (const m of html.matchAll(rowRe)) {
     const key = m[1].replace(/&amp;/g, '&').trim();
     if (!map.has(key)) map.set(key, m[2].trim());
   }

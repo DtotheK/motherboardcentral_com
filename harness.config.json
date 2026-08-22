@@ -1,0 +1,93 @@
+{
+  "$comment": [
+    "The slot manifest. Every fact that makes this harness THIS site's harness",
+    "lives here, so cutting the template means replacing this file plus",
+    "scripts/rules.site/ and jobs/missions/ -- and nothing else.",
+    "Step 2 of the extraction plan in docs/harness-audit-2026-08.md.",
+    "",
+    "Loaded synchronously at import time by scripts/core/config.mjs. That",
+    "matters: rules build their label strings when their module is evaluated,",
+    "so config must be populated before any rule module body runs. ESM",
+    "evaluates imports depth-first, so a synchronous read in config.mjs is",
+    "guaranteed to win that race. See config.mjs for the full explanation."
+  ],
+
+  "site": {
+    "name": "MotherboardCentral",
+    "host": "motherboardcentral.com",
+    "url": "https://motherboardcentral.com"
+  },
+
+  "git": {
+    "defaultBranch": "main",
+    "branchPrefix": "task/issue-"
+  },
+
+  "commands": {
+    "validate": "npm run validate",
+    "test": "npm test"
+  },
+
+  "tripwire": {
+    "maxFiles": 15,
+    "sharedPaths": ["shared template", "nav", "footer", "layout markup"]
+  },
+
+  "labels": {
+    "ok": "agent-ok",
+    "plan": "needs-plan",
+    "planReview": "plan-review",
+    "review": "needs-review"
+  },
+
+  "caps": {
+    "$comment": "Issues or PRs one run may produce. Scouts differ by remit.",
+    "default": 5,
+    "byJob": {
+      "product-scout": 5,
+      "market-watch": 5,
+      "seo-content-scout": 4,
+      "competitor-scan": 3,
+      "creative-features": 3,
+      "ux-audit": 3,
+      "feature-scout": 2,
+      "site-strategist": 1,
+      "planner": 1,
+      "backlog-worker": 1,
+      "reviewer": 1,
+      "pr-unblocker": 4
+    }
+  },
+
+  "validator": {
+    "baselineFile": "validation-baseline.json",
+
+    "$comment_ignorePaths": "Paths the host injects at runtime, correctly absent from the repo.",
+    "ignorePaths": ["/_vercel"],
+
+    "$comment_skipDirs": "Directories that are not site content. Dot-directories are always skipped, whatever this says.",
+    "skipDirs": ["node_modules", "docs"],
+
+    "affiliate": {
+      "tag": "motherboardcentral.com-20",
+      "hostPattern": "amazon\\.(?:com|co\\.uk|ca|de)",
+      "searchUrlPattern": "\\/s\\?k=|\\/s\\/\\?k=|[?&]k=|\\/s\\?",
+      "productLinkPattern": "https://www\\.amazon\\.com/dp/[A-Z0-9]{10}"
+    },
+
+    "pageShape": {
+      "$comment": "The markup shapes this site's generated pages share.",
+      "specTableRowPattern": "<tr>\\s*<td>([^<]+)<\\/td>\\s*<td>([^<]*)<\\/td>\\s*<\\/tr>",
+      "relatedSectionId": "related"
+    },
+
+    "$comment_specFields": [
+      "WHICH spec fields are cross-checked against body prose. HOW each one is",
+      "tokenised cannot live in JSON -- '2.5G' and '2.5 Gigabit Ethernet'",
+      "collapsing to the same token is code, and it stays in",
+      "scripts/rules.site/spec-contradiction.mjs. This is a partial slot: the",
+      "list is configurable, the tokenisers are a module a new site replaces."
+    ],
+    "specFields": ["LAN", "WiFi", "Socket"]
+  }
+}

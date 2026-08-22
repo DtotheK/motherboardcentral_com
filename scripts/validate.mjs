@@ -34,6 +34,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { ROOT, collectHtmlFiles } from './core/collect.mjs';
+import { config } from './core/config.mjs';
 import { fingerprint, dedupeFindings, diffBaseline } from './core/ratchet.mjs';
 import {
   extractRefs,
@@ -53,7 +54,7 @@ import {
   checkSpecContradictions,
 } from './rules.site/spec-contradiction.mjs';
 
-export const BASELINE_FILE = 'validation-baseline.json';
+export const BASELINE_FILE = config.validator.baselineFile;
 
 /* ============================================================ registry == */
 
@@ -99,6 +100,8 @@ export {
   // core/collect
   collectHtmlFiles,
   ROOT,
+  // core/config
+  config,
   // core/ratchet
   fingerprint,
   dedupeFindings,

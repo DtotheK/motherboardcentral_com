@@ -379,8 +379,20 @@ unaffected and passes:
   string-matches `'const motherboardDatabase = [\n{'`.
 
 **For the template:** add a preflight `command -v` check to the runner for
-`jq`/`gh`/`claude`, widen `.gitattributes` to `* text eol=lf`, and ban the
+`jq`/`gh`/`claude`, widen `.gitattributes` to `* text=auto eol=lf`, and ban the
 `.pathname` idiom. A harness that only runs on one CI image is not a template.
+
+> **Correction (2026-08-22, PR #126).** This line first read `* text eol=lf`.
+> That is wrong: bare `text` marks every file as text, including the 81 png/jpg
+> blobs, and would corrupt them on checkout. `text=auto` keeps git's binary
+> detection and applies `eol` only to what it decides is text.
+>
+> **The CRLF diagnosis was also revised.** This section originally implied the
+> repo held CRLF content. `git ls-files --eol` shows otherwise: all 168 text
+> blobs are `i/lf`, and only the Windows *working tree* was `w/crlf`, via
+> `core.autocrlf=true`. The fix is therefore one `.gitattributes` line with
+> **zero content churn**, not a repo-wide renormalisation — and it explains why
+> CI was always green, since `ubuntu-latest` checks out LF either way.
 
 ---
 
